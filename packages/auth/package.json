@@ -1,0 +1,48 @@
+{
+  "name": "@repo/auth",
+  "type": "module",
+  "version": "0.0.0",
+  "private": true,
+  "exports": {
+    ".": {
+      "types": "./src/index.ts",
+      "development": "./src/index.ts",
+      "import": "./dist/index.js"
+    },
+    "./client": {
+      "types": "./src/client.ts",
+      "development": "./src/client.ts",
+      "import": "./dist/client.js"
+    },
+    "./server": {
+      "types": "./src/server.ts",
+      "development": "./src/server.ts",
+      "import": "./dist/server.js"
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsdown",
+    "check-types": "tsc --noEmit",
+    "format": "eslint . --fix",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix"
+  },
+  "dependencies": {
+    "@better-auth/drizzle-adapter": "1.7.2",
+    "@repo/db": "workspace:*",
+    "better-auth": "1.7.2",
+    "drizzle-orm": "1.0.0-rc.4",
+    "nanoid": "^5.1.6",
+    "zod": "^4.4.3"
+  },
+  "devDependencies": {
+    "@repo/eslint-config": "workspace:*",
+    "@repo/typescript-config": "workspace:*",
+    "eslint": "^10.4.0",
+    "tsdown": "^0.22.14",
+    "typescript": "^6.0.2"
+  }
+}

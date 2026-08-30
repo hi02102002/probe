@@ -1,0 +1,41 @@
+import type { AnyRouter } from '@orpc/server'
+import {
+  BodyLimitPlugin,
+  CompressionPlugin,
+  RPCHandler,
+} from '@orpc/server/fetch'
+import {
+  RequestHeadersPlugin,
+  ResponseHeadersPlugin,
+} from '@orpc/server/plugins'
+import { useLogger, withEvlog } from 'evlog/orpc'
+import { getAuthIdentifier } from '#/libs/evlog.js'
+
+const maxBodySize = 1024 * 1024
+
+export function createRpcHandler<R extends AnyRouter>(router: R) {
+  const handler = new RPCHandler(router, {
+    interceptors: [
+      async (options) => {
+        await getAuthIdentifier()(
+          useLogger(),
+          options.request.headers,
+        )
+
+        return options.next()
+      },
+    ],
+    plugins: [
+      new RequestHeadersPlugin(),
+      new ResponseHeadersPlugin(),
+      new BodyLimitPlugin({
+        maxBodySize,
+      }),
+      new CompressionPlugin(),
+    ],
+  })
+
+  return withEvlog(handler, {
+    redact: true,
+  })
+}

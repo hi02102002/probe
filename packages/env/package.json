@@ -1,0 +1,52 @@
+{
+  "name": "@repo/env",
+  "type": "module",
+  "version": "0.0.0",
+  "private": true,
+  "exports": {
+    "./api": {
+      "types": "./src/api.ts",
+      "development": "./src/api.ts",
+      "import": "./dist/api.js"
+    },
+    "./dotenv": {
+      "types": "./src/dotenv.ts",
+      "development": "./src/dotenv.ts",
+      "import": "./dist/dotenv.js",
+      "default": "./src/dotenv.ts"
+    },
+    "./web/client": {
+      "types": "./src/web/client.ts",
+      "development": "./src/web/client.ts",
+      "import": "./dist/web/client.js"
+    },
+    "./web/server": {
+      "types": "./src/web/server.ts",
+      "development": "./src/web/server.ts",
+      "import": "./dist/web/server.js"
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsdown",
+    "check-types": "tsc --noEmit",
+    "format": "eslint . --fix",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix"
+  },
+  "dependencies": {
+    "@t3-oss/env-core": "^0.13.11",
+    "dotenv": "^17.4.2",
+    "zod": "^4.4.3"
+  },
+  "devDependencies": {
+    "@repo/eslint-config": "workspace:*",
+    "@repo/typescript-config": "workspace:*",
+    "@types/node": "^24.0.0",
+    "eslint": "^10.4.0",
+    "tsdown": "^0.22.14",
+    "typescript": "^6.0.2"
+  }
+}

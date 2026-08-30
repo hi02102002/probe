@@ -1,0 +1,58 @@
+{
+  "name": "@repo/db",
+  "type": "module",
+  "version": "0.0.0",
+  "private": true,
+  "exports": {
+    ".": {
+      "types": "./src/index.ts",
+      "development": "./src/index.ts",
+      "import": "./dist/index.js"
+    },
+    "./schema": {
+      "types": "./src/postgres/schema.ts",
+      "development": "./src/postgres/schema.ts",
+      "import": "./dist/postgres/schema.js"
+    },
+    "./relations": {
+      "types": "./src/postgres/relations.ts",
+      "development": "./src/postgres/relations.ts",
+      "import": "./dist/postgres/relations.js"
+    },
+    "./plus": {
+      "types": "./src/postgres/plus.ts",
+      "development": "./src/postgres/plus.ts",
+      "import": "./dist/postgres/plus.js"
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsdown",
+    "check-types": "tsc --noEmit",
+    "db:check": "drizzle-kit check --config=drizzle.config.ts",
+    "db:generate": "drizzle-kit generate --config=drizzle.config.ts",
+    "db:migrate": "drizzle-kit migrate --config=drizzle.config.ts",
+    "db:push": "drizzle-kit push --config=drizzle.config.ts",
+    "db:studio": "drizzle-kit studio --config=drizzle.config.ts",
+    "format": "eslint . --fix",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix"
+  },
+  "dependencies": {
+    "drizzle-orm": "1.0.0-rc.4",
+    "drizzle-plus": "1.0.0-rc.4",
+    "pg": "^8.16.3"
+  },
+  "devDependencies": {
+    "@repo/eslint-config": "workspace:*",
+    "@repo/typescript-config": "workspace:*",
+    "@types/pg": "^8.15.5",
+    "dotenv": "^17.4.2",
+    "drizzle-kit": "1.0.0-rc.4",
+    "eslint": "^10.4.0",
+    "tsdown": "^0.22.14",
+    "typescript": "^6.0.2"
+  }
+}
