@@ -9,125 +9,160 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
-import { Route as AuthRouteImport } from './routes/_auth'
-import { Route as ProtectedRouteImport } from './routes/_protected'
 import { Route as OgImageRouteImport } from './routes/og-image'
-import { Route as marketingIndexRouteImport } from './routes/(marketing)/index'
-import { Route as marketingPrivacyRouteImport } from './routes/(marketing)/privacy'
-import { Route as marketingTermsRouteImport } from './routes/(marketing)/terms'
-import { Route as AuthLoginRouteImport } from './routes/_auth/login'
-import { Route as ProtectedDashboardIndexRouteRouteImport } from './routes/_protected.dashboard/index/route'
+import { Route as Char123LocaleChar125RouteRouteImport } from './routes/{-$locale}/route'
+import { Route as Char123LocaleChar125SplatRouteImport } from './routes/{-$locale}/$'
+import { Route as Char123LocaleChar125404RouteImport } from './routes/{-$locale}/404'
+import { Route as Char123LocaleChar125AuthRouteImport } from './routes/{-$locale}/_auth'
+import { Route as Char123LocaleChar125ProtectedRouteImport } from './routes/{-$locale}/_protected'
+import { Route as Char123LocaleChar125marketingIndexRouteImport } from './routes/{-$locale}/(marketing)/index'
+import { Route as Char123LocaleChar125marketingPrivacyRouteImport } from './routes/{-$locale}/(marketing)/privacy'
+import { Route as Char123LocaleChar125marketingTermsRouteImport } from './routes/{-$locale}/(marketing)/terms'
+import { Route as Char123LocaleChar125AuthLoginRouteImport } from './routes/{-$locale}/_auth/login'
+import { Route as Char123LocaleChar125ProtectedDashboardIndexRouteRouteImport } from './routes/{-$locale}/_protected.dashboard/index/route'
 
-const AuthRoute = AuthRouteImport.update({
-  id: '/_auth',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const ProtectedRoute = ProtectedRouteImport.update({
-  id: '/_protected',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const OgImageRoute = OgImageRouteImport.update({
   id: '/og-image',
   path: '/og-image',
   getParentRoute: () => rootRouteImport,
 } as any)
-const marketingIndexRoute = marketingIndexRouteImport.update({
-  id: '/(marketing)/',
-  path: '/',
-  getParentRoute: () => rootRouteImport,
+const Char123LocaleChar125RouteRoute =
+  Char123LocaleChar125RouteRouteImport.update({
+    id: '/{-$locale}',
+    path: '/{-$locale}',
+    getParentRoute: () => rootRouteImport,
+  } as any)
+const Char123LocaleChar125SplatRoute =
+  Char123LocaleChar125SplatRouteImport.update({
+    id: '/$',
+    path: '/$',
+    getParentRoute: () => Char123LocaleChar125RouteRoute,
+  } as any)
+const Char123LocaleChar125404Route = Char123LocaleChar125404RouteImport.update({
+  id: '/404',
+  path: '/404',
+  getParentRoute: () => Char123LocaleChar125RouteRoute,
 } as any)
-const marketingPrivacyRoute = marketingPrivacyRouteImport.update({
-  id: '/(marketing)/privacy',
-  path: '/privacy',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const marketingTermsRoute = marketingTermsRouteImport.update({
-  id: '/(marketing)/terms',
-  path: '/terms',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const AuthLoginRoute = AuthLoginRouteImport.update({
-  id: '/login',
-  path: '/login',
-  getParentRoute: () => AuthRoute,
-} as any)
-const ProtectedDashboardIndexRouteRoute =
-  ProtectedDashboardIndexRouteRouteImport.update({
+const Char123LocaleChar125AuthRoute =
+  Char123LocaleChar125AuthRouteImport.update({
+    id: '/_auth',
+    getParentRoute: () => Char123LocaleChar125RouteRoute,
+  } as any)
+const Char123LocaleChar125ProtectedRoute =
+  Char123LocaleChar125ProtectedRouteImport.update({
+    id: '/_protected',
+    getParentRoute: () => Char123LocaleChar125RouteRoute,
+  } as any)
+const Char123LocaleChar125marketingIndexRoute =
+  Char123LocaleChar125marketingIndexRouteImport.update({
+    id: '/(marketing)/',
+    path: '/',
+    getParentRoute: () => Char123LocaleChar125RouteRoute,
+  } as any)
+const Char123LocaleChar125marketingPrivacyRoute =
+  Char123LocaleChar125marketingPrivacyRouteImport.update({
+    id: '/(marketing)/privacy',
+    path: '/privacy',
+    getParentRoute: () => Char123LocaleChar125RouteRoute,
+  } as any)
+const Char123LocaleChar125marketingTermsRoute =
+  Char123LocaleChar125marketingTermsRouteImport.update({
+    id: '/(marketing)/terms',
+    path: '/terms',
+    getParentRoute: () => Char123LocaleChar125RouteRoute,
+  } as any)
+const Char123LocaleChar125AuthLoginRoute =
+  Char123LocaleChar125AuthLoginRouteImport.update({
+    id: '/login',
+    path: '/login',
+    getParentRoute: () => Char123LocaleChar125AuthRoute,
+  } as any)
+const Char123LocaleChar125ProtectedDashboardIndexRouteRoute =
+  Char123LocaleChar125ProtectedDashboardIndexRouteRouteImport.update({
     id: '/dashboard/',
     path: '/dashboard',
-    getParentRoute: () => ProtectedRoute,
+    getParentRoute: () => Char123LocaleChar125ProtectedRoute,
   } as any)
 
 export interface FileRoutesByFullPath {
-  '/': typeof marketingIndexRoute
+  '/{-$locale}': typeof Char123LocaleChar125RouteRouteWithChildren
   '/og-image': typeof OgImageRoute
-  '/privacy': typeof marketingPrivacyRoute
-  '/terms': typeof marketingTermsRoute
-  '/login': typeof AuthLoginRoute
-  '/dashboard/': typeof ProtectedDashboardIndexRouteRoute
+  '/{-$locale}/$': typeof Char123LocaleChar125SplatRoute
+  '/{-$locale}/404': typeof Char123LocaleChar125404Route
+  '/{-$locale}/privacy': typeof Char123LocaleChar125marketingPrivacyRoute
+  '/{-$locale}/terms': typeof Char123LocaleChar125marketingTermsRoute
+  '/{-$locale}/login': typeof Char123LocaleChar125AuthLoginRoute
+  '/{-$locale}/': typeof Char123LocaleChar125marketingIndexRoute
+  '/{-$locale}/dashboard/': typeof Char123LocaleChar125ProtectedDashboardIndexRouteRoute
 }
 export interface FileRoutesByTo {
-  '/': typeof marketingIndexRoute
   '/og-image': typeof OgImageRoute
-  '/privacy': typeof marketingPrivacyRoute
-  '/terms': typeof marketingTermsRoute
-  '/login': typeof AuthLoginRoute
-  '/dashboard': typeof ProtectedDashboardIndexRouteRoute
+  '/{-$locale}/$': typeof Char123LocaleChar125SplatRoute
+  '/{-$locale}/404': typeof Char123LocaleChar125404Route
+  '/{-$locale}': typeof Char123LocaleChar125marketingIndexRoute
+  '/{-$locale}/privacy': typeof Char123LocaleChar125marketingPrivacyRoute
+  '/{-$locale}/terms': typeof Char123LocaleChar125marketingTermsRoute
+  '/{-$locale}/login': typeof Char123LocaleChar125AuthLoginRoute
+  '/{-$locale}/dashboard': typeof Char123LocaleChar125ProtectedDashboardIndexRouteRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
-  '/_auth': typeof AuthRouteWithChildren
-  '/_protected': typeof ProtectedRouteWithChildren
+  '/{-$locale}': typeof Char123LocaleChar125RouteRouteWithChildren
   '/og-image': typeof OgImageRoute
-  '/(marketing)/privacy': typeof marketingPrivacyRoute
-  '/(marketing)/terms': typeof marketingTermsRoute
-  '/_auth/login': typeof AuthLoginRoute
-  '/(marketing)/': typeof marketingIndexRoute
-  '/_protected/dashboard/': typeof ProtectedDashboardIndexRouteRoute
+  '/{-$locale}/$': typeof Char123LocaleChar125SplatRoute
+  '/{-$locale}/404': typeof Char123LocaleChar125404Route
+  '/{-$locale}/_auth': typeof Char123LocaleChar125AuthRouteWithChildren
+  '/{-$locale}/_protected': typeof Char123LocaleChar125ProtectedRouteWithChildren
+  '/{-$locale}/(marketing)/privacy': typeof Char123LocaleChar125marketingPrivacyRoute
+  '/{-$locale}/(marketing)/terms': typeof Char123LocaleChar125marketingTermsRoute
+  '/{-$locale}/_auth/login': typeof Char123LocaleChar125AuthLoginRoute
+  '/{-$locale}/(marketing)/': typeof Char123LocaleChar125marketingIndexRoute
+  '/{-$locale}/_protected/dashboard/': typeof Char123LocaleChar125ProtectedDashboardIndexRouteRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
-    '/' | '/og-image' | '/privacy' | '/terms' | '/login' | '/dashboard/'
+    | '/{-$locale}'
+    | '/og-image'
+    | '/{-$locale}/$'
+    | '/{-$locale}/404'
+    | '/{-$locale}/privacy'
+    | '/{-$locale}/terms'
+    | '/{-$locale}/login'
+    | '/{-$locale}/'
+    | '/{-$locale}/dashboard/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/og-image' | '/privacy' | '/terms' | '/login' | '/dashboard'
+  to:
+    | '/og-image'
+    | '/{-$locale}/$'
+    | '/{-$locale}/404'
+    | '/{-$locale}'
+    | '/{-$locale}/privacy'
+    | '/{-$locale}/terms'
+    | '/{-$locale}/login'
+    | '/{-$locale}/dashboard'
   id:
     | '__root__'
-    | '/_auth'
-    | '/_protected'
+    | '/{-$locale}'
     | '/og-image'
-    | '/(marketing)/privacy'
-    | '/(marketing)/terms'
-    | '/_auth/login'
-    | '/(marketing)/'
-    | '/_protected/dashboard/'
+    | '/{-$locale}/$'
+    | '/{-$locale}/404'
+    | '/{-$locale}/_auth'
+    | '/{-$locale}/_protected'
+    | '/{-$locale}/(marketing)/privacy'
+    | '/{-$locale}/(marketing)/terms'
+    | '/{-$locale}/_auth/login'
+    | '/{-$locale}/(marketing)/'
+    | '/{-$locale}/_protected/dashboard/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
-  AuthRoute: typeof AuthRouteWithChildren
-  ProtectedRoute: typeof ProtectedRouteWithChildren
+  Char123LocaleChar125RouteRoute: typeof Char123LocaleChar125RouteRouteWithChildren
   OgImageRoute: typeof OgImageRoute
-  marketingPrivacyRoute: typeof marketingPrivacyRoute
-  marketingTermsRoute: typeof marketingTermsRoute
-  marketingIndexRoute: typeof marketingIndexRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    '/_auth': {
-      id: '/_auth'
-      path: ''
-      fullPath: '/'
-      preLoaderRoute: typeof AuthRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/_protected': {
-      id: '/_protected'
-      path: ''
-      fullPath: '/'
-      preLoaderRoute: typeof ProtectedRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/og-image': {
       id: '/og-image'
       path: '/og-image'
@@ -135,73 +170,141 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof OgImageRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/(marketing)/': {
-      id: '/(marketing)/'
+    '/{-$locale}': {
+      id: '/{-$locale}'
+      path: '/{-$locale}'
+      fullPath: '/{-$locale}'
+      preLoaderRoute: typeof Char123LocaleChar125RouteRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/{-$locale}/$': {
+      id: '/{-$locale}/$'
+      path: '/$'
+      fullPath: '/{-$locale}/$'
+      preLoaderRoute: typeof Char123LocaleChar125SplatRouteImport
+      parentRoute: typeof Char123LocaleChar125RouteRoute
+    }
+    '/{-$locale}/404': {
+      id: '/{-$locale}/404'
+      path: '/404'
+      fullPath: '/{-$locale}/404'
+      preLoaderRoute: typeof Char123LocaleChar125404RouteImport
+      parentRoute: typeof Char123LocaleChar125RouteRoute
+    }
+    '/{-$locale}/_auth': {
+      id: '/{-$locale}/_auth'
+      path: ''
+      fullPath: '/{-$locale}'
+      preLoaderRoute: typeof Char123LocaleChar125AuthRouteImport
+      parentRoute: typeof Char123LocaleChar125RouteRoute
+    }
+    '/{-$locale}/_protected': {
+      id: '/{-$locale}/_protected'
+      path: ''
+      fullPath: '/{-$locale}'
+      preLoaderRoute: typeof Char123LocaleChar125ProtectedRouteImport
+      parentRoute: typeof Char123LocaleChar125RouteRoute
+    }
+    '/{-$locale}/(marketing)/': {
+      id: '/{-$locale}/(marketing)/'
       path: '/'
-      fullPath: '/'
-      preLoaderRoute: typeof marketingIndexRouteImport
-      parentRoute: typeof rootRouteImport
+      fullPath: '/{-$locale}/'
+      preLoaderRoute: typeof Char123LocaleChar125marketingIndexRouteImport
+      parentRoute: typeof Char123LocaleChar125RouteRoute
     }
-    '/(marketing)/privacy': {
-      id: '/(marketing)/privacy'
+    '/{-$locale}/(marketing)/privacy': {
+      id: '/{-$locale}/(marketing)/privacy'
       path: '/privacy'
-      fullPath: '/privacy'
-      preLoaderRoute: typeof marketingPrivacyRouteImport
-      parentRoute: typeof rootRouteImport
+      fullPath: '/{-$locale}/privacy'
+      preLoaderRoute: typeof Char123LocaleChar125marketingPrivacyRouteImport
+      parentRoute: typeof Char123LocaleChar125RouteRoute
     }
-    '/(marketing)/terms': {
-      id: '/(marketing)/terms'
+    '/{-$locale}/(marketing)/terms': {
+      id: '/{-$locale}/(marketing)/terms'
       path: '/terms'
-      fullPath: '/terms'
-      preLoaderRoute: typeof marketingTermsRouteImport
-      parentRoute: typeof rootRouteImport
+      fullPath: '/{-$locale}/terms'
+      preLoaderRoute: typeof Char123LocaleChar125marketingTermsRouteImport
+      parentRoute: typeof Char123LocaleChar125RouteRoute
     }
-    '/_auth/login': {
-      id: '/_auth/login'
+    '/{-$locale}/_auth/login': {
+      id: '/{-$locale}/_auth/login'
       path: '/login'
-      fullPath: '/login'
-      preLoaderRoute: typeof AuthLoginRouteImport
-      parentRoute: typeof AuthRoute
+      fullPath: '/{-$locale}/login'
+      preLoaderRoute: typeof Char123LocaleChar125AuthLoginRouteImport
+      parentRoute: typeof Char123LocaleChar125AuthRoute
     }
-    '/_protected/dashboard/': {
-      id: '/_protected/dashboard/'
+    '/{-$locale}/_protected/dashboard/': {
+      id: '/{-$locale}/_protected/dashboard/'
       path: '/dashboard'
-      fullPath: '/dashboard/'
-      preLoaderRoute: typeof ProtectedDashboardIndexRouteRouteImport
-      parentRoute: typeof ProtectedRoute
+      fullPath: '/{-$locale}/dashboard/'
+      preLoaderRoute: typeof Char123LocaleChar125ProtectedDashboardIndexRouteRouteImport
+      parentRoute: typeof Char123LocaleChar125ProtectedRoute
     }
   }
 }
 
-interface AuthRouteChildren {
-  AuthLoginRoute: typeof AuthLoginRoute
+interface Char123LocaleChar125AuthRouteChildren {
+  Char123LocaleChar125AuthLoginRoute: typeof Char123LocaleChar125AuthLoginRoute
 }
 
-const AuthRouteChildren: AuthRouteChildren = {
-  AuthLoginRoute: AuthLoginRoute,
+const Char123LocaleChar125AuthRouteChildren: Char123LocaleChar125AuthRouteChildren =
+  {
+    Char123LocaleChar125AuthLoginRoute: Char123LocaleChar125AuthLoginRoute,
+  }
+
+const Char123LocaleChar125AuthRouteWithChildren =
+  Char123LocaleChar125AuthRoute._addFileChildren(
+    Char123LocaleChar125AuthRouteChildren,
+  )
+
+interface Char123LocaleChar125ProtectedRouteChildren {
+  Char123LocaleChar125ProtectedDashboardIndexRouteRoute: typeof Char123LocaleChar125ProtectedDashboardIndexRouteRoute
 }
 
-const AuthRouteWithChildren = AuthRoute._addFileChildren(AuthRouteChildren)
+const Char123LocaleChar125ProtectedRouteChildren: Char123LocaleChar125ProtectedRouteChildren =
+  {
+    Char123LocaleChar125ProtectedDashboardIndexRouteRoute:
+      Char123LocaleChar125ProtectedDashboardIndexRouteRoute,
+  }
 
-interface ProtectedRouteChildren {
-  ProtectedDashboardIndexRouteRoute: typeof ProtectedDashboardIndexRouteRoute
+const Char123LocaleChar125ProtectedRouteWithChildren =
+  Char123LocaleChar125ProtectedRoute._addFileChildren(
+    Char123LocaleChar125ProtectedRouteChildren,
+  )
+
+interface Char123LocaleChar125RouteRouteChildren {
+  Char123LocaleChar125SplatRoute: typeof Char123LocaleChar125SplatRoute
+  Char123LocaleChar125404Route: typeof Char123LocaleChar125404Route
+  Char123LocaleChar125AuthRoute: typeof Char123LocaleChar125AuthRouteWithChildren
+  Char123LocaleChar125ProtectedRoute: typeof Char123LocaleChar125ProtectedRouteWithChildren
+  Char123LocaleChar125marketingPrivacyRoute: typeof Char123LocaleChar125marketingPrivacyRoute
+  Char123LocaleChar125marketingTermsRoute: typeof Char123LocaleChar125marketingTermsRoute
+  Char123LocaleChar125marketingIndexRoute: typeof Char123LocaleChar125marketingIndexRoute
 }
 
-const ProtectedRouteChildren: ProtectedRouteChildren = {
-  ProtectedDashboardIndexRouteRoute: ProtectedDashboardIndexRouteRoute,
-}
+const Char123LocaleChar125RouteRouteChildren: Char123LocaleChar125RouteRouteChildren =
+  {
+    Char123LocaleChar125SplatRoute: Char123LocaleChar125SplatRoute,
+    Char123LocaleChar125404Route: Char123LocaleChar125404Route,
+    Char123LocaleChar125AuthRoute: Char123LocaleChar125AuthRouteWithChildren,
+    Char123LocaleChar125ProtectedRoute:
+      Char123LocaleChar125ProtectedRouteWithChildren,
+    Char123LocaleChar125marketingPrivacyRoute:
+      Char123LocaleChar125marketingPrivacyRoute,
+    Char123LocaleChar125marketingTermsRoute:
+      Char123LocaleChar125marketingTermsRoute,
+    Char123LocaleChar125marketingIndexRoute:
+      Char123LocaleChar125marketingIndexRoute,
+  }
 
-const ProtectedRouteWithChildren = ProtectedRoute._addFileChildren(
-  ProtectedRouteChildren,
-)
+const Char123LocaleChar125RouteRouteWithChildren =
+  Char123LocaleChar125RouteRoute._addFileChildren(
+    Char123LocaleChar125RouteRouteChildren,
+  )
 
 const rootRouteChildren: RootRouteChildren = {
-  AuthRoute: AuthRouteWithChildren,
-  ProtectedRoute: ProtectedRouteWithChildren,
+  Char123LocaleChar125RouteRoute: Char123LocaleChar125RouteRouteWithChildren,
   OgImageRoute: OgImageRoute,
-  marketingPrivacyRoute: marketingPrivacyRoute,
-  marketingTermsRoute: marketingTermsRoute,
-  marketingIndexRoute: marketingIndexRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

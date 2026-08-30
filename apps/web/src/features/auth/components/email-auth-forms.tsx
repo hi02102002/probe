@@ -1,6 +1,7 @@
 import type { ReactNode } from 'react'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { GithubLogoIcon, GoogleLogoIcon } from '@phosphor-icons/react'
+import { defaultLocale, getPrefix } from 'intlayer'
 import { useState } from 'react'
 import { Controller, useForm } from 'react-hook-form'
 import { z } from 'zod'
@@ -15,8 +16,14 @@ const loginSchema = z.object({
   email: z.string().email('Enter a valid email address.'),
 })
 
-function getAuthCallbackURL(redirectTo?: string) {
-  const fallbackURL = new URL('/dashboard', window.location.origin)
+function getLocalizedPath(locale: string | undefined, path: string) {
+  const { prefix } = getPrefix(locale ?? defaultLocale)
+
+  return `/${prefix}${path}`
+}
+
+function getAuthCallbackURL(redirectTo: string | undefined, locale: string | undefined) {
+  const fallbackURL = new URL(getLocalizedPath(locale, 'dashboard'), window.location.origin)
 
   if (!redirectTo) {
     return fallbackURL.toString()
@@ -34,9 +41,9 @@ function getAuthCallbackURL(redirectTo?: string) {
   }
 }
 
-function getAuthErrorCallbackURL(redirectTo?: string) {
-  const callbackURL = new URL(getAuthCallbackURL(redirectTo))
-  const errorCallbackURL = new URL('/login', window.location.origin)
+function getAuthErrorCallbackURL(redirectTo: string | undefined, locale: string | undefined) {
+  const callbackURL = new URL(getAuthCallbackURL(redirectTo, locale))
+  const errorCallbackURL = new URL(getLocalizedPath(locale, 'login'), window.location.origin)
 
   errorCallbackURL.searchParams.set(
     'redirect',
@@ -46,7 +53,8 @@ function getAuthErrorCallbackURL(redirectTo?: string) {
   return errorCallbackURL.toString()
 }
 
-function SocialButtons({ redirectTo }: {
+function SocialButtons({ locale, redirectTo }: {
+  locale?: string
   redirectTo?: string
 }) {
   const [error, setError] = useState<string>()
@@ -58,7 +66,7 @@ function SocialButtons({ redirectTo }: {
 
     try {
       const result = await getAuthClient().signIn.social({
-        callbackURL: getAuthCallbackURL(redirectTo),
+        callbackURL: getAuthCallbackURL(redirectTo, locale),
         provider,
       })
 
@@ -136,7 +144,8 @@ function AuthField({
   )
 }
 
-export function LoginForm({ redirectTo }: {
+export function LoginForm({ locale, redirectTo }: {
+  locale?: string
   redirectTo?: string
 }) {
   const [isSubmitting, setIsSubmitting] = useState(false)
@@ -152,11 +161,11 @@ export function LoginForm({ redirectTo }: {
     form.clearErrors('root')
 
     try {
-      const callbackURL = getAuthCallbackURL(redirectTo)
+      const callbackURL = getAuthCallbackURL(redirectTo, locale)
       const result = await getAuthClient().signIn.magicLink({
         callbackURL,
         email: values.email,
-        errorCallbackURL: getAuthErrorCallbackURL(redirectTo),
+        errorCallbackURL: getAuthErrorCallbackURL(redirectTo, locale),
         name: values.email.split('@')[0],
         newUserCallbackURL: callbackURL,
       })
@@ -188,7 +197,7 @@ export function LoginForm({ redirectTo }: {
         <h1 className="text-2xl font-semibold text-foreground">Welcome back</h1>
         <p className="mt-2 text-muted-foreground text-sm">Sign in to your Probe account</p>
       </div>
-      <SocialButtons redirectTo={redirectTo} />
+      <SocialButtons locale={locale} redirectTo={redirectTo} />
       <FormDivider />
       <Form className="space-y-3" onSubmit={form.handleSubmit(onSubmit)} noValidate>
         <Controller

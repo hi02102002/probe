@@ -1,15 +1,21 @@
+import type { NotFoundRouteProps } from '@tanstack/react-router'
+import type { ReactElement } from 'react'
 import { ArrowLeftIcon, ArrowsClockwiseIcon } from '@phosphor-icons/react'
-import { Link, useRouter } from '@tanstack/react-router'
+import { useRouter } from '@tanstack/react-router'
 
 import { StatusPage } from '@/components/status-page'
 import { Button } from '@/components/ui/button'
 
-export function NotFoundPage() {
+export function NotFoundPage(props: { homeLink?: ReactElement } | NotFoundRouteProps) {
+  const homeLink = 'homeLink' in props && props.homeLink
+    ? props.homeLink
+    : <a href="/" />
+
   return (
     <StatusPage
       actions={(
         <Button
-          render={<Link to="/" />}
+          render={homeLink}
           variant="accent"
         >
           <ArrowLeftIcon />
@@ -33,7 +39,7 @@ export function BadGatewayPage({ onRetry }: { onRetry: () => void }) {
             Try again
           </Button>
           <Button
-            render={<Link to="/" />}
+            render={<a href="/" />}
             variant="outline"
           >
             Back to home

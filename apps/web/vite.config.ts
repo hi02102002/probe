@@ -6,6 +6,7 @@ import viteReact, { reactCompilerPreset } from '@vitejs/plugin-react'
 import evlog from 'evlog/vite'
 import { nitro } from 'nitro/vite'
 import { defineConfig } from 'vite'
+import { intlayer } from 'vite-intlayer'
 
 const config = defineConfig(() => {
   return {
@@ -22,10 +23,16 @@ const config = defineConfig(() => {
         service: 'probe-web',
       }),
       nitro({ rollupConfig: { external: [/^@sentry\//] } }),
+      intlayer({
+        proxy: {
+          ignore: req => req.url?.startsWith('/api') ?? false,
+        },
+      }),
       tailwindcss(),
       tanstackStart({
         router: {
-          routeFileIgnorePattern: '(^|/)_components(/|$)',
+          routeFileIgnorePattern:
+            '((^|/)_components(/|$)|\\.content\\.(ts|tsx|js|mjs|cjs|jsx|json|jsonc|json5|md|mdx|yaml|yml)$)',
         },
       }),
       viteReact(),

@@ -1,12 +1,13 @@
-import { Link, Outlet } from '@tanstack/react-router'
-import { Logo } from '@/components/logo'
+import { Outlet } from '@tanstack/react-router'
+import { LocalizedLink } from '@/components/localized-link'
+import { LocalizedLogo } from '@/components/localized-logo'
 
 export function AuthLayout() {
   return (
     <main className="dark flex h-svh overflow-hidden bg-[#0b0d0e] font-sans text-foreground">
       <section className="relative flex min-h-0 w-full flex-col overflow-y-auto border-white/10 bg-[#111315] px-6 py-6 lg:w-[40%] lg:min-w-[480px] lg:border-r lg:px-16 xl:min-w-[560px]">
         <div>
-          <Logo />
+          <LocalizedLogo />
         </div>
 
         <div className="mx-auto flex w-full max-w-md flex-1 flex-col justify-center py-12">
@@ -16,15 +17,15 @@ export function AuthLayout() {
         <p className="text-center text-muted-foreground text-xs leading-5">
           By continuing, you agree to our
           {' '}
-          <Link className="text-foreground underline underline-offset-4" to="/terms">
+          <LocalizedLink className="text-foreground underline underline-offset-4" to="/terms">
             Terms of Service
-          </Link>
+          </LocalizedLink>
           {' '}
           and acknowledge our
           {' '}
-          <Link className="text-foreground underline underline-offset-4" to="/privacy">
+          <LocalizedLink className="text-foreground underline underline-offset-4" to="/privacy">
             Privacy Policy
-          </Link>
+          </LocalizedLink>
           .
         </p>
       </section>

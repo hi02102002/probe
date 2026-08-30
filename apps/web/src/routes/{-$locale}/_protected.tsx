@@ -2,11 +2,12 @@ import { createFileRoute, Outlet, redirect } from '@tanstack/react-router'
 import { Spinner } from '@/components/ui/spinner'
 import { MainLayout } from '@/features/dashboard/components/main-layout'
 
-export const Route = createFileRoute('/_protected')({
-  beforeLoad: async ({ location, context }) => {
+export const Route = createFileRoute('/{-$locale}/_protected')({
+  beforeLoad: async ({ location, context, params }) => {
     if (!context.session) {
       throw redirect({
-        to: '/login',
+        to: '/{-$locale}/login',
+        params: { locale: params.locale },
         search: {
           redirect: location.href,
         },

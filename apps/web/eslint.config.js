@@ -2,6 +2,7 @@ import { reactConfig } from '@repo/eslint-config/react'
 
 export default reactConfig({
   ignores: [
+    '.intlayer/**',
     'README.md',
     'src/routeTree.gen.ts',
   ],

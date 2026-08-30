@@ -3,20 +3,21 @@ import { z } from 'zod'
 
 import { AuthLayout } from '@/features/auth'
 
-export const Route = createFileRoute('/_auth')({
+export const Route = createFileRoute('/{-$locale}/_auth')({
   component: AuthLayout,
   validateSearch: z.object({
     redirect: z.string().optional(),
   }),
-  beforeLoad: async ({ context, search }) => {
-    const redirectProps: Parameters<typeof redirect>[0] = search.redirect
-      ? { href: search.redirect }
-      : {
-          to: '/dashboard',
-        }
-
+  beforeLoad: async ({ context, params, search }) => {
     if (context.session) {
-      throw redirect(redirectProps)
+      if (search.redirect) {
+        throw redirect({ href: search.redirect })
+      }
+
+      throw redirect({
+        to: '/{-$locale}/dashboard',
+        params: { locale: params.locale },
+      })
     }
 
     return { session: context.session }

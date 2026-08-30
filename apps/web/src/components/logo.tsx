@@ -20,7 +20,7 @@ export function Logo({
   return (
     <Link
       className={cn('inline-flex w-fit items-center gap-2.5 font-semibold text-lg tracking-tight', classNames?.container)}
-      to={to ?? '/'}
+      to={to ?? '.'}
       {...props}
     >
       <img

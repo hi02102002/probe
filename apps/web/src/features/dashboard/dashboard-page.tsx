@@ -4,7 +4,7 @@ import { PageHeader, PageHeaderDescription, PageHeaderTitle } from './components
 
 export function DashboardPage() {
   const { session } = useRouteContext({
-    from: '/_protected',
+    from: '/{-$locale}/_protected',
   })
 
   return (

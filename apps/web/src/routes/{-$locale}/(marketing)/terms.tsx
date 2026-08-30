@@ -2,7 +2,7 @@ import { createFileRoute } from '@tanstack/react-router'
 import { LegalPage } from '@/features/legal'
 import { generateAppSeo } from '@/lib/seo'
 
-export const Route = createFileRoute('/(marketing)/terms')({
+export const Route = createFileRoute('/{-$locale}/(marketing)/terms')({
   component: TermsPage,
   head: () => generateAppSeo({
     description: 'Terms for Probe.',

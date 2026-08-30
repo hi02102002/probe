@@ -1,6 +1,6 @@
 import type { ReactNode } from 'react'
-import { Link } from '@tanstack/react-router'
-import { Logo } from '@/components/logo'
+import { LocalizedLink } from '@/components/localized-link'
+import { LocalizedLogo } from '@/components/localized-logo'
 
 interface LegalSection {
   content: ReactNode
@@ -24,14 +24,14 @@ export function LegalPage({
     <div className="dark min-h-screen bg-background text-foreground">
       <header className="border-b border-border">
         <div className="mx-auto flex h-16 max-w-5xl items-center justify-between px-6">
-          <Logo />
+          <LocalizedLogo />
           <nav aria-label="Legal pages" className="flex items-center gap-5 text-sm text-muted-foreground">
-            <Link activeProps={{ className: 'text-foreground' }} className="transition-colors hover:text-foreground" to="/terms">
+            <LocalizedLink activeProps={{ className: 'text-foreground' }} className="transition-colors hover:text-foreground" to="/terms">
               Terms
-            </Link>
-            <Link activeProps={{ className: 'text-foreground' }} className="transition-colors hover:text-foreground" to="/privacy">
+            </LocalizedLink>
+            <LocalizedLink activeProps={{ className: 'text-foreground' }} className="transition-colors hover:text-foreground" to="/privacy">
               Privacy
-            </Link>
+            </LocalizedLink>
           </nav>
         </div>
       </header>

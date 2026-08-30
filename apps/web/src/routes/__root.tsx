@@ -3,6 +3,7 @@ import interWoff2 from '@fontsource-variable/inter/files/inter-latin-wght-normal
 import { TanStackDevtools } from '@tanstack/react-devtools'
 import {
   createRootRouteWithContext,
+  getRouteApi,
   HeadContent,
   Outlet,
   Scripts,
@@ -10,6 +11,7 @@ import {
 import { TanStackRouterDevtoolsPanel } from '@tanstack/react-router-devtools'
 import { createMiddleware } from '@tanstack/react-start'
 import { evlogErrorHandler } from 'evlog/nitro/v3'
+import { IntlayerProvider } from 'react-intlayer'
 import { NotFoundPage, RootErrorPage } from '@/components/error-pages'
 import { AnchoredToastProvider, ToastProvider } from '@/components/ui/toast'
 import { getAuthSessionQueryOptions } from '@/features/auth/api/get-auth-session'
@@ -19,6 +21,7 @@ import { generateAppSeo } from '@/lib/seo'
 import appCss from '@/styles.css?url'
 
 const evlogMiddleware = createMiddleware().server(evlogErrorHandler)
+const localeRoute = getRouteApi('/{-$locale}')
 
 export const Route = createRootRouteWithContext<RouterContext>()({
   errorComponent: RootErrorPage,
@@ -71,18 +74,23 @@ export const Route = createRootRouteWithContext<RouterContext>()({
 
 function RootDocument() {
   const { session } = Route.useRouteContext()
+  const params = localeRoute.useParams()
+  const locale = params.locale ?? 'en'
+
   useAuthIdentity(session)
   return (
-    <html lang="en" className="dark">
+    <html className="dark" dir="ltr" lang={locale}>
       <head>
         <HeadContent />
       </head>
       <body>
-        <ToastProvider>
-          <AnchoredToastProvider>
-            <Outlet />
-          </AnchoredToastProvider>
-        </ToastProvider>
+        <IntlayerProvider locale={locale}>
+          <ToastProvider>
+            <AnchoredToastProvider>
+              <Outlet />
+            </AnchoredToastProvider>
+          </ToastProvider>
+        </IntlayerProvider>
         <TanStackDevtools
           config={{ position: 'bottom-right' }}
           plugins={[
