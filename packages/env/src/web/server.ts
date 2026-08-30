@@ -7,11 +7,11 @@ export function createWebServerEnv(
   return createEnv({
     emptyStringAsUndefined: true,
     runtimeEnvStrict: {
-      API_PROXY_TARGET: runtimeEnv.API_PROXY_TARGET,
+      API_URL: runtimeEnv.API_URL,
       API_RPC_URL: runtimeEnv.API_RPC_URL,
     },
     server: {
-      API_PROXY_TARGET: z.url().default('http://localhost:3001'),
+      API_URL: z.url().default('http://localhost:3001'),
       API_RPC_URL: z.url().default('http://localhost:3001/api/rpc'),
     },
   })

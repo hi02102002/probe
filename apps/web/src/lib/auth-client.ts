@@ -1,4 +1,5 @@
 import { createAppAuthClient } from '@repo/auth/client'
+import { env } from '@/env/client'
 
 let authClient: ReturnType<typeof createAppAuthClient> | undefined
 
@@ -8,7 +9,7 @@ export function getAuthClient() {
   }
 
   authClient = createAppAuthClient({
-    baseURL: typeof window === 'undefined' ? '' : window.location.origin,
+    baseURL: env.VITE_API_URL,
   })
 
   return authClient

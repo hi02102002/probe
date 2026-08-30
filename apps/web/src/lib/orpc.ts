@@ -12,7 +12,8 @@ import {
 import { resolveHttpUrl } from '@repo/utils'
 import { createIsomorphicFn } from '@tanstack/react-start'
 import { getRequestHeaders } from '@tanstack/react-start/server'
-import { env } from '@/env/server'
+import { env as clientEnv } from '@/env/client'
+import { env as serverEnv } from '@/env/server'
 
 const GET_OPERATION_TYPES = new Set([
   'query',
@@ -25,6 +26,7 @@ export interface ApiClientContext extends TanstackQueryOperationContext {}
 
 export const createApiClient = createIsomorphicFn().client((url: string | URL) => {
   const link = new RPCLink<ApiClientContext>({
+    fetch: (input, init) => fetch(input, { ...init, credentials: 'include' }),
     method: ({ context }) => {
       const operationType
         = context[TANSTACK_QUERY_OPERATION_CONTEXT_SYMBOL]?.type
@@ -76,10 +78,10 @@ export function createApiQueryUtils(url: string | URL) {
 }
 
 export const getApiRpcUrl = createIsomorphicFn()
-  .client(() => new URL('/api-rpc/rpc', window.location.origin))
+  .client(() => new URL('/api/rpc', clientEnv.VITE_API_URL))
   .server(() =>
     resolveHttpUrl(
-      env.API_RPC_URL,
+      serverEnv.API_RPC_URL,
       'http://localhost:3001/api/rpc',
     ),
   )

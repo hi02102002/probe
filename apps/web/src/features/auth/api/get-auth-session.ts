@@ -20,7 +20,7 @@ export interface AuthSession {
 export const getAuthSession = createServerFn({ method: 'GET' }).handler(
   async (): Promise<AuthSession | null> => {
     try {
-      const authBaseURL = new URL('/api/auth', env.API_PROXY_TARGET).toString()
+      const authBaseURL = new URL('/api/auth', env.API_URL).toString()
       const { data, error } = await getAuthClient().getSession({
         fetchOptions: {
           baseURL: authBaseURL,
