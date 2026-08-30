@@ -1,5 +1,6 @@
 import { ORPCError } from '@orpc/server'
 import { getAuth } from '#/auth.js'
+import { i18n } from '#/libs/i18n/messages.js'
 import { middlewareBase } from '#/libs/orpc/base.js'
 
 export const authMiddleware = middlewareBase.middleware(async ({ context, next }) => {
@@ -8,7 +9,9 @@ export const authMiddleware = middlewareBase.middleware(async ({ context, next }
   })
 
   if (!sessionData) {
-    throw new ORPCError('UNAUTHORIZED')
+    throw new ORPCError('UNAUTHORIZED', {
+      message: i18n.common.unauthorized(),
+    })
   }
 
   return next({

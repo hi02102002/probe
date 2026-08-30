@@ -9,6 +9,10 @@ import antfu from '@antfu/eslint-config'
 export function baseConfig(options = {}, ...configs) {
   return antfu(
     {
+      ignores: [
+        '**/.intlayer/**',
+        ...(options.ignores ?? []),
+      ],
       pnpm: false,
       typescript: true,
       ...options,

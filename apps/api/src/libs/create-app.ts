@@ -1,12 +1,14 @@
 import type { EvlogVariables } from 'evlog/hono'
 import { evlog } from 'evlog/hono'
 import { Hono } from 'hono'
+import { intlayer } from 'hono-intlayer'
 import { cors } from 'hono/cors'
 import { requestId } from 'hono/request-id'
 import { secureHeaders } from 'hono/secure-headers'
 import { getAuth } from '#/auth.js'
 import { env } from '#/env.js'
 import { getAuthIdentifier } from '#/libs/evlog.js'
+import { i18n } from '#/libs/i18n/messages.js'
 import { createORPCContext } from '#/libs/orpc/context.js'
 import { createRpcHandler } from '#/libs/orpc/handlers.js'
 import { router } from '#/routers/index.js'
@@ -26,6 +28,7 @@ export function createApp() {
     c.req.raw.headers.set('x-request-id', c.get('requestId'))
     await next()
   })
+  app.use('*', intlayer())
   app.use('*', evlog({
     exclude: [
       '/api/openapi/**',
@@ -67,14 +70,14 @@ export function createApp() {
   })
 
   app.notFound(c => c.json({
-    error: 'Not found',
+    error: i18n.common.notFound(),
   }, 404))
 
   app.onError((error, c) => {
     c.get('log')?.error(error)
 
     return c.json({
-      error: 'Internal server error',
+      error: i18n.common.internalServerError(),
     }, 500)
   })
 
