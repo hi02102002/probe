@@ -10,6 +10,8 @@ import { intlayer } from 'vite-intlayer'
 
 const config = defineConfig(() => {
   return {
+    envDir: '../../',
+    envPrefix: ['VITE_', 'SERVER_', 'WEB_'],
     server: {
       strictPort: true,
     },

@@ -13,11 +13,11 @@
   "scripts": {
     "build": "tsdown",
     "check-types": "tsc --noEmit",
-    "dev": "tsx watch --conditions=development --env-file-if-exists=.env src/index.ts",
+    "dev": "tsx watch --conditions=development --env-file-if-exists=../../.env --env-file-if-exists=.env src/index.ts",
     "format": "eslint . --fix",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
-    "start": "node --env-file-if-exists=.env dist/index.js"
+    "start": "node --env-file-if-exists=../../.env --env-file-if-exists=.env dist/index.js"
   },
   "dependencies": {
     "@hono/node-server": "^2.0.12",

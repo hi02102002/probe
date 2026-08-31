@@ -7,8 +7,10 @@ const workspaceRoot = new URL('../../', import.meta.url)
 
 config({
   path: [
-    fileURLToPath(new URL('apps/api/.env', workspaceRoot)),
+    fileURLToPath(new URL('.env.local', workspaceRoot)),
     fileURLToPath(new URL('.env', workspaceRoot)),
+    fileURLToPath(new URL('apps/api/.env.local', workspaceRoot)),
+    fileURLToPath(new URL('apps/api/.env', workspaceRoot)),
   ],
   quiet: true,
 })

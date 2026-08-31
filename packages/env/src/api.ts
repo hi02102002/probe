@@ -4,12 +4,14 @@ import { z } from 'zod'
 export function createApiEnv(
   runtimeEnv: Record<string, string | undefined>,
 ) {
+  const serverUrl = runtimeEnv.SERVER_URL || 'http://localhost:3001'
+
   return createEnv({
     emptyStringAsUndefined: true,
     runtimeEnvStrict: {
       APP_NAME: runtimeEnv.APP_NAME,
       BETTER_AUTH_SECRET: runtimeEnv.BETTER_AUTH_SECRET,
-      BETTER_AUTH_URL: runtimeEnv.BETTER_AUTH_URL,
+      BETTER_AUTH_URL: runtimeEnv.BETTER_AUTH_URL || serverUrl,
       DATABASE_URL: runtimeEnv.DATABASE_URL,
       GMAIL_APP_PASSWORD: runtimeEnv.GMAIL_APP_PASSWORD,
       GMAIL_USER: runtimeEnv.GMAIL_USER,
@@ -18,13 +20,13 @@ export function createApiEnv(
       GOOGLE_CLIENT_ID: runtimeEnv.GOOGLE_CLIENT_ID,
       GOOGLE_CLIENT_SECRET: runtimeEnv.GOOGLE_CLIENT_SECRET,
       PORT: runtimeEnv.PORT,
-      SERVER_URL: runtimeEnv.SERVER_URL,
+      SERVER_URL: serverUrl,
       WEB_URL: runtimeEnv.WEB_URL,
     },
     server: {
       APP_NAME: z.string().min(1).default('Probe'),
       BETTER_AUTH_SECRET: z.string().min(32),
-      BETTER_AUTH_URL: z.url().optional(),
+      BETTER_AUTH_URL: z.url().default('http://localhost:3001'),
       DATABASE_URL: z.string().min(1),
       GMAIL_APP_PASSWORD: z.string()
         .transform(value => value.replaceAll(' ', ''))

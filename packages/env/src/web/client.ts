@@ -4,6 +4,9 @@ import { z } from 'zod'
 export function createWebClientEnv(
   runtimeEnv: Record<string, string | undefined>,
 ) {
+  const apiUrl = runtimeEnv.VITE_API_URL || runtimeEnv.SERVER_URL
+  const siteUrl = runtimeEnv.VITE_SITE_URL || runtimeEnv.WEB_URL
+
   return createEnv({
     client: {
       VITE_API_URL: z.url().default('http://localhost:3001'),
@@ -12,8 +15,8 @@ export function createWebClientEnv(
     clientPrefix: 'VITE_',
     emptyStringAsUndefined: true,
     runtimeEnvStrict: {
-      VITE_API_URL: runtimeEnv.VITE_API_URL,
-      VITE_SITE_URL: runtimeEnv.VITE_SITE_URL,
+      VITE_API_URL: apiUrl,
+      VITE_SITE_URL: siteUrl,
     },
   })
 }
