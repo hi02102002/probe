@@ -2,13 +2,10 @@ FROM node:22-slim AS base
 
 WORKDIR /app
 
-ENV PATH="/app/node_modules/.bin:$PATH"
-
 RUN corepack enable && corepack prepare pnpm@9.0.0 --activate
 
 FROM base AS prepare
 
-# The complete workspace is needed only to calculate the dependency graph.
 COPY . .
 RUN pnpm dlx turbo@2.10.12 prune @repo/web --docker
 
@@ -23,15 +20,12 @@ FROM base AS builder
 ARG SERVER_URL
 ARG WEB_URL
 
-COPY --from=prepare /app/out/json/ ./
 COPY --from=prepare /app/out/full/ ./
-COPY --from=installer /app/node_modules ./node_modules
-COPY --from=installer /app/apps/web/node_modules ./apps/web/node_modules
-COPY --from=installer /app/packages/ ./packages/
+COPY --from=installer /app/ ./
 
 RUN SERVER_URL="$SERVER_URL" \
     WEB_URL="$WEB_URL" \
-    npx turbo run build --filter=@repo/web
+    pnpm turbo run build --filter=@repo/web
 
 FROM node:22-slim AS runner
 
