@@ -37,6 +37,10 @@ ENV PORT=3000
 
 WORKDIR /app
 
+RUN apt-get update \
+    && apt-get install -y --no-install-recommends curl \
+    && rm -rf /var/lib/apt/lists/*
+
 COPY --from=builder --chown=node:node /app/apps/web/.output ./
 
 USER node

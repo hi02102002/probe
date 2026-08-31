@@ -24,7 +24,7 @@ COPY --from=installer /app/ ./
 
 RUN ./node_modules/.bin/turbo run build --filter=@repo/api
 RUN --mount=type=cache,target=/root/.local/share/pnpm/store \
-    pnpm --ignore-scripts --filter=@repo/api deploy --prod --no-optional /app/deploy
+    pnpm --ignore-scripts --filter=@repo/api deploy --prod /app/deploy
 
 FROM node:22-slim AS runner
 
@@ -33,7 +33,12 @@ ENV PORT=3001
 
 WORKDIR /app
 
+RUN apt-get update \
+    && apt-get install -y --no-install-recommends curl \
+    && rm -rf /var/lib/apt/lists/*
+
 COPY --from=builder --chown=node:node /app/deploy ./
+RUN mkdir -p /app/.intlayer && chown node:node /app/.intlayer
 
 USER node
 
