@@ -9,6 +9,7 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as HealthRouteImport } from './routes/health'
 import { Route as OgImageRouteImport } from './routes/og-image'
 import { Route as Char123LocaleChar125RouteRouteImport } from './routes/{-$locale}/route'
 import { Route as Char123LocaleChar125SplatRouteImport } from './routes/{-$locale}/$'
@@ -21,6 +22,11 @@ import { Route as Char123LocaleChar125marketingTermsRouteImport } from './routes
 import { Route as Char123LocaleChar125AuthLoginRouteImport } from './routes/{-$locale}/_auth/login'
 import { Route as Char123LocaleChar125ProtectedDashboardIndexRouteRouteImport } from './routes/{-$locale}/_protected.dashboard/index/route'
 
+const HealthRoute = HealthRouteImport.update({
+  id: '/health',
+  path: '/health',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const OgImageRoute = OgImageRouteImport.update({
   id: '/og-image',
   path: '/og-image',
@@ -86,6 +92,7 @@ const Char123LocaleChar125ProtectedDashboardIndexRouteRoute =
 
 export interface FileRoutesByFullPath {
   '/{-$locale}': typeof Char123LocaleChar125RouteRouteWithChildren
+  '/health': typeof HealthRoute
   '/og-image': typeof OgImageRoute
   '/{-$locale}/$': typeof Char123LocaleChar125SplatRoute
   '/{-$locale}/404': typeof Char123LocaleChar125404Route
@@ -96,6 +103,7 @@ export interface FileRoutesByFullPath {
   '/{-$locale}/dashboard/': typeof Char123LocaleChar125ProtectedDashboardIndexRouteRoute
 }
 export interface FileRoutesByTo {
+  '/health': typeof HealthRoute
   '/og-image': typeof OgImageRoute
   '/{-$locale}/$': typeof Char123LocaleChar125SplatRoute
   '/{-$locale}/404': typeof Char123LocaleChar125404Route
@@ -108,6 +116,7 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/{-$locale}': typeof Char123LocaleChar125RouteRouteWithChildren
+  '/health': typeof HealthRoute
   '/og-image': typeof OgImageRoute
   '/{-$locale}/$': typeof Char123LocaleChar125SplatRoute
   '/{-$locale}/404': typeof Char123LocaleChar125404Route
@@ -123,6 +132,7 @@ export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/{-$locale}'
+    | '/health'
     | '/og-image'
     | '/{-$locale}/$'
     | '/{-$locale}/404'
@@ -133,6 +143,7 @@ export interface FileRouteTypes {
     | '/{-$locale}/dashboard/'
   fileRoutesByTo: FileRoutesByTo
   to:
+    | '/health'
     | '/og-image'
     | '/{-$locale}/$'
     | '/{-$locale}/404'
@@ -144,6 +155,7 @@ export interface FileRouteTypes {
   id:
     | '__root__'
     | '/{-$locale}'
+    | '/health'
     | '/og-image'
     | '/{-$locale}/$'
     | '/{-$locale}/404'
@@ -158,11 +170,19 @@ export interface FileRouteTypes {
 }
 export interface RootRouteChildren {
   Char123LocaleChar125RouteRoute: typeof Char123LocaleChar125RouteRouteWithChildren
+  HealthRoute: typeof HealthRoute
   OgImageRoute: typeof OgImageRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/health': {
+      id: '/health'
+      path: '/health'
+      fullPath: '/health'
+      preLoaderRoute: typeof HealthRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/og-image': {
       id: '/og-image'
       path: '/og-image'
@@ -304,6 +324,7 @@ const Char123LocaleChar125RouteRouteWithChildren =
 
 const rootRouteChildren: RootRouteChildren = {
   Char123LocaleChar125RouteRoute: Char123LocaleChar125RouteRouteWithChildren,
+  HealthRoute: HealthRoute,
   OgImageRoute: OgImageRoute,
 }
 export const routeTree = rootRouteImport

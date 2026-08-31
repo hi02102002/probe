@@ -1,9 +1,0 @@
-node_modules
-**/node_modules
-.turbo
-**/.turbo
-**/dist
-**/.output
-.git
-.env
-**/.env
