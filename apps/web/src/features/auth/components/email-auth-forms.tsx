@@ -227,7 +227,7 @@ export function LoginForm({ locale, redirectTo }: {
             for your sign-in link. It expires in 10 minutes.
           </p>
         )}
-        <Button className="h-10 w-full" disabled={isSubmitting} loading={isSubmitting} type="submit" variant="accent">
+        <Button className="h-10 w-full" disabled={isSubmitting} loading={isSubmitting} type="submit">
           {sentTo ? 'Send link again' : 'Send sign-in link'}
         </Button>
       </Form>

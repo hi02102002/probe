@@ -9,14 +9,13 @@ import { Button } from '@/components/ui/button'
 export function NotFoundPage(props: { homeLink?: ReactElement } | NotFoundRouteProps) {
   const homeLink = 'homeLink' in props && props.homeLink
     ? props.homeLink
-    : <a href="/" />
+    : <a href="/" aria-label="Back to home" />
 
   return (
     <StatusPage
       actions={(
         <Button
           render={homeLink}
-          variant="accent"
         >
           <ArrowLeftIcon />
           Back to home
@@ -34,12 +33,12 @@ export function BadGatewayPage({ onRetry }: { onRetry: () => void }) {
     <StatusPage
       actions={(
         <>
-          <Button onClick={onRetry} variant="accent">
+          <Button onClick={onRetry}>
             <ArrowsClockwiseIcon />
             Try again
           </Button>
           <Button
-            render={<a href="/" />}
+            render={<a href="/" aria-label="Back to home" />}
             variant="outline"
           >
             Back to home

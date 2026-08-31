@@ -1,4 +1,5 @@
 import type { EvlogVariables } from 'evlog/hono'
+import type { translateFunction } from 'hono-intlayer'
 import { evlog } from 'evlog/hono'
 import { Hono } from 'hono'
 import { intlayer } from 'hono-intlayer'
@@ -8,13 +9,19 @@ import { secureHeaders } from 'hono/secure-headers'
 import { getAuth } from '#/auth.js'
 import { env } from '#/env.js'
 import { getAuthIdentifier } from '#/libs/evlog.js'
-import { i18n } from '#/libs/i18n/messages.js'
+import { createI18n } from '#/libs/i18n/messages.js'
 import { createORPCContext } from '#/libs/orpc/context.js'
 import { createRpcHandler } from '#/libs/orpc/handlers.js'
 import { router } from '#/routers/index.js'
 
 export function createApp() {
-  const app = new Hono<EvlogVariables>().basePath('/api')
+  interface AppVariables {
+    Variables: EvlogVariables['Variables'] & {
+      t: ReturnType<typeof translateFunction>
+    }
+  }
+
+  const app = new Hono<AppVariables>().basePath('/api')
 
   app.use('*', cors({
     origin: origin => env.WEB_URL.includes(origin) ? origin : env.WEB_URL[0],
@@ -58,7 +65,7 @@ export function createApp() {
 
   app.use('/rpc/*', async (c, next) => {
     const { matched, response } = await rpcHandler.handle(c.req.raw, {
-      context: createORPCContext(),
+      context: createORPCContext(c.get('t')),
       prefix: '/api/rpc',
     })
 
@@ -70,14 +77,14 @@ export function createApp() {
   })
 
   app.notFound(c => c.json({
-    error: i18n.common.notFound(),
+    error: createI18n(c.get('t')).common.notFound(),
   }, 404))
 
   app.onError((error, c) => {
     c.get('log')?.error(error)
 
     return c.json({
-      error: i18n.common.internalServerError(),
+      error: createI18n(c.get('t')).common.internalServerError(),
     }, 500)
   })
 

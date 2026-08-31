@@ -124,18 +124,18 @@ export const buttonVariants = cva(
         `,
 
         'accent': `
-          border-violet-500
-          bg-violet-500
-          text-white
+          border-primary/20
+          bg-accent
+          text-accent-foreground
           shadow-xs
-          shadow-violet-500/20
+          shadow-primary/10
 
           not-disabled:inset-shadow-[0_1px_--theme(--color-white/16%)]
 
-          hover:bg-violet-500/90
-          data-pressed:bg-violet-600
+          hover:bg-accent/80
+          data-pressed:bg-accent/80
 
-          *:data-[slot=button-loading-indicator]:text-white
+          *:data-[slot=button-loading-indicator]:text-accent-foreground
 
           [:active,[data-pressed]]:inset-shadow-[0_1px_--theme(--color-black/8%)]
           [:disabled,:active,[data-pressed]]:shadow-none

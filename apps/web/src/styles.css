@@ -38,6 +38,39 @@ body {
   margin: 0;
 }
 
+html {
+  scroll-behavior: smooth;
+}
+
+@keyframes probe-scan {
+  0% { transform: translateY(0); opacity: 0; }
+  10%, 80% { opacity: 0.65; }
+  100% { transform: translateY(16rem); opacity: 0; }
+}
+
+@keyframes probe-glow {
+  0%, 100% { opacity: 0.55; transform: scaleX(0.9); }
+  50% { opacity: 0.9; transform: scaleX(1.05); }
+}
+
+.probe-scan {
+  animation: probe-scan 5s ease-in-out infinite;
+  background: linear-gradient(to right, transparent, color-mix(in oklab, var(--primary) 80%, transparent), transparent);
+}
+.probe-glow { animation: probe-glow 4s ease-in-out infinite; }
+.probe-hero-glow {
+  background: radial-gradient(ellipse at center, color-mix(in oklab, var(--primary) 13%, transparent), transparent 65%);
+}
+.probe-grid-accent {
+  background-image: linear-gradient(135deg, transparent 0%, color-mix(in oklab, var(--primary) 6%, transparent) 50%, transparent 50%, transparent 100%);
+  background-size: 18px 18px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  .probe-scan, .probe-glow { animation: none; }
+}
+
 @theme inline {
   --breakpoint-xs: 23.4375rem;
   --animate-skeleton: skeleton 2s -1s infinite linear;

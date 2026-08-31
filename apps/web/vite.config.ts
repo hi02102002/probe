@@ -10,6 +10,9 @@ import { intlayer } from 'vite-intlayer'
 
 const config = defineConfig(() => {
   return {
+    server: {
+      strictPort: true,
+    },
     plugins: [
       devtools({
         consolePiping: {
