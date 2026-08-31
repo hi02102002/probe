@@ -15,7 +15,7 @@ FROM base AS installer
 
 COPY --from=prepare /app/out/json/ ./
 RUN --mount=type=cache,target=/root/.local/share/pnpm/store \
-    pnpm install --frozen-lockfile
+    pnpm install --frozen-lockfile --prod=false
 
 FROM base AS builder
 
