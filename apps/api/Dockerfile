@@ -2,6 +2,8 @@ FROM node:22-slim AS base
 
 WORKDIR /app
 
+ENV PATH="/app/node_modules/.bin:$PATH"
+
 RUN corepack enable && corepack prepare pnpm@9.0.0 --activate
 
 FROM base AS prepare
@@ -9,13 +11,18 @@ FROM base AS prepare
 COPY . .
 RUN pnpm dlx turbo@2.10.12 prune @repo/api --docker
 
-FROM base AS builder
+FROM base AS installer
 
-COPY --from=prepare /app/out/full/ ./
+COPY --from=prepare /app/out/json/ ./
 RUN --mount=type=cache,target=/root/.local/share/pnpm/store \
     pnpm install --frozen-lockfile
 
-RUN pnpm turbo run build --filter=@repo/api
+FROM base AS builder
+
+COPY --from=prepare /app/out/full/ ./
+COPY --from=installer /app/ ./
+
+RUN ./node_modules/.bin/turbo run build --filter=@repo/api
 RUN --mount=type=cache,target=/root/.local/share/pnpm/store \
     pnpm --ignore-scripts --filter=@repo/api deploy --prod --no-optional /app/deploy
 
