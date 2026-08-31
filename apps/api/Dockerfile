@@ -2,6 +2,8 @@ FROM node:22-slim AS base
 
 WORKDIR /app
 
+ENV PATH="/app/node_modules/.bin:$PATH"
+
 RUN corepack enable && corepack prepare pnpm@9.0.0 --activate
 
 FROM base AS prepare
@@ -24,7 +26,7 @@ COPY --from=installer /app/node_modules ./node_modules
 COPY --from=installer /app/apps/api/node_modules ./apps/api/node_modules
 COPY --from=installer /app/packages/ ./packages/
 
-RUN pnpm turbo run build --filter=@repo/api
+RUN npx turbo run build --filter=@repo/api
 RUN --mount=type=cache,target=/root/.local/share/pnpm/store \
     pnpm --ignore-scripts --filter=@repo/api deploy --prod --no-optional /app/deploy
 
@@ -42,4 +44,3 @@ USER node
 EXPOSE 3001
 
 CMD ["node", "dist/index.js"]
-

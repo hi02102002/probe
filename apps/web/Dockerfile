@@ -2,6 +2,8 @@ FROM node:22-slim AS base
 
 WORKDIR /app
 
+ENV PATH="/app/node_modules/.bin:$PATH"
+
 RUN corepack enable && corepack prepare pnpm@9.0.0 --activate
 
 FROM base AS prepare
@@ -29,7 +31,7 @@ COPY --from=installer /app/packages/ ./packages/
 
 RUN SERVER_URL="$SERVER_URL" \
     WEB_URL="$WEB_URL" \
-    pnpm turbo run build --filter=@repo/web
+    npx turbo run build --filter=@repo/web
 
 FROM node:22-slim AS runner
 
@@ -46,4 +48,3 @@ USER node
 EXPOSE 3000
 
 CMD ["node", "server/index.mjs"]
-
