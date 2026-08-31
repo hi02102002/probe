@@ -10,13 +10,18 @@
       "import": "./dist/index.js"
     }
   },
-  "files": ["dist"],
+  "files": [
+    "dist"
+  ],
   "scripts": {
     "build": "tsdown",
     "check-types": "tsc --noEmit",
     "format": "eslint . --fix",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix"
+  },
+  "dependencies": {
+    "nanoid": "^5.1.6"
   },
   "devDependencies": {
     "@repo/eslint-config": "workspace:*",
