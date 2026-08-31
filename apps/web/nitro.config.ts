@@ -10,6 +10,7 @@ export default defineConfig({
       env: {
         service: 'probe-web',
       },
+      exclude: ['/health'],
       redact: true,
     }),
   ],
