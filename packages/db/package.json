@@ -41,6 +41,7 @@
     "lint:fix": "eslint . --fix"
   },
   "dependencies": {
+    "@repo/utils": "workspace:*",
     "drizzle-orm": "1.0.0-rc.4",
     "drizzle-plus": "1.0.0-rc.4",
     "pg": "^8.16.3"
