@@ -25,7 +25,8 @@ ARG WEB_URL
 COPY --from=prepare /app/out/full/ ./
 COPY --from=installer /app/ ./
 
-RUN SERVER_URL="$SERVER_URL" \
+RUN --mount=type=cache,target=/app/.turbo \
+    SERVER_URL="$SERVER_URL" \
     WEB_URL="$WEB_URL" \
     ./node_modules/.bin/turbo run build --filter=@repo/web
 

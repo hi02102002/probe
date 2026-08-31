@@ -22,7 +22,8 @@ FROM base AS builder
 COPY --from=prepare /app/out/full/ ./
 COPY --from=installer /app/ ./
 
-RUN ./node_modules/.bin/turbo run build --filter=@repo/api
+RUN --mount=type=cache,target=/app/.turbo \
+    ./node_modules/.bin/turbo run build --filter=@repo/api
 RUN --mount=type=cache,target=/root/.local/share/pnpm/store \
     pnpm --ignore-scripts --filter=@repo/api deploy --prod /app/deploy
 
