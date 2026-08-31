@@ -39,8 +39,11 @@ export function createApp() {
   app.use('*', evlog({
     exclude: [
       '/health',
+      '/api/health',
       '/openapi/**',
+      '/api/openapi/**',
       '/rpc/**',
+      '/api/rpc/**',
     ],
     redact: true,
   }))

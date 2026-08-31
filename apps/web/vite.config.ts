@@ -14,7 +14,10 @@ const config = defineConfig(() => {
       // evlog/vite does not support 'exclude' — override __EVLOG_CONFIG__ to add it manually
       __EVLOG_CONFIG__: JSON.stringify({
         env: { service: 'probe-web' },
-        exclude: ['/health'],
+        exclude: [
+          '/health',
+          '/assets/**',
+        ],
         redact: true,
       }),
     },
