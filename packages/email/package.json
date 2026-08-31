@@ -1,0 +1,48 @@
+{
+  "name": "@repo/email",
+  "type": "module",
+  "version": "0.0.0",
+  "private": true,
+  "exports": {
+    ".": {
+      "types": "./src/index.ts",
+      "development": "./src/index.ts",
+      "import": "./dist/index.js"
+    },
+    "./client": {
+      "types": "./src/client.ts",
+      "development": "./src/client.ts",
+      "import": "./dist/client.js"
+    },
+    "./templates": {
+      "types": "./src/templates/index.ts",
+      "development": "./src/templates/index.ts",
+      "import": "./dist/templates/index.js"
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsdown",
+    "check-types": "tsc --noEmit",
+    "format": "eslint . --fix",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix"
+  },
+  "dependencies": {
+    "react": "^19.2.0",
+    "react-email": "^6.9.3",
+    "resend": "^6.25.0"
+  },
+  "devDependencies": {
+    "@react-email/ui": "^6.9.3",
+    "@repo/eslint-config": "workspace:*",
+    "@repo/typescript-config": "workspace:*",
+    "@types/node": "^24.0.0",
+    "@types/react": "^19.2.0",
+    "eslint": "^10.4.0",
+    "tsdown": "^0.22.14",
+    "typescript": "^6.0.2"
+  }
+}

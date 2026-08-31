@@ -1,7 +1,7 @@
 import { createAppAuth } from '@repo/auth/server'
+import { createResendMagicLinkSender } from '@repo/email'
 import { resolveHttpUrl } from '@repo/utils'
 import { getDatabase } from '#/db.js'
-import { createGmailMagicLinkSender } from '#/email.js'
 import { env } from '#/env.js'
 
 let auth: ReturnType<typeof createAppAuth> | undefined
@@ -31,11 +31,11 @@ export function getAuth() {
         }
       : undefined,
     secret: env.BETTER_AUTH_SECRET,
-    sendMagicLink: createGmailMagicLinkSender({
+    sendMagicLink: createResendMagicLinkSender({
+      apiKey: env.RESEND_API_KEY,
       appName: env.APP_NAME,
-      appPassword: env.GMAIL_APP_PASSWORD,
+      fromEmail: env.RESEND_FROM_EMAIL,
       publicOrigin: env.SERVER_URL,
-      user: env.GMAIL_USER,
     }),
     trustedOrigins: env.WEB_URL,
   })
