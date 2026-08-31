@@ -10,6 +10,14 @@ import { intlayer } from 'vite-intlayer'
 
 const config = defineConfig(() => {
   return {
+    define: {
+      // evlog/vite does not support 'exclude' — override __EVLOG_CONFIG__ to add it manually
+      __EVLOG_CONFIG__: JSON.stringify({
+        env: { service: 'probe-web' },
+        exclude: ['/health'],
+        redact: true,
+      }),
+    },
     envDir: '../../',
     envPrefix: ['VITE_', 'SERVER_', 'WEB_'],
     server: {
