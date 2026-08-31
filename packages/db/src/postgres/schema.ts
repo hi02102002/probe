@@ -1,6 +1,8 @@
+import { createId } from '@repo/utils'
 import {
   boolean,
   index,
+  jsonb,
   pgTable,
   text,
   timestamp,
@@ -84,3 +86,45 @@ export const verification = pgTable(
   },
   table => [index('verification_identifier_idx').on(table.identifier)],
 )
+
+export const endpoint = pgTable(
+  'endpoints',
+  {
+    id: text('id').primaryKey().$defaultFn(() => createId('ep')),
+    userId: text('user_id')
+      .notNull()
+      .references(() => user.id, { onDelete: 'cascade' }),
+    name: text('name').notNull(),
+    createdAt: timestamp('created_at', { withTimezone: true }).defaultNow().notNull(),
+    token: text('token').notNull().unique(),
+    updatedAt: timestamp('updated_at', { withTimezone: true })
+      .defaultNow()
+      .$onUpdate(() => new Date())
+      .notNull(),
+  },
+)
+
+export const webhook_request = pgTable('webhook_requests', {
+  id: text('id')
+    .primaryKey()
+    .$defaultFn(() => createId('wr')),
+  endpointId: text('endpoint_id')
+    .notNull()
+    .references(() => endpoint.id, { onDelete: 'cascade' }),
+  method: text('method')
+    .$type<'GET' | 'POST' | 'PUT' | 'DELETE' | 'PATCH'>()
+    .notNull(),
+  url: text('url').notNull(),
+  reqHeaders: jsonb('req_headers').notNull(),
+  reqBody: jsonb('req_body'),
+  resHeaders: jsonb('res_headers'),
+  resBody: jsonb('res_body'),
+  statusCode: text('status_code'),
+  ip: text('ip'),
+  size: text('size'),
+  createdAt: timestamp('created_at', { withTimezone: true }).defaultNow().notNull(),
+  updatedAt: timestamp('updated_at', { withTimezone: true })
+    .defaultNow()
+    .$onUpdate(() => new Date())
+    .notNull(),
+})
