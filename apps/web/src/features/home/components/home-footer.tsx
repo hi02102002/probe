@@ -1,4 +1,5 @@
 import { useIntlayer } from 'react-intlayer'
+import { LanguageSelector } from '@/components/language-selector'
 import { LocalizedLink } from '@/components/localized-link'
 import { LocalizedLogo } from '@/components/localized-logo'
 
@@ -10,8 +11,12 @@ export function HomeFooter() {
       <div>
         <LocalizedLogo classNames={{ container: 'text-foreground' }} />
         <p className="mt-4 max-w-sm text-sm leading-6 text-muted-foreground">{content.footerDescription}</p>
+        <div className="mt-6">
+          <LanguageSelector align="start" />
+        </div>
         <p className="mt-6 font-mono text-[11px] text-muted-foreground">
           © 2026 Probe.
+          {' '}
           {content.rights}
         </p>
       </div>

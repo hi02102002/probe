@@ -1,6 +1,7 @@
 import type { LocalesValues } from 'intlayer'
 import { useLocation, useNavigate } from '@tanstack/react-router'
 import { getPathWithoutLocale, getPrefix, Locales } from 'intlayer'
+import { useState } from 'react'
 import { useLocale } from 'react-intlayer'
 import { Button } from '@/components/ui/button'
 import {
@@ -31,7 +32,14 @@ const LANGUAGES: Array<{
   },
 ]
 
-export function LanguageSelector({ className }: { className?: string }) {
+export function LanguageSelector({
+  align = 'start',
+  className,
+}: {
+  align?: 'center' | 'end' | 'start'
+  className?: string
+}) {
+  const [open, setOpen] = useState(false)
   const navigate = useNavigate()
   const { pathname } = useLocation()
   const { locale, setLocale } = useLocale()
@@ -39,6 +47,8 @@ export function LanguageSelector({ className }: { className?: string }) {
   const currentLanguage = LANGUAGES.find(l => l.locale === locale) ?? LANGUAGES[0]
 
   const handleLanguageChange = (newLocale: string) => {
+    setOpen(false)
+
     if (newLocale === locale) {
       return
     }
@@ -58,7 +68,7 @@ export function LanguageSelector({ className }: { className?: string }) {
   }
 
   return (
-    <Menu>
+    <Menu onOpenChange={setOpen} open={open}>
       <MenuTrigger
         render={(
           <Button
@@ -66,15 +76,14 @@ export function LanguageSelector({ className }: { className?: string }) {
             size="sm"
             variant="outline"
           >
-            <span className="hidden items-center gap-1.5 sm:inline-flex">
+            <span className="inline-flex items-center gap-1.5">
               <span>{currentLanguage?.flag}</span>
               <span>{currentLanguage?.label}</span>
             </span>
-            <span className="sm:hidden">{currentLanguage?.flag}</span>
           </Button>
         )}
       />
-      <MenuPopup align="end" className="w-44" sideOffset={6}>
+      <MenuPopup align={align} className="w-44" sideOffset={6}>
         <MenuGroup>
           <MenuGroupLabel>
             {locale === Locales.VIETNAMESE ? 'Chọn ngôn ngữ' : 'Select Language'}
@@ -87,6 +96,7 @@ export function LanguageSelector({ className }: { className?: string }) {
         >
           {LANGUAGES.map(lang => (
             <MenuRadioItem
+              closeOnClick
               key={lang.locale}
               value={lang.locale}
             >

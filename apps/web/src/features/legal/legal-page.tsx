@@ -45,7 +45,6 @@ export function LegalPage({
             <LocalizedLink activeProps={{ className: 'text-foreground' }} className="transition-colors hover:text-foreground" to="/privacy">
               {privacyNavLabel}
             </LocalizedLink>
-            <LanguageSelector />
           </nav>
         </div>
       </header>
@@ -73,11 +72,14 @@ export function LegalPage({
       </main>
 
       <footer className="border-t border-border">
-        <div className="mx-auto flex max-w-5xl flex-col gap-3 px-6 py-8 text-sm text-muted-foreground sm:flex-row sm:items-center sm:justify-between">
+        <div className="mx-auto flex max-w-5xl flex-col gap-4 px-6 py-8 text-sm text-muted-foreground sm:flex-row sm:items-center sm:justify-between">
           <p>{copyrightText}</p>
-          <LocalizedLink className="transition-colors hover:text-foreground" to="/">
-            {backToHomeLabel}
-          </LocalizedLink>
+          <div className="flex items-center gap-4">
+            <LanguageSelector align="end" />
+            <LocalizedLink className="transition-colors hover:text-foreground" to="/">
+              {backToHomeLabel}
+            </LocalizedLink>
+          </div>
         </div>
       </footer>
     </div>

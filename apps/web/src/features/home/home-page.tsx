@@ -1,4 +1,5 @@
 import { ComparisonSection } from './components/comparison-section'
+import { DeliverySection } from './components/delivery-section'
 import { FeaturesSection } from './components/features-section'
 import { HeroSection } from './components/hero-section'
 import { HomeFooter } from './components/home-footer'
@@ -12,6 +13,7 @@ export function HomePage() {
       <main className="mx-auto max-w-6xl border-x border-border">
         <HeroSection />
         <FeaturesSection />
+        <DeliverySection />
         <ComparisonSection />
         <PricingSection />
       </main>

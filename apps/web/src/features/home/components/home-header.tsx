@@ -1,6 +1,5 @@
 import { ArrowRightIcon } from '@phosphor-icons/react'
 import { useIntlayer } from 'react-intlayer'
-import { LanguageSelector } from '@/components/language-selector'
 import { LocalizedLink } from '@/components/localized-link'
 import { LocalizedLogo } from '@/components/localized-logo'
 import { Button } from '@/components/ui/button'
@@ -22,8 +21,7 @@ export function HomeHeader() {
           <a className="px-3 py-2 text-sm text-muted-foreground transition-colors hover:text-foreground" href="#pricing">{content.pricingNav}</a>
         </nav>
         <div className="flex items-center gap-2">
-          <LanguageSelector />
-          <Button className="hidden sm:inline-flex" render={<LocalizedLink to="/login" />}>
+          <Button render={<LocalizedLink to="/login" />}>
             {content.signIn}
           </Button>
         </div>

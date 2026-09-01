@@ -38,10 +38,6 @@ body {
   margin: 0;
 }
 
-html {
-  scroll-behavior: smooth;
-}
-
 @keyframes probe-scan {
   0% { transform: translateY(0); opacity: 0; }
   10%, 80% { opacity: 0.65; }
@@ -51,6 +47,17 @@ html {
 @keyframes probe-glow {
   0%, 100% { opacity: 0.55; transform: scaleX(0.9); }
   50% { opacity: 0.9; transform: scaleX(1.05); }
+}
+
+@keyframes probe-delivery-attempt {
+  0%, 30%, 100% { opacity: 0.45; transform: scale(0.98); }
+  5%, 24% { opacity: 1; transform: scale(1); }
+}
+
+@keyframes probe-delivery-result {
+  0%, 68% { opacity: 0.35; }
+  76%, 96% { opacity: 1; }
+  100% { opacity: 0.35; }
 }
 
 .probe-scan {
@@ -65,10 +72,16 @@ html {
   background-image: linear-gradient(135deg, transparent 0%, color-mix(in oklab, var(--primary) 6%, transparent) 50%, transparent 50%, transparent 100%);
   background-size: 18px 18px;
 }
+.probe-delivery-attempt { animation: probe-delivery-attempt 7.8s cubic-bezier(0.77, 0, 0.175, 1) infinite; }
+.probe-delivery-attempt-one { animation-delay: 0s; }
+.probe-delivery-attempt-two { animation-delay: 2.6s; }
+.probe-delivery-attempt-three { animation-delay: 5.2s; }
+.probe-delivery-result { animation: probe-delivery-result 7.8s ease-in-out infinite; }
 
 @media (prefers-reduced-motion: reduce) {
-  html { scroll-behavior: auto; }
   .probe-scan, .probe-glow { animation: none; }
+  .probe-delivery-flow { display: none; }
+  .probe-delivery-attempt, .probe-delivery-result { animation: none; opacity: 1; transform: none; }
 }
 
 @theme inline {

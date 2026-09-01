@@ -1,16 +1,11 @@
-import { ArrowRightIcon, CheckIcon, TerminalWindowIcon } from '@phosphor-icons/react'
+import { ArrowRightIcon, CheckIcon } from '@phosphor-icons/react'
 import { useIntlayer } from 'react-intlayer'
 import { LocalizedLink } from '@/components/localized-link'
 import { Button } from '@/components/ui/button'
 
 function RequestCanvas() {
-  const requests = ['POST /events', 'GET /users/24', 'POST /webhooks', 'GET /health']
-  const timings = [
-    ['DNS', '4ms', 'w-[12%]'],
-    ['TLS', '18ms', 'w-[28%]'],
-    ['Server', '51ms', 'w-[72%]'],
-    ['Transfer', '11ms', 'w-[18%]'],
-  ]
+  const content = useIntlayer('home')
+  const requests = ['POST  Stripe', 'POST  GitHub', 'POST  Shopify', 'GET   Test ping']
 
   return (
     <div className="relative mx-auto mt-16 max-w-4xl px-3 sm:px-8" aria-hidden="true">
@@ -19,13 +14,13 @@ function RequestCanvas() {
         <div className="flex h-10 items-center justify-between border-b border-border px-4 font-mono text-[10px] text-muted-foreground sm:text-xs">
           <div className="flex items-center gap-2.5">
             <span className="size-2 rounded-full bg-success" />
-            <span>api.probe.dev / live</span>
+            <span>{content.canvasEndpoint}</span>
           </div>
-          <span>42 req/s</span>
+          <span>{content.canvasCaptured}</span>
         </div>
         <div className="grid min-h-64 grid-cols-[2.2rem_1fr] sm:grid-cols-[12rem_1fr]">
           <div className="border-r border-border bg-muted/20 px-2 py-4 sm:px-3">
-            <p className="hidden font-mono text-[10px] uppercase tracking-[0.18em] text-muted-foreground sm:block">Recent requests</p>
+            <p className="hidden font-mono text-[10px] uppercase tracking-[0.18em] text-muted-foreground sm:block">{content.canvasRecent}</p>
             <div className="mt-3 space-y-1.5">
               {requests.map((request, index) => (
                 <div key={request} className={`flex h-8 items-center gap-2 border px-1.5 font-mono text-[10px] ${index === 0 ? 'border-primary/25 bg-primary/10 text-accent-foreground' : 'border-transparent text-muted-foreground'}`}>
@@ -39,44 +34,52 @@ function RequestCanvas() {
             <div className="probe-scan absolute inset-x-0 top-0 h-px" />
             <div className="flex flex-wrap items-center gap-2 font-mono text-[10px] sm:text-xs">
               <span className="bg-chart-2/15 px-2 py-1 text-chart-2">POST</span>
-              <span className="text-foreground">/v1/events</span>
-              <span className="ml-auto text-success-foreground">201 Created</span>
-              <span className="text-muted-foreground">84ms</span>
+              <span className="text-foreground">/hooks/ep_checkout</span>
+              <span className="ml-auto text-success-foreground">200 OK</span>
+              <span className="text-muted-foreground">{content.canvasReceived}</span>
             </div>
             <div className="mt-6 grid gap-4 sm:grid-cols-2">
               <div className="border border-border bg-code p-4 font-mono text-[10px] leading-5 sm:text-xs">
-                <p className="mb-2 text-muted-foreground">REQUEST BODY</p>
+                <p className="mb-2 text-muted-foreground">{content.canvasRequestBody}</p>
                 <p className="text-muted-foreground">{'{'}</p>
                 <p className="pl-3">
-                  <span className="text-chart-4">&quot;event&quot;</span>
+                  <span className="text-chart-4">&quot;type&quot;</span>
                   <span className="text-muted-foreground">: </span>
-                  <span className="text-warning-foreground">&quot;checkout.done&quot;</span>
+                  <span className="text-warning-foreground">&quot;checkout.completed&quot;</span>
+                  ,
+                </p>
+                <p className="pl-3">
+                  <span className="text-chart-4">&quot;order_id&quot;</span>
+                  <span className="text-muted-foreground">: </span>
+                  <span className="text-warning-foreground">&quot;ord_1042&quot;</span>
                   ,
                 </p>
                 <p className="pl-3">
                   <span className="text-chart-4">&quot;amount&quot;</span>
                   <span className="text-muted-foreground">: </span>
                   <span className="text-chart-2">14900</span>
-                  ,
-                </p>
-                <p className="pl-3">
-                  <span className="text-chart-4">&quot;currency&quot;</span>
-                  <span className="text-muted-foreground">: </span>
-                  <span className="text-warning-foreground">&quot;USD&quot;</span>
                 </p>
                 <p className="text-muted-foreground">{'}'}</p>
               </div>
-              <div className="space-y-2 font-mono text-[10px] sm:text-xs">
-                {timings.map(([label, value, width]) => (
-                  <div key={label} className="grid grid-cols-[3rem_1fr_2.5rem] items-center gap-2 text-muted-foreground">
-                    <span>{label}</span>
-                    <span className="h-1 bg-muted"><span className={`block h-full bg-primary/70 ${width}`} /></span>
-                    <span className="text-right text-foreground">{value}</span>
+              <div className="font-mono text-[10px] sm:text-xs">
+                <p className="mb-3 text-muted-foreground">{content.canvasRequestHeaders}</p>
+                <dl className="space-y-3">
+                  <div className="grid grid-cols-[5rem_1fr] gap-2">
+                    <dt className="text-muted-foreground">content-type</dt>
+                    <dd className="truncate text-foreground">application/json</dd>
                   </div>
-                ))}
+                  <div className="grid grid-cols-[5rem_1fr] gap-2">
+                    <dt className="text-muted-foreground">user-agent</dt>
+                    <dd className="truncate text-foreground">Stripe/1.0</dd>
+                  </div>
+                  <div className="grid grid-cols-[5rem_1fr] gap-2">
+                    <dt className="text-muted-foreground">x-signature</dt>
+                    <dd className="truncate text-foreground">t=1788,v1=3fd92...</dd>
+                  </div>
+                </dl>
                 <div className="mt-5 flex items-center gap-2 border-t border-border pt-4 text-success-foreground">
                   <CheckIcon weight="bold" />
-                  <span>Schema validated</span>
+                  <span>{content.canvasCaptured}</span>
                 </div>
               </div>
             </div>
@@ -104,18 +107,10 @@ export function HeroSection() {
           <span className="text-accent-foreground">{content.titleAccent}</span>
         </h1>
         <p className="mx-auto mt-7 max-w-2xl text-pretty text-base leading-7 text-muted-foreground sm:text-xl sm:leading-8">{content.description}</p>
-        <div className="mt-10 flex flex-col items-center justify-center gap-3 sm:flex-row">
+        <div className="mt-10 flex justify-center">
           <Button render={<LocalizedLink to="/dashboard" />} size="xl">
             {content.openDashboard}
             <ArrowRightIcon weight="bold" />
-          </Button>
-          <Button
-            render={<a href="#features" aria-label={String(content.seeHow)} />}
-            size="xl"
-            variant="outline"
-          >
-            <TerminalWindowIcon />
-            {content.seeHow}
           </Button>
         </div>
       </div>

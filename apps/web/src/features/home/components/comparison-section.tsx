@@ -1,46 +1,32 @@
+import { ArrowRightIcon } from '@phosphor-icons/react'
 import { useIntlayer } from 'react-intlayer'
 
 export function ComparisonSection() {
   const content = useIntlayer('home')
-  const rows = [
-    [content.captureLabel, content.allTraffic, content.manualOnly, content.sampled, content.sampled],
-    [content.payloadLabel, content.fullPayloads, content.rawText, content.limited, content.limited],
-    [content.searchLabel, content.instantSearch, content.none, content.basic, content.advanced],
-    [content.setupLabel, content.twoMinutes, content.manual, content.hours, content.days],
-    [content.priceLabel, '$0', '$0', '$25+', '$99+'],
+  const steps = [
+    { number: content.stepOneNumber, title: content.stepOneTitle, description: content.stepOneDescription },
+    { number: content.stepTwoNumber, title: content.stepTwoTitle, description: content.stepTwoDescription },
+    { number: content.stepThreeNumber, title: content.stepThreeTitle, description: content.stepThreeDescription },
   ]
-  const columnKeys = ['console', 'proxy', 'apm']
 
   return (
     <section id="compare" className="scroll-mt-24 border-b border-border">
       <div className="border-b border-border px-6 py-10 sm:px-10">
         <p className="font-mono text-xs uppercase tracking-[0.18em] text-accent-foreground">{content.compareEyebrow}</p>
         <h2 className="mt-3 text-3xl font-semibold tracking-[-0.03em] text-foreground sm:text-4xl">{content.compareTitle}</h2>
-        <p className="mt-2 text-sm text-muted-foreground">{content.compareDescription}</p>
+        <p className="mt-2 max-w-2xl text-sm leading-6 text-muted-foreground">{content.compareDescription}</p>
       </div>
-      <div className="overflow-x-auto" role="region" aria-label="Product comparison">
-        <table className="w-full min-w-[720px] border-collapse text-sm">
-          <thead>
-            <tr className="border-b border-border">
-              <th className="w-44 px-6 py-5 text-left font-normal text-muted-foreground sm:px-10">{content.featureLabel}</th>
-              <th className="bg-accent/40 px-5 py-5 text-left font-semibold text-accent-foreground">Probe</th>
-              <th className="px-5 py-5 text-left font-medium text-muted-foreground">{content.consoleLogs}</th>
-              <th className="px-5 py-5 text-left font-medium text-muted-foreground">{content.proxyTools}</th>
-              <th className="px-5 py-5 text-left font-medium text-muted-foreground">{content.apmSuites}</th>
-            </tr>
-          </thead>
-          <tbody className="divide-y divide-border">
-            {rows.map(row => (
-              <tr key={String(row[0])}>
-                <th className="px-6 py-4 text-left font-normal text-muted-foreground sm:px-10">{row[0]}</th>
-                <td className="bg-accent/40 px-5 py-4 font-semibold text-accent-foreground">{row[1]}</td>
-                {row.slice(2).map((cell, index) => (
-                  <td key={columnKeys[index]} className="px-5 py-4 text-muted-foreground">{cell}</td>
-                ))}
-              </tr>
-            ))}
-          </tbody>
-        </table>
+      <div className="grid gap-px bg-border md:grid-cols-3">
+        {steps.map((step, index) => (
+          <article key={String(step.number)} className="group bg-background px-6 py-10 sm:px-10">
+            <div className="flex items-center justify-between">
+              <span className="font-mono text-xs font-semibold text-accent-foreground">{step.number}</span>
+              {index < steps.length - 1 && <ArrowRightIcon className="hidden text-muted-foreground md:block" />}
+            </div>
+            <h3 className="mt-8 text-xl font-semibold tracking-[-0.02em] text-foreground">{step.title}</h3>
+            <p className="mt-3 text-sm leading-6 text-muted-foreground">{step.description}</p>
+          </article>
+        ))}
       </div>
     </section>
   )
