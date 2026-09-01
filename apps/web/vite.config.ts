@@ -1,3 +1,4 @@
+/** biome-ignore-all lint/suspicious/noExplicitAny: <hono> */
 import babel from '@rolldown/plugin-babel'
 import tailwindcss from '@tailwindcss/vite'
 import { devtools } from '@tanstack/devtools-vite'
@@ -8,18 +9,26 @@ import { nitro } from 'nitro/vite'
 import { defineConfig } from 'vite'
 import { intlayer } from 'vite-intlayer'
 
+const EVLOG_CONFIG = {
+  env: { service: 'probe-web' },
+  exclude: [
+    '/health',
+    '/assets/**',
+  ],
+  redact: true,
+}
+
+const ROUTE_IGNORE_PROXY = [
+  '/api',
+  '/health',
+  '/og-image',
+  '/assets',
+]
+
 const config = defineConfig(() => {
   return {
     define: {
-      // evlog/vite does not support 'exclude' — override __EVLOG_CONFIG__ to add it manually
-      __EVLOG_CONFIG__: JSON.stringify({
-        env: { service: 'probe-web' },
-        exclude: [
-          '/health',
-          '/assets/**',
-        ],
-        redact: true,
-      }),
+      __EVLOG_CONFIG__: JSON.stringify(EVLOG_CONFIG),
     },
     envDir: '../../',
     envPrefix: ['VITE_', 'SERVER_', 'WEB_'],
@@ -32,16 +41,17 @@ const config = defineConfig(() => {
           enabled: false,
         },
       }),
-      evlog({
-        client: {
-          service: 'probe-web',
-        },
-        service: 'probe-web',
-      }),
+      evlog(EVLOG_CONFIG as any),
       nitro({ rollupConfig: { external: [/^@sentry\//] } }),
       intlayer({
         proxy: {
-          ignore: req => req.url?.startsWith('/api') ?? false,
+          ignore: (req) => {
+            if (!req.url) {
+              return false
+            }
+
+            return ROUTE_IGNORE_PROXY.some(route => req.url?.startsWith(route))
+          },
         },
       }),
       tailwindcss(),

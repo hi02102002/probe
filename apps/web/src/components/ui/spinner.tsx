@@ -1,13 +1,13 @@
 import type React from 'react'
-import { Loader2Icon } from 'lucide-react'
+import { CircleNotchIcon } from '@phosphor-icons/react'
 import { cn } from '@/lib/cn'
 
 export function Spinner({
   className,
   ...props
-}: React.ComponentProps<typeof Loader2Icon>): React.ReactElement {
+}: React.ComponentProps<typeof CircleNotchIcon>): React.ReactElement {
   return (
-    <Loader2Icon
+    <CircleNotchIcon
       aria-label="Loading"
       className={cn('animate-spin', className)}
       role="status"
