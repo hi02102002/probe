@@ -17,6 +17,7 @@ export function getAuth() {
       env.BETTER_AUTH_URL,
       `http://localhost:${env.PORT}`,
     ),
+    cookieDomain: env.AUTH_COOKIE_DOMAIN,
     database: getDatabase(),
     github: env.GITHUB_CLIENT_ID && env.GITHUB_CLIENT_SECRET
       ? {

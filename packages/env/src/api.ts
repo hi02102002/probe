@@ -10,6 +10,7 @@ export function createApiEnv(
     emptyStringAsUndefined: true,
     runtimeEnvStrict: {
       APP_NAME: runtimeEnv.APP_NAME,
+      AUTH_COOKIE_DOMAIN: runtimeEnv.AUTH_COOKIE_DOMAIN,
       BETTER_AUTH_SECRET: runtimeEnv.BETTER_AUTH_SECRET,
       BETTER_AUTH_URL: runtimeEnv.BETTER_AUTH_URL || serverUrl,
       DATABASE_URL: runtimeEnv.DATABASE_URL,
@@ -25,6 +26,7 @@ export function createApiEnv(
     },
     server: {
       APP_NAME: z.string().min(1).default('Probe'),
+      AUTH_COOKIE_DOMAIN: z.string().min(1).optional(),
       BETTER_AUTH_SECRET: z.string().min(32),
       BETTER_AUTH_URL: z.url().default('http://localhost:3001'),
       DATABASE_URL: z.string().min(1),

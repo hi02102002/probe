@@ -10,6 +10,7 @@ import { nanoid } from 'nanoid'
 export interface AppAuthOptions {
   appName?: string
   baseURL: string
+  cookieDomain?: string
   database: PostgresDatabase
   github?: NonNullable<BetterAuthOptions['socialProviders']>['github']
   google?: NonNullable<BetterAuthOptions['socialProviders']>['google']
@@ -21,6 +22,14 @@ export interface AppAuthOptions {
 export function createAppAuth(options: AppAuthOptions) {
   return betterAuth({
     advanced: {
+      ...(options.cookieDomain
+        ? {
+            crossSubDomainCookies: {
+              domain: options.cookieDomain,
+              enabled: true,
+            },
+          }
+        : {}),
       database: {
         generateId: () => nanoid(),
       },
