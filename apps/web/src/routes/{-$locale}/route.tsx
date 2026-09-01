@@ -1,9 +1,9 @@
 import { createFileRoute, Outlet, redirect } from '@tanstack/react-router'
-import { NotFoundComponent } from './404'
+import { validatePrefix } from 'intlayer'
+import { LocalizedNotFound } from '@/components/error-pages'
 
 export const Route = createFileRoute('/{-$locale}')({
-  beforeLoad: async ({ params }) => {
-    const { validatePrefix } = await import('intlayer')
+  beforeLoad: ({ params }) => {
     const { isValid, localePrefix } = validatePrefix(params.locale)
     const isDeclaredLocale = params.locale === undefined
       || params.locale === 'en'
@@ -11,11 +11,11 @@ export const Route = createFileRoute('/{-$locale}')({
 
     if (!isValid || !isDeclaredLocale) {
       throw redirect({
-        to: '/{-$locale}/404',
         params: { locale: localePrefix },
+        to: '/{-$locale}/404',
       })
     }
   },
   component: Outlet,
-  notFoundComponent: NotFoundComponent,
+  notFoundComponent: LocalizedNotFound,
 })

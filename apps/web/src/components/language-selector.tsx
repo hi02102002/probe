@@ -1,5 +1,5 @@
 import type { LocalesValues } from 'intlayer'
-import { useLocation } from '@tanstack/react-router'
+import { useLocation, useNavigate } from '@tanstack/react-router'
 import { getPathWithoutLocale, getPrefix, Locales } from 'intlayer'
 import { useLocale } from 'react-intlayer'
 import { Button } from '@/components/ui/button'
@@ -32,6 +32,7 @@ const LANGUAGES: Array<{
 ]
 
 export function LanguageSelector({ className }: { className?: string }) {
+  const navigate = useNavigate()
   const { pathname } = useLocation()
   const { locale, setLocale } = useLocale()
 
@@ -48,9 +49,12 @@ export function LanguageSelector({ className }: { className?: string }) {
     const pathWithoutLocale = getPathWithoutLocale(pathname)
     const { prefix } = getPrefix(selectedLocale)
     const targetPath = prefix ? `/${prefix}${pathWithoutLocale === '/' ? '' : pathWithoutLocale}` : (pathWithoutLocale || '/')
-    const targetUrl = `${targetPath}${window.location.search}${window.location.hash}`
 
-    window.location.href = targetUrl
+    void navigate({
+      replace: true,
+      search: true,
+      to: targetPath as any,
+    })
   }
 
   return (

@@ -1,11 +1,6 @@
 import { createFileRoute } from '@tanstack/react-router'
-import { NotFoundPage } from '@/components/error-pages'
-import { LocalizedLink } from '@/components/localized-link'
+import { LocalizedNotFound } from '@/components/error-pages'
 
 export const Route = createFileRoute('/{-$locale}/404')({
-  component: NotFoundComponent,
+  component: LocalizedNotFound,
 })
-
-export function NotFoundComponent() {
-  return <NotFoundPage homeLink={<LocalizedLink to="/" />} />
-}

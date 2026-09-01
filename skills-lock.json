@@ -37,6 +37,42 @@
       "skillPath": "better-auth/emailAndPassword/SKILL.md",
       "computedHash": "863886759f729081e265941f4f72c503835d55a1f34f6d63cebe6571159fff4a"
     },
+    "intlayer-cli": {
+      "source": "aymericzip/intlayer-skills",
+      "sourceType": "github",
+      "skillPath": "skills/intlayer-cli/SKILL.md",
+      "computedHash": "8251c694096a75aa4ea516d8c73fa8033ca34e2325d2375ef96e680784188d89"
+    },
+    "intlayer-compiler": {
+      "source": "aymericzip/intlayer-skills",
+      "sourceType": "github",
+      "skillPath": "skills/intlayer-compiler/SKILL.md",
+      "computedHash": "ccc296678075c8dc1742a7a11b3726288b41664198d2c26d53f56ef5d5574953"
+    },
+    "intlayer-config": {
+      "source": "aymericzip/intlayer-skills",
+      "sourceType": "github",
+      "skillPath": "skills/intlayer-config/SKILL.md",
+      "computedHash": "4a5d69eb56aa0ea9bead713637c56629ac4581f3a8771de9edd97263152031cb"
+    },
+    "intlayer-content": {
+      "source": "aymericzip/intlayer-skills",
+      "sourceType": "github",
+      "skillPath": "skills/intlayer-content/SKILL.md",
+      "computedHash": "594e6b3bd90dc71508f32538351cf2c58fbaebfa29116814a32c5eb8b26237cb"
+    },
+    "intlayer-react": {
+      "source": "aymericzip/intlayer-skills",
+      "sourceType": "github",
+      "skillPath": "skills/intlayer-react/SKILL.md",
+      "computedHash": "cafc995e361e2882b41e86c13860b6fe471344e049634621f12ed7dcbe6c88e8"
+    },
+    "intlayer-usage": {
+      "source": "aymericzip/intlayer-skills",
+      "sourceType": "github",
+      "skillPath": "skills/intlayer-usage/SKILL.md",
+      "computedHash": "5586613e6157944a6f4319064f49481f2ba034e9364f2a497dddd02f350e6a34"
+    },
     "organization-best-practices": {
       "source": "better-auth/skills",
       "sourceType": "github",

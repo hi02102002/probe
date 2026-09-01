@@ -2,14 +2,14 @@ import type { NotFoundRouteProps } from '@tanstack/react-router'
 import type { ReactElement } from 'react'
 import { ArrowLeftIcon, ArrowsClockwiseIcon } from '@phosphor-icons/react'
 import { useRouter } from '@tanstack/react-router'
-
+import { LocalizedLink } from '@/components/localized-link'
 import { StatusPage } from '@/components/status-page'
 import { Button } from '@/components/ui/button'
 
 export function NotFoundPage(props: { homeLink?: ReactElement } | NotFoundRouteProps) {
   const homeLink = 'homeLink' in props && props.homeLink
     ? props.homeLink
-    : <a href="/" aria-label="Back to home" />
+    : <a aria-label="Back to home" href="/" />
 
   return (
     <StatusPage
@@ -28,6 +28,10 @@ export function NotFoundPage(props: { homeLink?: ReactElement } | NotFoundRouteP
   )
 }
 
+export function LocalizedNotFound() {
+  return <NotFoundPage homeLink={<LocalizedLink to="/" />} />
+}
+
 export function BadGatewayPage({ onRetry }: { onRetry: () => void }) {
   return (
     <StatusPage
@@ -38,7 +42,7 @@ export function BadGatewayPage({ onRetry }: { onRetry: () => void }) {
             Try again
           </Button>
           <Button
-            render={<a href="/" aria-label="Back to home" />}
+            render={<a aria-label="Back to home" href="/" />}
             variant="outline"
           >
             Back to home
