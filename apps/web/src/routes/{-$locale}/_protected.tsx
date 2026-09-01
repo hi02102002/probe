@@ -1,6 +1,6 @@
 import { createFileRoute, Outlet, redirect } from '@tanstack/react-router'
+import { MainLayout } from '@/components/layouts/dashboard/main-layout'
 import { Spinner } from '@/components/ui/spinner'
-import { MainLayout } from '@/features/dashboard/components/main-layout'
 
 export const Route = createFileRoute('/{-$locale}/_protected')({
   beforeLoad: async ({ location, context, params }) => {
@@ -28,9 +28,8 @@ function ProtectedPending() {
       aria-label="Loading dashboard"
       aria-live="polite"
       className="dark flex min-h-svh flex-col items-center justify-center gap-3 bg-background text-foreground"
-      role="status"
     >
-      <Spinner className="size-5 text-lime-300" />
+      <Spinner className="size-5 text-primary" />
       <p className="text-sm text-muted-foreground">Preparing your dashboard…</p>
     </div>
   )

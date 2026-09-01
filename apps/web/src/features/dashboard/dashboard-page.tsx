@@ -1,6 +1,6 @@
 import { useRouteContext } from '@tanstack/react-router'
-import { AppShell } from './components/app-shell'
-import { PageHeader, PageHeaderDescription, PageHeaderTitle } from './components/page-header'
+import { AppShell } from '@/components/layouts/dashboard/app-shell'
+import { PageHeader, PageHeaderDescription, PageHeaderTitle } from '@/components/layouts/dashboard/page-header'
 
 export function DashboardPage() {
   const { session } = useRouteContext({

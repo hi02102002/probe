@@ -1,9 +1,8 @@
 import type { Icon } from '@phosphor-icons/react'
-import type { LinkProps } from '@tanstack/react-router'
 import type { ReactNode } from 'react'
-import { Link } from '@tanstack/react-router'
-
+import type { To } from '@/components/localized-link'
 import { Fragment } from 'react'
+import { LocalizedLink } from '@/components/localized-link'
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -15,9 +14,9 @@ import {
 import { cn } from '@/lib/cn'
 
 export interface AppShellBreadcrumb {
-  label: string
-  linkProps?: LinkProps
   icon?: Icon
+  label: string
+  to?: To
 }
 
 interface AppShellProps {
@@ -28,7 +27,7 @@ interface AppShellProps {
 
 export function AppShell({ breadcrumbs = [], children, className }: AppShellProps) {
   return (
-    <div className={cn('mx-auto w-full max-w-7xl px-4 py-6 sm:px-6 sm:py-6', className)}>
+    <div className={cn('mx-auto w-full max-w-6xl px-4 py-6 sm:px-6 sm:py-6', className)}>
       {breadcrumbs.length > 0 && (
         <Breadcrumb className="mb-6">
           <BreadcrumbList>
@@ -45,11 +44,11 @@ export function AppShell({ breadcrumbs = [], children, className }: AppShellProp
               return (
                 <Fragment key={breadcrumb.label}>
                   <BreadcrumbItem>
-                    {breadcrumb.linkProps && !isCurrentPage
+                    {breadcrumb.to && !isCurrentPage
                       ? (
                           <BreadcrumbLink
                             className="inline-flex items-center gap-1.5"
-                            render={<Link {...breadcrumb.linkProps} />}
+                            render={<LocalizedLink to={breadcrumb.to} />}
                           >
                             {content}
                           </BreadcrumbLink>

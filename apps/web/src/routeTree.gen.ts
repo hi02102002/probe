@@ -21,6 +21,8 @@ import { Route as Char123LocaleChar125marketingPrivacyRouteImport } from './rout
 import { Route as Char123LocaleChar125marketingTermsRouteImport } from './routes/{-$locale}/(marketing)/terms'
 import { Route as Char123LocaleChar125AuthLoginRouteImport } from './routes/{-$locale}/_auth/login'
 import { Route as Char123LocaleChar125ProtectedDashboardIndexRouteRouteImport } from './routes/{-$locale}/_protected.dashboard/index/route'
+import { Route as Char123LocaleChar125ProtectedDashboardBillingRouteRouteImport } from './routes/{-$locale}/_protected.dashboard/billing/route'
+import { Route as Char123LocaleChar125ProtectedDashboardSettingsRouteRouteImport } from './routes/{-$locale}/_protected.dashboard/settings/route'
 
 const HealthRoute = HealthRouteImport.update({
   id: '/health',
@@ -89,6 +91,18 @@ const Char123LocaleChar125ProtectedDashboardIndexRouteRoute =
     path: '/dashboard',
     getParentRoute: () => Char123LocaleChar125ProtectedRoute,
   } as any)
+const Char123LocaleChar125ProtectedDashboardBillingRouteRoute =
+  Char123LocaleChar125ProtectedDashboardBillingRouteRouteImport.update({
+    id: '/dashboard/billing',
+    path: '/dashboard/billing',
+    getParentRoute: () => Char123LocaleChar125ProtectedRoute,
+  } as any)
+const Char123LocaleChar125ProtectedDashboardSettingsRouteRoute =
+  Char123LocaleChar125ProtectedDashboardSettingsRouteRouteImport.update({
+    id: '/dashboard/settings',
+    path: '/dashboard/settings',
+    getParentRoute: () => Char123LocaleChar125ProtectedRoute,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/{-$locale}': typeof Char123LocaleChar125RouteRouteWithChildren
@@ -101,6 +115,8 @@ export interface FileRoutesByFullPath {
   '/{-$locale}/login': typeof Char123LocaleChar125AuthLoginRoute
   '/{-$locale}/': typeof Char123LocaleChar125marketingIndexRoute
   '/{-$locale}/dashboard/': typeof Char123LocaleChar125ProtectedDashboardIndexRouteRoute
+  '/{-$locale}/dashboard/billing': typeof Char123LocaleChar125ProtectedDashboardBillingRouteRoute
+  '/{-$locale}/dashboard/settings': typeof Char123LocaleChar125ProtectedDashboardSettingsRouteRoute
 }
 export interface FileRoutesByTo {
   '/health': typeof HealthRoute
@@ -112,6 +128,8 @@ export interface FileRoutesByTo {
   '/{-$locale}/terms': typeof Char123LocaleChar125marketingTermsRoute
   '/{-$locale}/login': typeof Char123LocaleChar125AuthLoginRoute
   '/{-$locale}/dashboard': typeof Char123LocaleChar125ProtectedDashboardIndexRouteRoute
+  '/{-$locale}/dashboard/billing': typeof Char123LocaleChar125ProtectedDashboardBillingRouteRoute
+  '/{-$locale}/dashboard/settings': typeof Char123LocaleChar125ProtectedDashboardSettingsRouteRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -127,6 +145,8 @@ export interface FileRoutesById {
   '/{-$locale}/_auth/login': typeof Char123LocaleChar125AuthLoginRoute
   '/{-$locale}/(marketing)/': typeof Char123LocaleChar125marketingIndexRoute
   '/{-$locale}/_protected/dashboard/': typeof Char123LocaleChar125ProtectedDashboardIndexRouteRoute
+  '/{-$locale}/_protected/dashboard/billing': typeof Char123LocaleChar125ProtectedDashboardBillingRouteRoute
+  '/{-$locale}/_protected/dashboard/settings': typeof Char123LocaleChar125ProtectedDashboardSettingsRouteRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -141,6 +161,8 @@ export interface FileRouteTypes {
     | '/{-$locale}/login'
     | '/{-$locale}/'
     | '/{-$locale}/dashboard/'
+    | '/{-$locale}/dashboard/billing'
+    | '/{-$locale}/dashboard/settings'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/health'
@@ -152,6 +174,8 @@ export interface FileRouteTypes {
     | '/{-$locale}/terms'
     | '/{-$locale}/login'
     | '/{-$locale}/dashboard'
+    | '/{-$locale}/dashboard/billing'
+    | '/{-$locale}/dashboard/settings'
   id:
     | '__root__'
     | '/{-$locale}'
@@ -166,6 +190,8 @@ export interface FileRouteTypes {
     | '/{-$locale}/_auth/login'
     | '/{-$locale}/(marketing)/'
     | '/{-$locale}/_protected/dashboard/'
+    | '/{-$locale}/_protected/dashboard/billing'
+    | '/{-$locale}/_protected/dashboard/settings'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -260,6 +286,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof Char123LocaleChar125ProtectedDashboardIndexRouteRouteImport
       parentRoute: typeof Char123LocaleChar125ProtectedRoute
     }
+    '/{-$locale}/_protected/dashboard/billing': {
+      id: '/{-$locale}/_protected/dashboard/billing'
+      path: '/dashboard/billing'
+      fullPath: '/{-$locale}/dashboard/billing'
+      preLoaderRoute: typeof Char123LocaleChar125ProtectedDashboardBillingRouteRouteImport
+      parentRoute: typeof Char123LocaleChar125ProtectedRoute
+    }
+    '/{-$locale}/_protected/dashboard/settings': {
+      id: '/{-$locale}/_protected/dashboard/settings'
+      path: '/dashboard/settings'
+      fullPath: '/{-$locale}/dashboard/settings'
+      preLoaderRoute: typeof Char123LocaleChar125ProtectedDashboardSettingsRouteRouteImport
+      parentRoute: typeof Char123LocaleChar125ProtectedRoute
+    }
   }
 }
 
@@ -279,12 +319,18 @@ const Char123LocaleChar125AuthRouteWithChildren =
 
 interface Char123LocaleChar125ProtectedRouteChildren {
   Char123LocaleChar125ProtectedDashboardIndexRouteRoute: typeof Char123LocaleChar125ProtectedDashboardIndexRouteRoute
+  Char123LocaleChar125ProtectedDashboardBillingRouteRoute: typeof Char123LocaleChar125ProtectedDashboardBillingRouteRoute
+  Char123LocaleChar125ProtectedDashboardSettingsRouteRoute: typeof Char123LocaleChar125ProtectedDashboardSettingsRouteRoute
 }
 
 const Char123LocaleChar125ProtectedRouteChildren: Char123LocaleChar125ProtectedRouteChildren =
   {
     Char123LocaleChar125ProtectedDashboardIndexRouteRoute:
       Char123LocaleChar125ProtectedDashboardIndexRouteRoute,
+    Char123LocaleChar125ProtectedDashboardBillingRouteRoute:
+      Char123LocaleChar125ProtectedDashboardBillingRouteRoute,
+    Char123LocaleChar125ProtectedDashboardSettingsRouteRoute:
+      Char123LocaleChar125ProtectedDashboardSettingsRouteRoute,
   }
 
 const Char123LocaleChar125ProtectedRouteWithChildren =
