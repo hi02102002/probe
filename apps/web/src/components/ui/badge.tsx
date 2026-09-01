@@ -35,16 +35,6 @@ export const badgeVariants = cva(
           'bg-secondary text-secondary-foreground [button&,a&]:hover:bg-secondary/90',
         success: 'bg-success/8 text-success-foreground dark:bg-success/16',
         warning: 'bg-warning/8 text-warning-foreground dark:bg-warning/16',
-        ghost:
-          'bg-transparent text-foreground [button&,a&]:hover:bg-accent/50 dark:[button&,a&]:hover:bg-input/48',
-        link: 'bg-transparent text-primary underline-offset-4 hover:underline [button&,a&]:hover:bg-accent/50 dark:[button&,a&]:hover:bg-input/48',
-        subtle:
-          'bg-accent text-foreground [button&,a&]:hover:bg-accent/50 dark:bg-accent/32 dark:[button&,a&]:hover:bg-input/48',
-        gray: 'bg-gray-100 text-gray-900 [button&,a&]:hover:bg-gray-200 dark:bg-gray-600 dark:text-gray-100 dark:[button&,a&]:hover:bg-gray-500',
-        red: 'bg-red-100 text-red-900 [button&,a&]:hover:bg-red-200 dark:bg-red-600 dark:text-red-100 dark:[button&,a&]:hover:bg-red-500',
-        green: 'bg-green-100 text-green-900 [button&,a&]:hover:bg-green-200 dark:bg-green-600 dark:text-green-100 dark:[button&,a&]:hover:bg-green-500',
-        blue: 'bg-blue-100 text-blue-900 [button&,a&]:hover:bg-blue-200 dark:bg-blue-600 dark:text-blue-100 dark:[button&,a&]:hover:bg-blue-500',
-        yellow: 'bg-yellow-100 text-yellow-900 [button&,a&]:hover:bg-yellow-200 dark:bg-yellow-600 dark:text-yellow-100 dark:[button&,a&]:hover:bg-yellow-500',
       },
     },
   },

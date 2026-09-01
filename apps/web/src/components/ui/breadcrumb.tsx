@@ -3,7 +3,7 @@
 import type * as React from 'react'
 import { mergeProps } from '@base-ui/react/merge-props'
 import { useRender } from '@base-ui/react/use-render'
-import { CaretRightIcon, DotsThreeIcon } from '@phosphor-icons/react'
+import { ChevronRight, MoreHorizontal } from 'lucide-react'
 import { cn } from '@/lib/cn'
 
 export function Breadcrumb({
@@ -85,7 +85,7 @@ export function BreadcrumbSeparator({
       role="presentation"
       {...props}
     >
-      {children ?? <CaretRightIcon />}
+      {children ?? <ChevronRight />}
     </li>
   )
 }
@@ -102,7 +102,7 @@ export function BreadcrumbEllipsis({
       role="presentation"
       {...props}
     >
-      <DotsThreeIcon className="size-4" />
+      <MoreHorizontal className="size-4" />
       <span className="sr-only">More</span>
     </span>
   )

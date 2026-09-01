@@ -5,10 +5,10 @@ import type { Button } from '@/components/ui/button'
 import { mergeProps } from '@base-ui/react/merge-props'
 import { useRender } from '@base-ui/react/use-render'
 import {
-  CaretLeftIcon,
-  CaretRightIcon,
-  DotsThreeIcon,
-} from '@phosphor-icons/react'
+  ChevronLeftIcon,
+  ChevronRightIcon,
+  MoreHorizontalIcon,
+} from 'lucide-react'
 import { buttonVariants } from '@/components/ui/button'
 import { cn } from '@/lib/cn'
 
@@ -90,7 +90,7 @@ export function PaginationPrevious({
       size="default"
       {...props}
     >
-      <CaretLeftIcon className="sm:-ms-1" />
+      <ChevronLeftIcon className="sm:-ms-1" />
       <span className="max-sm:hidden">Previous</span>
     </PaginationLink>
   )
@@ -108,7 +108,7 @@ export function PaginationNext({
       {...props}
     >
       <span className="max-sm:hidden">Next</span>
-      <CaretRightIcon className="sm:-me-1" />
+      <ChevronRightIcon className="sm:-me-1" />
     </PaginationLink>
   )
 }
@@ -124,7 +124,7 @@ export function PaginationEllipsis({
       data-slot="pagination-ellipsis"
       {...props}
     >
-      <DotsThreeIcon className="size-5 sm:size-4" />
+      <MoreHorizontalIcon className="size-5 sm:size-4" />
       <span className="sr-only">More pages</span>
     </span>
   )

@@ -24,7 +24,7 @@ export function LanguageSelector() {
             />
           )}
           size="sm"
-          variant={locale === itemLocale ? 'accent' : 'outline'}
+          variant={locale === itemLocale ? 'default' : 'outline'}
           onClick={() => setLocale(itemLocale)}
         >
           {itemLocale.toUpperCase()}

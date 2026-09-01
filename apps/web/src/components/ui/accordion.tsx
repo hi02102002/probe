@@ -2,7 +2,7 @@
 
 import type React from 'react'
 import { Accordion as AccordionPrimitive } from '@base-ui/react/accordion'
-import { CaretDownIcon } from '@phosphor-icons/react'
+import { ChevronDownIcon } from 'lucide-react'
 import { cn } from '@/lib/cn'
 
 export function Accordion(
@@ -40,7 +40,7 @@ export function AccordionTrigger({
         {...props}
       >
         {children}
-        <CaretDownIcon
+        <ChevronDownIcon
           className="pointer-events-none size-4 shrink-0 translate-y-0.5 opacity-80 transition-transform duration-200 ease-in-out"
           data-slot="accordion-indicator"
         />

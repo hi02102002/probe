@@ -6,7 +6,7 @@ export function DashboardHeader() {
   const { session } = useRouteContext({ from: '/{-$locale}/_protected' })
 
   return (
-    <header className="sticky top-0 z-40 border-b bg-accent backdrop-blur-2xl">
+    <header className="sticky top-0 z-40 border-b bg-card/80 backdrop-blur-2xl">
       <div className="mx-auto flex h-16 max-w-7xl items-center gap-3 px-4 sm:px-6">
         <LocalizedLogo to="/dashboard" />
         <div className="ml-auto flex items-center gap-2">

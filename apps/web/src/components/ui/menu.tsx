@@ -2,7 +2,7 @@
 
 import type * as React from 'react'
 import { Menu as MenuPrimitive } from '@base-ui/react/menu'
-import { CaretRightIcon } from '@phosphor-icons/react'
+import { ChevronRightIcon } from 'lucide-react'
 import { cn } from '@/lib/cn'
 
 export const MenuCreateHandle: typeof MenuPrimitive.createHandle
@@ -302,7 +302,7 @@ export function MenuSubTrigger({
       {...props}
     >
       {children}
-      <CaretRightIcon className="ms-auto -me-0.5 opacity-80" />
+      <ChevronRightIcon className="ms-auto -me-0.5 opacity-80" />
     </MenuPrimitive.SubmenuTrigger>
   )
 }

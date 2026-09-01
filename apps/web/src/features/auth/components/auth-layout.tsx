@@ -4,8 +4,8 @@ import { LocalizedLogo } from '@/components/localized-logo'
 
 export function AuthLayout() {
   return (
-    <main className="dark flex h-svh overflow-hidden bg-[#0b0d0e] font-sans text-foreground">
-      <section className="relative flex min-h-0 w-full flex-col overflow-y-auto border-white/10 bg-[#111315] px-6 py-6 lg:w-[40%] lg:min-w-[480px] lg:border-r lg:px-16 xl:min-w-[560px]">
+    <main className="dark flex h-svh overflow-hidden bg-background font-sans text-foreground">
+      <section className="relative flex min-h-0 w-full flex-col overflow-y-auto border-white/10 bg-card px-6 py-6 lg:w-[40%] lg:min-w-[480px] lg:border-r lg:px-16 xl:min-w-[560px]">
         <div>
           <LocalizedLogo />
         </div>
