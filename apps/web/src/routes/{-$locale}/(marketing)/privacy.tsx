@@ -1,36 +1,57 @@
 import { createFileRoute } from '@tanstack/react-router'
+import { useIntlayer } from 'react-intlayer'
 import { LegalPage } from '@/features/legal'
 import { generateAppSeo } from '@/lib/seo'
 
 export const Route = createFileRoute('/{-$locale}/(marketing)/privacy')({
   component: PrivacyPage,
   head: () => generateAppSeo({
-    description: 'Privacy information for Probe.',
+    description: 'Privacy Policy and data protection practices for Probe.',
     pathname: '/privacy',
     title: 'Privacy Policy',
   }),
 })
 
 function PrivacyPage() {
+  const content = useIntlayer('legal')
+
   return (
     <LegalPage
-      description="Starter privacy copy for the Probe application. Review and replace it before production use."
-      lastUpdated="August 30, 2026"
+      backToHomeLabel={content.backToHome.value}
+      copyrightText={content.copyright.value}
+      description={content.privacyDescription.value}
+      eyebrow={content.eyebrow.value}
+      lastUpdatedDate={content.lastUpdatedDate.value}
+      lastUpdatedLabel={content.lastUpdatedLabel.value}
+      privacyNavLabel={content.privacyNav.value}
       sections={[
         {
-          title: '1. Account data',
-          content: <p>The application may process account and authentication data required to sign users in and keep sessions secure.</p>,
+          content: <p>{content.privacySection1Content.value}</p>,
+          title: content.privacySection1Title.value,
         },
         {
-          title: '2. Webhook data',
-          content: <p>When webhook capture is implemented, define clearly what request data is stored, how long it is retained, and who can access it.</p>,
+          content: <p>{content.privacySection2Content.value}</p>,
+          title: content.privacySection2Title.value,
         },
         {
-          title: '3. Security and retention',
-          content: <p>Document the safeguards, retention periods, deletion controls, and subprocessors used by the production service.</p>,
+          content: <p>{content.privacySection3Content.value}</p>,
+          title: content.privacySection3Title.value,
+        },
+        {
+          content: <p>{content.privacySection4Content.value}</p>,
+          title: content.privacySection4Title.value,
+        },
+        {
+          content: <p>{content.privacySection5Content.value}</p>,
+          title: content.privacySection5Title.value,
+        },
+        {
+          content: <p>{content.privacySection6Content.value}</p>,
+          title: content.privacySection6Title.value,
         },
       ]}
-      title="Privacy Policy"
+      termsNavLabel={content.termsNav.value}
+      title={content.privacyTitle.value}
     />
   )
 }

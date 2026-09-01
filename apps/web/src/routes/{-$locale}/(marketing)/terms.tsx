@@ -1,36 +1,57 @@
 import { createFileRoute } from '@tanstack/react-router'
+import { useIntlayer } from 'react-intlayer'
 import { LegalPage } from '@/features/legal'
 import { generateAppSeo } from '@/lib/seo'
 
 export const Route = createFileRoute('/{-$locale}/(marketing)/terms')({
   component: TermsPage,
   head: () => generateAppSeo({
-    description: 'Terms for Probe.',
+    description: 'Terms of Service for Probe webhook debugging and request intelligence.',
     pathname: '/terms',
     title: 'Terms of Service',
   }),
 })
 
 function TermsPage() {
+  const content = useIntlayer('legal')
+
   return (
     <LegalPage
-      description="Starter terms copy for the Probe application. Review and replace it before production use."
-      lastUpdated="August 30, 2026"
+      backToHomeLabel={content.backToHome.value}
+      copyrightText={content.copyright.value}
+      description={content.termsDescription.value}
+      eyebrow={content.eyebrow.value}
+      lastUpdatedDate={content.lastUpdatedDate.value}
+      lastUpdatedLabel={content.lastUpdatedLabel.value}
+      privacyNavLabel={content.privacyNav.value}
       sections={[
         {
-          title: '1. Service',
-          content: <p>The service is intended to provide developer tooling for receiving, inspecting, and debugging webhook requests.</p>,
+          content: <p>{content.termsSection1Content.value}</p>,
+          title: content.termsSection1Title.value,
         },
         {
-          title: '2. Acceptable use',
-          content: <p>Users must not submit data they are not authorized to process or use the service to interfere with third-party systems.</p>,
+          content: <p>{content.termsSection2Content.value}</p>,
+          title: content.termsSection2Title.value,
         },
         {
-          title: '3. Production review',
-          content: <p>Replace this starter language with terms reviewed for your business, jurisdiction, billing model, and data-handling practices.</p>,
+          content: <p>{content.termsSection3Content.value}</p>,
+          title: content.termsSection3Title.value,
+        },
+        {
+          content: <p>{content.termsSection4Content.value}</p>,
+          title: content.termsSection4Title.value,
+        },
+        {
+          content: <p>{content.termsSection5Content.value}</p>,
+          title: content.termsSection5Title.value,
+        },
+        {
+          content: <p>{content.termsSection6Content.value}</p>,
+          title: content.termsSection6Title.value,
         },
       ]}
-      title="Terms of Service"
+      termsNavLabel={content.termsNav.value}
+      title={content.termsTitle.value}
     />
   )
 }

@@ -1,5 +1,4 @@
 import type { LocalesValues } from 'intlayer'
-import { TranslateIcon } from '@phosphor-icons/react'
 import { useLocation } from '@tanstack/react-router'
 import { getPathWithoutLocale, getPrefix, Locales } from 'intlayer'
 import { useLocale } from 'react-intlayer'
