@@ -1,3 +1,4 @@
+import { createElement } from 'react'
 import { withResend } from '../client.js'
 import { MagicLinkEmail } from '../templates/magic-link.js'
 
@@ -28,12 +29,10 @@ export function createResendMagicLinkSender(
       const magicLinkUrl = publicUrl.toString()
       const { error } = await resend.emails.send({
         from: `${options.appName} <${options.fromEmail}>`,
-        react: (
-          <MagicLinkEmail
-            appName={options.appName}
-            magicLinkUrl={magicLinkUrl}
-          />
-        ),
+        react: createElement(MagicLinkEmail, {
+          appName: options.appName,
+          magicLinkUrl,
+        }),
         subject: `Your ${options.appName} sign-in link`,
         to: email,
       })

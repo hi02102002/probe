@@ -1,4 +1,5 @@
 import type { CSSProperties } from 'react'
+import * as React from 'react'
 import {
   Body,
   Button,
@@ -85,7 +86,9 @@ export function MagicLinkEmail({
   appName,
   magicLinkUrl,
 }: MagicLinkEmailProps) {
-  return (
+  return React.createElement(
+    React.Fragment,
+    null,
     <Html lang="en">
       <Head />
       <Preview>{`Sign in securely to ${appName}`}</Preview>
@@ -113,7 +116,7 @@ export function MagicLinkEmail({
           </Text>
         </Container>
       </Body>
-    </Html>
+    </Html>,
   )
 }
 

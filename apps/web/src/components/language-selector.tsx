@@ -1,35 +1,100 @@
-import type { To } from '@/components/localized-link'
+import type { LocalesValues } from 'intlayer'
+import { TranslateIcon } from '@phosphor-icons/react'
 import { useLocation } from '@tanstack/react-router'
-import { getPathWithoutLocale, getPrefix } from 'intlayer'
+import { getPathWithoutLocale, getPrefix, Locales } from 'intlayer'
 import { useLocale } from 'react-intlayer'
-import { LocalizedLink } from '@/components/localized-link'
 import { Button } from '@/components/ui/button'
+import {
+  Menu,
+  MenuGroup,
+  MenuGroupLabel,
+  MenuPopup,
+  MenuRadioGroup,
+  MenuRadioItem,
+  MenuSeparator,
+  MenuTrigger,
+} from '@/components/ui/menu'
 
-export function LanguageSelector() {
+const LANGUAGES: Array<{
+  flag: string
+  label: string
+  locale: LocalesValues
+}> = [
+  {
+    flag: '🇺🇸',
+    label: 'English',
+    locale: Locales.ENGLISH,
+  },
+  {
+    flag: '🇻🇳',
+    label: 'Tiếng Việt',
+    locale: Locales.VIETNAMESE,
+  },
+]
+
+export function LanguageSelector({ className }: { className?: string }) {
   const { pathname } = useLocation()
-  const { availableLocales, locale, setLocale } = useLocale()
-  const pathWithoutLocale = getPathWithoutLocale(pathname)
+  const { locale, setLocale } = useLocale()
+
+  const currentLanguage = LANGUAGES.find(l => l.locale === locale) ?? LANGUAGES[0]
+
+  const handleLanguageChange = (newLocale: string) => {
+    if (newLocale === locale) {
+      return
+    }
+
+    const selectedLocale = newLocale as LocalesValues
+    setLocale(selectedLocale)
+
+    const pathWithoutLocale = getPathWithoutLocale(pathname)
+    const { prefix } = getPrefix(selectedLocale)
+    const targetPath = prefix ? `/${prefix}${pathWithoutLocale === '/' ? '' : pathWithoutLocale}` : (pathWithoutLocale || '/')
+    const targetUrl = `${targetPath}${window.location.search}${window.location.hash}`
+
+    window.location.href = targetUrl
+  }
 
   return (
-    <div className="flex items-center gap-1.5">
-      {availableLocales.map(itemLocale => (
-        <Button
-          key={itemLocale}
-          className="px-2.5 py-1 text-xs"
-          render={(
-            <LocalizedLink
-              aria-current={locale === itemLocale ? 'page' : undefined}
-              params={{ locale: getPrefix(itemLocale).localePrefix }}
-              to={pathWithoutLocale as To}
-            />
-          )}
-          size="sm"
-          variant={locale === itemLocale ? 'default' : 'outline'}
-          onClick={() => setLocale(itemLocale)}
+    <Menu>
+      <MenuTrigger
+        render={(
+          <Button
+            className={className}
+            size="sm"
+            variant="outline"
+          >
+            <span className="hidden items-center gap-1.5 sm:inline-flex">
+              <span>{currentLanguage?.flag}</span>
+              <span>{currentLanguage?.label}</span>
+            </span>
+            <span className="sm:hidden">{currentLanguage?.flag}</span>
+          </Button>
+        )}
+      />
+      <MenuPopup align="end" className="w-44" sideOffset={6}>
+        <MenuGroup>
+          <MenuGroupLabel>
+            {locale === Locales.VIETNAMESE ? 'Chọn ngôn ngữ' : 'Select Language'}
+          </MenuGroupLabel>
+        </MenuGroup>
+        <MenuSeparator className="-mx-1" />
+        <MenuRadioGroup
+          onValueChange={handleLanguageChange}
+          value={locale}
         >
-          {itemLocale.toUpperCase()}
-        </Button>
-      ))}
-    </div>
+          {LANGUAGES.map(lang => (
+            <MenuRadioItem
+              key={lang.locale}
+              value={lang.locale}
+            >
+              <span className="flex items-center gap-2">
+                <span>{lang.flag}</span>
+                <span>{lang.label}</span>
+              </span>
+            </MenuRadioItem>
+          ))}
+        </MenuRadioGroup>
+      </MenuPopup>
+    </Menu>
   )
 }

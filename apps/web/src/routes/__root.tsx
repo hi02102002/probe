@@ -85,7 +85,7 @@ function RootDocument() {
       </head>
       <body>
         <IntlayerProvider locale={locale}>
-          <ToastProvider>
+          <ToastProvider position="top-center">
             <AnchoredToastProvider>
               <Outlet />
             </AnchoredToastProvider>

@@ -2,19 +2,19 @@ import type { ReactNode } from 'react'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { GithubLogoIcon, GoogleLogoIcon } from '@phosphor-icons/react'
 import { defaultLocale, getPrefix } from 'intlayer'
-import { useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { Controller, useForm } from 'react-hook-form'
+import { useIntlayer } from 'react-intlayer'
 import { z } from 'zod'
 import { Button } from '@/components/ui/button'
 import { Field, FieldLabel, FieldError as UiFieldError } from '@/components/ui/field'
 import { Form } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
 import { Separator } from '@/components/ui/separator'
+import { toastManager } from '@/components/ui/toast'
 import { getAuthClient } from '@/lib/auth-client'
 
-const loginSchema = z.object({
-  email: z.string().email('Enter a valid email address.'),
-})
+const MAGIC_LINK_COOLDOWN_SECONDS = 60
 
 function getLocalizedPath(locale: string | undefined, path: string) {
   const { prefix } = getPrefix(locale ?? defaultLocale)
@@ -57,6 +57,7 @@ function SocialButtons({ locale, redirectTo }: {
   locale?: string
   redirectTo?: string
 }) {
+  const content = useIntlayer('auth')
   const [error, setError] = useState<string>()
   const [isSubmitting, setIsSubmitting] = useState<'github' | 'google'>()
 
@@ -71,12 +72,12 @@ function SocialButtons({ locale, redirectTo }: {
       })
 
       if (result.error) {
-        setError(result.error.message ?? `Unable to sign in with ${provider}. Try again.`)
+        setError(result.error.message ?? `${content.unableToSignInWith.value} ${provider}. ${content.tryAgain.value}`)
         setIsSubmitting(undefined)
       }
     }
     catch {
-      setError(`Unable to sign in with ${provider}. Try again.`)
+      setError(`${content.unableToSignInWith.value} ${provider}. ${content.tryAgain.value}`)
       setIsSubmitting(undefined)
     }
   }
@@ -92,7 +93,7 @@ function SocialButtons({ locale, redirectTo }: {
         variant="outline"
       >
         <GithubLogoIcon weight="fill" />
-        Continue with GitHub
+        {content.continueWithGithub.value}
       </Button>
       <Button
         className="h-10 w-full border-white/10 bg-transparent text-foreground shadow-none hover:bg-white/5"
@@ -103,7 +104,7 @@ function SocialButtons({ locale, redirectTo }: {
         variant="outline"
       >
         <GoogleLogoIcon />
-        Continue with Google
+        {content.continueWithGoogle.value}
       </Button>
       {error && <p aria-live="polite" className="text-destructive text-sm">{error}</p>}
     </div>
@@ -111,10 +112,12 @@ function SocialButtons({ locale, redirectTo }: {
 }
 
 function FormDivider() {
+  const content = useIntlayer('auth')
+
   return (
     <div className="my-6 flex items-center gap-3">
       <Separator className="flex-1 bg-white/10 data-[orientation=horizontal]:w-auto" />
-      <span className="shrink-0 text-muted-foreground text-xs">or</span>
+      <span className="shrink-0 text-muted-foreground text-xs">{content.orDivider.value}</span>
       <Separator className="flex-1 bg-white/10 data-[orientation=horizontal]:w-auto" />
     </div>
   )
@@ -148,16 +151,39 @@ export function LoginForm({ locale, redirectTo }: {
   locale?: string
   redirectTo?: string
 }) {
+  const content = useIntlayer('auth')
+  const [cooldownSeconds, setCooldownSeconds] = useState(0)
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [sentTo, setSentTo] = useState<string>()
+
+  const loginSchema = useMemo(() => z.object({
+    email: z.string().email(content.emailErrorInvalid.value),
+  }), [content.emailErrorInvalid.value])
+
   const form = useForm<z.infer<typeof loginSchema>>({
     resolver: zodResolver(loginSchema),
     defaultValues: { email: '' },
   })
+  const isCoolingDown = cooldownSeconds > 0
+
+  useEffect(() => {
+    if (!isCoolingDown) {
+      return
+    }
+
+    const intervalId = window.setInterval(() => {
+      setCooldownSeconds(current => Math.max(0, current - 1))
+    }, 1000)
+
+    return () => window.clearInterval(intervalId)
+  }, [isCoolingDown])
 
   async function onSubmit(values: z.infer<typeof loginSchema>) {
+    if (isCoolingDown) {
+      return
+    }
+
     setIsSubmitting(true)
-    setSentTo(undefined)
     form.clearErrors('root')
 
     try {
@@ -172,16 +198,31 @@ export function LoginForm({ locale, redirectTo }: {
 
       if (!result.error) {
         setSentTo(values.email)
+        setCooldownSeconds(MAGIC_LINK_COOLDOWN_SECONDS)
+        toastManager.add({
+          description: (
+            <span>
+              {content.linkSentDescPrefix.value}
+              {' '}
+              <strong className="font-medium text-foreground">{values.email}</strong>
+              {' '}
+              {content.linkSentDescSuffix.value}
+            </span>
+          ),
+          id: 'magic-link-sent',
+          title: content.linkSentTitle.value,
+          type: 'success',
+        })
         return
       }
 
       form.setError('root', {
-        message: result.error.message ?? 'Unable to send the sign-in link. Try again.',
+        message: result.error.message ?? content.unableToSend.value,
       })
     }
     catch {
       form.setError('root', {
-        message: 'Unable to send the sign-in link. Try again.',
+        message: content.unableToSend.value,
       })
     }
     finally {
@@ -194,8 +235,8 @@ export function LoginForm({ locale, redirectTo }: {
   return (
     <>
       <div className="mb-7">
-        <h1 className="text-2xl font-semibold text-foreground">Welcome back</h1>
-        <p className="mt-2 text-muted-foreground text-sm">Sign in to your Probe account</p>
+        <h1 className="text-2xl font-semibold text-foreground">{content.welcomeTitle.value}</h1>
+        <p className="mt-2 text-muted-foreground text-sm">{content.welcomeSubtitle.value}</p>
       </div>
       <SocialButtons locale={locale} redirectTo={redirectTo} />
       <FormDivider />
@@ -204,31 +245,26 @@ export function LoginForm({ locale, redirectTo }: {
           control={form.control}
           name="email"
           render={({ field, fieldState }) => (
-            <AuthField error={fieldState.error?.message} id="login-email" label="Email">
+            <AuthField error={fieldState.error?.message} id="login-email" label={content.emailLabel.value}>
               <Input
                 {...field}
                 aria-describedby={fieldState.error ? 'login-email-error' : undefined}
                 aria-invalid={Boolean(fieldState.error)}
                 autoComplete="email"
                 id="login-email"
-                placeholder="you@company.com"
+                placeholder={content.emailPlaceholder.value}
                 type="email"
               />
             </AuthField>
           )}
         />
         {rootError && <p className="text-destructive text-sm">{rootError}</p>}
-        {sentTo && (
-          <p aria-live="polite" className="rounded-md border border-emerald-500/20 bg-emerald-500/10 p-3 text-emerald-300 text-sm">
-            Check
-            {' '}
-            <strong>{sentTo}</strong>
-            {' '}
-            for your sign-in link. It expires in 10 minutes.
-          </p>
-        )}
-        <Button className="h-10 w-full" disabled={isSubmitting} loading={isSubmitting} type="submit">
-          {sentTo ? 'Send link again' : 'Send sign-in link'}
+        <Button className="h-10 w-full" disabled={isSubmitting || isCoolingDown} loading={isSubmitting} type="submit">
+          {isCoolingDown
+            ? `${content.sendCooldownPrefix.value} ${cooldownSeconds}s`
+            : sentTo
+              ? content.sendLinkAgain.value
+              : content.sendLink.value}
         </Button>
       </Form>
     </>

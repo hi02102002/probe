@@ -1,13 +1,18 @@
 import { Outlet } from '@tanstack/react-router'
+import { useIntlayer } from 'react-intlayer'
+import { LanguageSelector } from '@/components/language-selector'
 import { LocalizedLink } from '@/components/localized-link'
 import { LocalizedLogo } from '@/components/localized-logo'
 
 export function AuthLayout() {
+  const content = useIntlayer('auth')
+
   return (
     <main className="dark flex h-svh overflow-hidden bg-background font-sans text-foreground">
       <section className="relative flex min-h-0 w-full flex-col overflow-y-auto border-white/10 bg-card px-6 py-6 lg:w-[40%] lg:min-w-[480px] lg:border-r lg:px-16 xl:min-w-[560px]">
-        <div>
+        <div className="flex items-center justify-between">
           <LocalizedLogo />
+          <LanguageSelector />
         </div>
 
         <div className="mx-auto flex w-full max-w-md flex-1 flex-col justify-center py-12">
@@ -15,16 +20,16 @@ export function AuthLayout() {
         </div>
 
         <p className="text-center text-muted-foreground text-xs leading-5">
-          By continuing, you agree to our
+          {content.termsPrefix.value}
           {' '}
           <LocalizedLink className="text-foreground underline underline-offset-4" to="/terms">
-            Terms of Service
+            {content.termsOfService.value}
           </LocalizedLink>
           {' '}
-          and acknowledge our
+          {content.termsAnd.value}
           {' '}
           <LocalizedLink className="text-foreground underline underline-offset-4" to="/privacy">
-            Privacy Policy
+            {content.privacyPolicy.value}
           </LocalizedLink>
           .
         </p>
@@ -42,16 +47,15 @@ export function AuthLayout() {
         </div>
         <div className="absolute left-1/2 top-1/2 w-[min(92%,42rem)] -translate-x-1/2 -translate-y-1/2">
           <p className="mb-5 text-xs font-medium tracking-wide text-indigo-300 uppercase">
-            Probe
+            {content.bannerEyebrow.value}
           </p>
           <h2 className="text-3xl font-medium text-foreground lg:text-4xl xl:text-5xl">
-            Capture webhooks.
+            {content.bannerTitle1.value}
             <br />
-            <span className="bg-indigo-400 px-1.5 text-primary-foreground">Inspect everything.</span>
+            <span className="bg-indigo-400 px-1.5 text-primary-foreground">{content.bannerTitle2.value}</span>
           </h2>
           <p className="mt-6 max-w-lg text-base text-muted-foreground">
-            Get a unique endpoint, send any webhook to it, and inspect
-            headers, query parameters, and payloads in real time.
+            {content.bannerDescription.value}
           </p>
         </div>
       </section>

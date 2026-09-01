@@ -51,12 +51,18 @@ export function createAppAuth(options: AppAuthOptions) {
         expiresIn: 10 * 60,
         sendMagicLink: options.sendMagicLink,
         storeToken: 'hashed',
-        rateLimit: {
-          max: 2,
-          window: 60,
-        },
       }),
     ],
+    rateLimit: {
+      customRules: {
+        '/sign-in/magic-link': {
+          max: 1,
+          window: 60,
+        },
+        '*': false,
+      },
+      enabled: true,
+    },
     secret: options.secret,
     socialProviders: {
       ...(options.github ? { github: options.github } : {}),
