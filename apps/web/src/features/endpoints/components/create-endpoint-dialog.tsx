@@ -1,5 +1,7 @@
 import type { ReactNode } from 'react'
 import type { EndpointFormProps } from './endpoint-form'
+import { useMutation } from '@tanstack/react-query'
+import { useRouteContext } from '@tanstack/react-router'
 import { useRef } from 'react'
 import {
   Dialog,
@@ -10,6 +12,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from '@/components/ui/dialog'
+import { toastManager } from '@/components/ui/toast'
 import { EndpointForm } from './endpoint-form'
 
 export interface CreateEndpointDialogProps {
@@ -19,8 +22,34 @@ export interface CreateEndpointDialogProps {
 export function CreateEndpointDialog({
   trigger,
 }: CreateEndpointDialogProps) {
+  const { orpc, queryClient } = useRouteContext({
+    from: '/_protected',
+  })
+
+  const createEndpointMutation = useMutation(
+    orpc.endpoint.create.mutationOptions({
+      onSuccess: async () => {
+        await queryClient.invalidateQueries({
+          queryKey: orpc.endpoint.list.key(),
+        })
+      },
+    }),
+  )
+
   const closeTriggerRef = useRef<HTMLButtonElement>(null)
-  const handleSubmit: EndpointFormProps['onSubmit'] = async () => {
+  const handleSubmit: EndpointFormProps['onSubmit'] = async (values) => {
+    await createEndpointMutation.mutateAsync({
+      body: {
+        name: values.name,
+      },
+    })
+
+    toastManager.add({
+      type: 'success',
+      title: 'Endpoint created',
+      description: `The endpoint "${values.name}" has been created successfully.`,
+    })
+
     closeTriggerRef.current?.click()
   }
 
@@ -44,6 +73,7 @@ export function CreateEndpointDialog({
             onCancel={() => closeTriggerRef.current?.click()}
             onSubmit={handleSubmit}
             submitLabel="Create endpoint"
+            isSubmitting={createEndpointMutation.isPending}
           />
           <DialogClose
             ref={closeTriggerRef}

@@ -10,6 +10,7 @@ import {
 import { TanStackRouterDevtoolsPanel } from '@tanstack/react-router-devtools'
 import { createMiddleware } from '@tanstack/react-start'
 import { evlogErrorHandler } from 'evlog/nitro/v3'
+import { NuqsAdapter } from 'nuqs/adapters/tanstack-router'
 import { NotFoundPage, RootErrorPage } from '@/components/error-pages'
 import { AnchoredToastProvider, ToastProvider } from '@/components/ui/toast'
 import { getAuthSessionQueryOptions } from '@/features/auth/api/get-auth-session'
@@ -50,6 +51,7 @@ export const Route = createRootRouteWithContext<RouterContext>()({
         },
         {
           rel: 'apple-touch-icon',
+          type: 'image/png',
           href: '/logo.png',
         },
       ],
@@ -79,11 +81,13 @@ function RootDocument() {
         <HeadContent />
       </head>
       <body>
-        <ToastProvider position="top-center">
-          <AnchoredToastProvider>
-            <Outlet />
-          </AnchoredToastProvider>
-        </ToastProvider>
+        <NuqsAdapter>
+          <ToastProvider position="top-center">
+            <AnchoredToastProvider>
+              <Outlet />
+            </AnchoredToastProvider>
+          </ToastProvider>
+        </NuqsAdapter>
         <TanStackDevtools
           config={{ position: 'bottom-right' }}
           plugins={[

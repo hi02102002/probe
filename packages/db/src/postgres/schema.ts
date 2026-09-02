@@ -95,8 +95,10 @@ export const endpoint = pgTable(
       .notNull()
       .references(() => user.id, { onDelete: 'cascade' }),
     name: text('name').notNull(),
-    createdAt: timestamp('created_at', { withTimezone: true }).defaultNow().notNull(),
     token: text('token').notNull().unique(),
+    status: text('status').notNull().default('active').$type<'active' | 'inactive' | 'paused'>(),
+    createdAt: timestamp('created_at', { withTimezone: true }).defaultNow().notNull(),
+    lastRequestAt: timestamp('last_request_at', { withTimezone: true }),
     updatedAt: timestamp('updated_at', { withTimezone: true })
       .defaultNow()
       .$onUpdate(() => new Date())

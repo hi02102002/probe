@@ -13,6 +13,11 @@
       "types": "./src/endpoint.ts",
       "development": "./src/endpoint.ts",
       "import": "./dist/endpoint.js"
+    },
+    "./pagination": {
+      "types": "./src/pagination.ts",
+      "development": "./src/pagination.ts",
+      "import": "./dist/pagination.js"
     }
   },
   "files": [
