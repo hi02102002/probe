@@ -1,10 +1,9 @@
 import { createFileRoute } from '@tanstack/react-router'
-
 import z from 'zod'
 import { LoginForm } from '@/features/auth'
 import { generateAppSeo } from '@/lib/seo'
 
-export const Route = createFileRoute('/{-$locale}/_auth/login')({
+export const Route = createFileRoute('/_auth/login')({
   component: RouteComponent,
   head: () => generateAppSeo({
     pathname: '/login',
@@ -16,8 +15,7 @@ export const Route = createFileRoute('/{-$locale}/_auth/login')({
 })
 
 function RouteComponent() {
-  const { locale } = Route.useParams()
   const { redirect } = Route.useSearch()
 
-  return <LoginForm locale={locale} redirectTo={redirect} />
+  return <LoginForm redirectTo={redirect} />
 }

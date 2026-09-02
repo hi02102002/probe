@@ -4,8 +4,6 @@ import { SignOutIcon } from '@phosphor-icons/react'
 import { useQueryClient } from '@tanstack/react-query'
 import { useRouter } from '@tanstack/react-router'
 import { useState } from 'react'
-import { useIntlayer } from 'react-intlayer'
-import { LanguageSwitcher } from '@/components/language-switcher'
 import {
   Menu,
   MenuGroup,
@@ -19,7 +17,6 @@ import { getAuthSessionQueryOptions } from '@/features/auth/api/get-auth-session
 import { getAuthClient } from '@/lib/auth-client'
 
 export function UserMenu({ user }: { user: AuthSession['user'] }) {
-  const content = useIntlayer('dashboard')
   const queryClient = useQueryClient()
   const router = useRouter()
   const [isSigningOut, setIsSigningOut] = useState(false)
@@ -70,11 +67,9 @@ export function UserMenu({ user }: { user: AuthSession['user'] }) {
           </MenuGroupLabel>
         </MenuGroup>
         <MenuSeparator className="-mx-1" />
-        <LanguageSwitcher />
-        <MenuSeparator className="-mx-1" />
         <MenuItem disabled={isSigningOut} onClick={() => void handleSignOut()}>
           <SignOutIcon className="size-4 shrink-0" weight="duotone" />
-          {isSigningOut ? content.loggingOut.value : content.logOut.value}
+          {isSigningOut ? 'Logging out...' : 'Log out'}
         </MenuItem>
       </MenuPopup>
     </Menu>

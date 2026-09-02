@@ -2,26 +2,24 @@ import type { LinkProps } from '@tanstack/react-router'
 import { Link } from '@tanstack/react-router'
 import { cn } from '@/lib/cn'
 
-interface Props {
+interface LogoProps {
   classNames?: {
     container?: string
     logo?: string
   }
-  to?: LinkProps['to']
   isShowText?: boolean
+  to?: LinkProps['to']
 }
 
 export function Logo({
   classNames,
-  to,
   isShowText = true,
-  ...props
-}: Props) {
+  to = '/',
+}: LogoProps) {
   return (
     <Link
       className={cn('inline-flex w-fit items-center gap-2.5 font-semibold text-lg tracking-tight', classNames?.container)}
-      to={to ?? '.'}
-      {...props}
+      to={to}
     >
       <img
         alt="Probe"

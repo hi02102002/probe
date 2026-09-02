@@ -19,17 +19,28 @@ export function Field({
 
 export function FieldLabel({
   className,
+  children,
+  required,
   ...props
-}: FieldPrimitive.Label.Props): React.ReactElement {
+}: FieldPrimitive.Label.Props & {
+  required?: boolean
+}): React.ReactElement {
   return (
     <FieldPrimitive.Label
       className={cn(
-        'inline-flex items-center gap-2 font-medium text-base/4.5 text-foreground data-disabled:opacity-64 sm:text-sm/4',
+        'inline-flex items-center gap-1 font-medium text-base/4.5 text-foreground data-disabled:opacity-64 sm:text-sm/4',
         className,
       )}
       data-slot="field-label"
       {...props}
-    />
+    >
+      {children}
+      {required && (
+        <span aria-hidden="true" className="text-destructive font-normal select-none">
+          *
+        </span>
+      )}
+    </FieldPrimitive.Label>
   )
 }
 

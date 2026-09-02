@@ -7,7 +7,6 @@ import viteReact, { reactCompilerPreset } from '@vitejs/plugin-react'
 import evlog from 'evlog/vite'
 import { nitro } from 'nitro/vite'
 import { defineConfig } from 'vite'
-import { intlayer } from 'vite-intlayer'
 
 const EVLOG_CONFIG = {
   env: { service: 'probe-web' },
@@ -17,13 +16,6 @@ const EVLOG_CONFIG = {
   ],
   redact: true,
 }
-
-const ROUTE_IGNORE_PROXY = [
-  '/api',
-  '/health',
-  '/og-image',
-  '/assets',
-]
 
 const config = defineConfig(() => {
   return {
@@ -43,17 +35,6 @@ const config = defineConfig(() => {
       }),
       evlog(EVLOG_CONFIG as any),
       nitro({ rollupConfig: { external: [/^@sentry\//] } }),
-      intlayer({
-        proxy: {
-          ignore: (req) => {
-            if (!req.url) {
-              return false
-            }
-
-            return ROUTE_IGNORE_PROXY.some(route => req.url?.startsWith(route))
-          },
-        },
-      }),
       tailwindcss(),
       tanstackStart({
         router: {

@@ -1,6 +1,5 @@
 import type { ReactNode } from 'react'
 import { CheckIcon, LightningIcon, WebhooksLogoIcon, XIcon } from '@phosphor-icons/react'
-import { useIntlayer } from 'react-intlayer'
 
 const PATHS = [
   'M 72,132 C 150,56 266,56 344,132',
@@ -52,8 +51,6 @@ function Attempt({
 }
 
 function DeliveryDiagram() {
-  const content = useIntlayer('home')
-
   return (
     <div className="relative aspect-[13/9] w-full max-w-[26rem]" aria-hidden="true">
       <svg className="pointer-events-none absolute inset-0 size-full" viewBox="0 0 416 288" fill="none">
@@ -90,7 +87,7 @@ function DeliveryDiagram() {
           badge="502"
           className="probe-delivery-attempt-one"
           icon={<XIcon className="size-2.5" weight="bold" />}
-          label={content.deliveryFailed}
+          label="Bad Gateway"
           tone="error"
         />
       </div>
@@ -99,7 +96,7 @@ function DeliveryDiagram() {
           badge="···"
           className="probe-delivery-attempt-two"
           icon={<XIcon className="size-2.5" weight="bold" />}
-          label={content.deliveryTimedOut}
+          label="Timed out"
           tone="error"
         />
       </div>
@@ -108,27 +105,25 @@ function DeliveryDiagram() {
           badge="200"
           className="probe-delivery-attempt-three"
           icon={<CheckIcon className="size-2.5" weight="bold" />}
-          label={content.deliverySucceeded}
+          label="Delivered"
           tone="success"
         />
       </div>
 
       <p className="probe-delivery-result absolute left-1/2 top-[94.44%] -translate-x-1/2 -translate-y-1/2 whitespace-nowrap font-mono text-[10px] text-muted-foreground">
-        {content.deliveryResult}
+        Delivered after 3 attempts · 10.2s
       </p>
     </div>
   )
 }
 
 export function DeliverySection() {
-  const content = useIntlayer('home')
-
   return (
     <section className="grid border-b border-border lg:grid-cols-[0.85fr_1.15fr]">
       <div className="flex flex-col justify-center px-6 py-14 sm:px-10 lg:border-r lg:border-border lg:py-20">
-        <p className="font-mono text-xs uppercase tracking-[0.18em] text-accent-foreground">{content.deliveryEyebrow}</p>
-        <h2 className="mt-4 max-w-md text-3xl font-semibold tracking-[-0.035em] text-foreground sm:text-5xl">{content.deliveryTitle}</h2>
-        <p className="mt-5 max-w-md leading-7 text-muted-foreground">{content.deliveryDescription}</p>
+        <p className="font-mono text-xs uppercase tracking-[0.18em] text-accent-foreground">Every attempt, in order</p>
+        <h2 className="mt-4 max-w-md text-3xl font-semibold tracking-[-0.035em] text-foreground sm:text-5xl">See how each attempt ended.</h2>
+        <p className="mt-5 max-w-md leading-7 text-muted-foreground">Follow webhook retries from the first failure to the request that finally succeeds.</p>
       </div>
       <div className="flex min-h-80 items-center justify-center overflow-hidden border-t border-border bg-card/20 px-4 py-8 lg:border-t-0 sm:px-8">
         <DeliveryDiagram />

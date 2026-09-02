@@ -1,10 +1,8 @@
 import type { ReactNode } from 'react'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { GithubLogoIcon, GoogleLogoIcon } from '@phosphor-icons/react'
-import { defaultLocale, getPrefix } from 'intlayer'
-import { useEffect, useMemo, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Controller, useForm } from 'react-hook-form'
-import { useIntlayer } from 'react-intlayer'
 import { z } from 'zod'
 import { Button } from '@/components/ui/button'
 import { Field, FieldLabel, FieldError as UiFieldError } from '@/components/ui/field'
@@ -16,14 +14,8 @@ import { getAuthClient } from '@/lib/auth-client'
 
 const MAGIC_LINK_COOLDOWN_SECONDS = 60
 
-function getLocalizedPath(locale: string | undefined, path: string) {
-  const { prefix } = getPrefix(locale ?? defaultLocale)
-
-  return `/${prefix}${path}`
-}
-
-function getAuthCallbackURL(redirectTo: string | undefined, locale: string | undefined) {
-  const fallbackURL = new URL(getLocalizedPath(locale, 'dashboard'), window.location.origin)
+function getAuthCallbackURL(redirectTo: string | undefined) {
+  const fallbackURL = new URL('/dashboard', window.location.origin)
 
   if (!redirectTo) {
     return fallbackURL.toString()
@@ -41,9 +33,9 @@ function getAuthCallbackURL(redirectTo: string | undefined, locale: string | und
   }
 }
 
-function getAuthErrorCallbackURL(redirectTo: string | undefined, locale: string | undefined) {
-  const callbackURL = new URL(getAuthCallbackURL(redirectTo, locale))
-  const errorCallbackURL = new URL(getLocalizedPath(locale, 'login'), window.location.origin)
+function getAuthErrorCallbackURL(redirectTo: string | undefined) {
+  const callbackURL = new URL(getAuthCallbackURL(redirectTo))
+  const errorCallbackURL = new URL('/login', window.location.origin)
 
   errorCallbackURL.searchParams.set(
     'redirect',
@@ -53,11 +45,9 @@ function getAuthErrorCallbackURL(redirectTo: string | undefined, locale: string 
   return errorCallbackURL.toString()
 }
 
-function SocialButtons({ locale, redirectTo }: {
-  locale?: string
+function SocialButtons({ redirectTo }: {
   redirectTo?: string
 }) {
-  const content = useIntlayer('auth')
   const [error, setError] = useState<string>()
   const [isSubmitting, setIsSubmitting] = useState<'github' | 'google'>()
 
@@ -67,17 +57,17 @@ function SocialButtons({ locale, redirectTo }: {
 
     try {
       const result = await getAuthClient().signIn.social({
-        callbackURL: getAuthCallbackURL(redirectTo, locale),
+        callbackURL: getAuthCallbackURL(redirectTo),
         provider,
       })
 
       if (result.error) {
-        setError(result.error.message ?? `${content.unableToSignInWith.value} ${provider}. ${content.tryAgain.value}`)
+        setError(result.error.message ?? `Unable to sign in with ${provider}. Try again.`)
         setIsSubmitting(undefined)
       }
     }
     catch {
-      setError(`${content.unableToSignInWith.value} ${provider}. ${content.tryAgain.value}`)
+      setError(`Unable to sign in with ${provider}. Try again.`)
       setIsSubmitting(undefined)
     }
   }
@@ -93,7 +83,7 @@ function SocialButtons({ locale, redirectTo }: {
         variant="outline"
       >
         <GithubLogoIcon weight="fill" />
-        {content.continueWithGithub.value}
+        Continue with GitHub
       </Button>
       <Button
         className="h-10 w-full border-white/10 bg-transparent text-foreground shadow-none hover:bg-white/5"
@@ -104,7 +94,7 @@ function SocialButtons({ locale, redirectTo }: {
         variant="outline"
       >
         <GoogleLogoIcon />
-        {content.continueWithGoogle.value}
+        Continue with Google
       </Button>
       {error && <p aria-live="polite" className="text-destructive text-sm">{error}</p>}
     </div>
@@ -112,12 +102,10 @@ function SocialButtons({ locale, redirectTo }: {
 }
 
 function FormDivider() {
-  const content = useIntlayer('auth')
-
   return (
     <div className="my-6 flex items-center gap-3">
       <Separator className="flex-1 bg-white/10 data-[orientation=horizontal]:w-auto" />
-      <span className="shrink-0 text-muted-foreground text-xs">{content.orDivider.value}</span>
+      <span className="shrink-0 text-muted-foreground text-xs">or</span>
       <Separator className="flex-1 bg-white/10 data-[orientation=horizontal]:w-auto" />
     </div>
   )
@@ -128,15 +116,17 @@ function AuthField({
   error,
   id,
   label,
+  required,
 }: {
   children: ReactNode
   error?: string
   id: string
   label: string
+  required?: boolean
 }) {
   return (
     <Field className="gap-1.5" invalid={Boolean(error)}>
-      <FieldLabel htmlFor={id}>{label}</FieldLabel>
+      <FieldLabel htmlFor={id} required={required}>{label}</FieldLabel>
       {children}
       {error && (
         <UiFieldError id={`${id}-error`} match>
@@ -147,18 +137,16 @@ function AuthField({
   )
 }
 
-export function LoginForm({ locale, redirectTo }: {
-  locale?: string
+const loginSchema = z.object({
+  email: z.string().email('Enter a valid email address.'),
+})
+
+export function LoginForm({ redirectTo }: {
   redirectTo?: string
 }) {
-  const content = useIntlayer('auth')
   const [cooldownSeconds, setCooldownSeconds] = useState(0)
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [sentTo, setSentTo] = useState<string>()
-
-  const loginSchema = useMemo(() => z.object({
-    email: z.string().email(content.emailErrorInvalid.value),
-  }), [content.emailErrorInvalid.value])
 
   const form = useForm<z.infer<typeof loginSchema>>({
     resolver: zodResolver(loginSchema),
@@ -187,11 +175,11 @@ export function LoginForm({ locale, redirectTo }: {
     form.clearErrors('root')
 
     try {
-      const callbackURL = getAuthCallbackURL(redirectTo, locale)
+      const callbackURL = getAuthCallbackURL(redirectTo)
       const result = await getAuthClient().signIn.magicLink({
         callbackURL,
         email: values.email,
-        errorCallbackURL: getAuthErrorCallbackURL(redirectTo, locale),
+        errorCallbackURL: getAuthErrorCallbackURL(redirectTo),
         name: values.email.split('@')[0],
         newUserCallbackURL: callbackURL,
       })
@@ -202,27 +190,27 @@ export function LoginForm({ locale, redirectTo }: {
         toastManager.add({
           description: (
             <span>
-              {content.linkSentDescPrefix.value}
+              Check
               {' '}
               <strong className="font-medium text-foreground">{values.email}</strong>
               {' '}
-              {content.linkSentDescSuffix.value}
+              for your sign-in link. It expires in 10 minutes.
             </span>
           ),
           id: 'magic-link-sent',
-          title: content.linkSentTitle.value,
+          title: 'Sign-in link sent',
           type: 'success',
         })
         return
       }
 
       form.setError('root', {
-        message: result.error.message ?? content.unableToSend.value,
+        message: result.error.message ?? 'Unable to send the sign-in link. Try again.',
       })
     }
     catch {
       form.setError('root', {
-        message: content.unableToSend.value,
+        message: 'Unable to send the sign-in link. Try again.',
       })
     }
     finally {
@@ -235,24 +223,24 @@ export function LoginForm({ locale, redirectTo }: {
   return (
     <>
       <div className="mb-7">
-        <h1 className="text-2xl font-semibold text-foreground">{content.welcomeTitle.value}</h1>
-        <p className="mt-2 text-muted-foreground text-sm">{content.welcomeSubtitle.value}</p>
+        <h1 className="text-2xl font-semibold text-foreground">Welcome back</h1>
+        <p className="mt-2 text-muted-foreground text-sm">Sign in to your Probe account</p>
       </div>
-      <SocialButtons locale={locale} redirectTo={redirectTo} />
+      <SocialButtons redirectTo={redirectTo} />
       <FormDivider />
       <Form className="space-y-3" onSubmit={form.handleSubmit(onSubmit)} noValidate>
         <Controller
           control={form.control}
           name="email"
           render={({ field, fieldState }) => (
-            <AuthField error={fieldState.error?.message} id="login-email" label={content.emailLabel.value}>
+            <AuthField error={fieldState.error?.message} id="login-email" label="Email" required>
               <Input
                 {...field}
                 aria-describedby={fieldState.error ? 'login-email-error' : undefined}
                 aria-invalid={Boolean(fieldState.error)}
                 autoComplete="email"
                 id="login-email"
-                placeholder={content.emailPlaceholder.value}
+                placeholder="you@company.com"
                 type="email"
               />
             </AuthField>
@@ -261,10 +249,10 @@ export function LoginForm({ locale, redirectTo }: {
         {rootError && <p className="text-destructive text-sm">{rootError}</p>}
         <Button className="h-10 w-full" disabled={isSubmitting || isCoolingDown} loading={isSubmitting} type="submit">
           {isCoolingDown
-            ? `${content.sendCooldownPrefix.value} ${cooldownSeconds}s`
+            ? `Send again in ${cooldownSeconds}s`
             : sentTo
-              ? content.sendLinkAgain.value
-              : content.sendLink.value}
+              ? 'Send link again'
+              : 'Send sign-in link'}
         </Button>
       </Form>
     </>

@@ -1,8 +1,8 @@
 import type { Icon } from '@phosphor-icons/react'
+import type { LinkProps } from '@tanstack/react-router'
 import type { ReactNode } from 'react'
-import type { To } from '@/components/localized-link'
+import { Link } from '@tanstack/react-router'
 import { Fragment } from 'react'
-import { LocalizedLink } from '@/components/localized-link'
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -16,7 +16,7 @@ import { cn } from '@/lib/cn'
 export interface AppShellBreadcrumb {
   icon?: Icon
   label: string
-  to?: To
+  to?: LinkProps['to']
 }
 
 interface AppShellProps {
@@ -48,7 +48,7 @@ export function AppShell({ breadcrumbs = [], children, className }: AppShellProp
                       ? (
                           <BreadcrumbLink
                             className="inline-flex items-center gap-1.5"
-                            render={<LocalizedLink to={breadcrumb.to} />}
+                            render={<Link to={breadcrumb.to} />}
                           >
                             {content}
                           </BreadcrumbLink>

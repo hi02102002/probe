@@ -1,25 +1,27 @@
-import { useRouteContext } from '@tanstack/react-router'
+import { PlusIcon } from '@phosphor-icons/react'
 import { AppShell } from '@/components/layouts/dashboard/app-shell'
 import { PageHeader, PageHeaderDescription, PageHeaderTitle } from '@/components/layouts/dashboard/page-header'
+import { Button } from '@/components/ui/button'
 
 export function DashboardPage() {
-  const { session } = useRouteContext({
-    from: '/{-$locale}/_protected',
-  })
-
   return (
     <AppShell>
-      <PageHeader>
-        <PageHeaderTitle>
-          Welcome,
-          {' '}
-          {session.user.name}
-        </PageHeaderTitle>
-        <PageHeaderDescription>
-          Authentication is working. Build the Webhook Debugger product from this protected dashboard.
-          Authentication is working. Build the Probe product from this protected dashboard.
-        </PageHeaderDescription>
-      </PageHeader>
+      <div
+        className="flex items-start justify-between gap-4"
+      >
+        <PageHeader>
+          <PageHeaderTitle>
+            Endpoints
+          </PageHeaderTitle>
+          <PageHeaderDescription>
+            Create and manage your endpoints.
+          </PageHeaderDescription>
+        </PageHeader>
+        <Button>
+          <PlusIcon />
+          New endpoint
+        </Button>
+      </div>
     </AppShell>
   )
 }
