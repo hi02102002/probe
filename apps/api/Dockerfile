@@ -39,7 +39,6 @@ RUN apt-get update \
     && rm -rf /var/lib/apt/lists/*
 
 COPY --from=builder --chown=node:node /app/deploy ./
-RUN mkdir -p /app/.intlayer && chown node:node /app/.intlayer
 
 USER node
 

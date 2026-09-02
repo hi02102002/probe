@@ -5,7 +5,6 @@ import type {
 import type { AppSession } from '@repo/auth/server'
 import type { PostgresDatabase } from '@repo/db'
 import type { EvlogOrpcContext } from 'evlog/orpc'
-import type { I18nTranslator } from '#/libs/i18n/messages.js'
 import { implement } from '@orpc/server'
 import { contract } from '@repo/api-contracts'
 import { evlog } from 'evlog/orpc'
@@ -15,7 +14,6 @@ export interface ORPCContext
   ResponseHeadersPluginContext,
   EvlogOrpcContext {
   db: PostgresDatabase
-  t: I18nTranslator
 }
 
 export type AuthContext = AppSession
