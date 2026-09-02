@@ -1,4 +1,4 @@
-import type { AuthSession } from '@/features/auth/api/get-auth-session'
+import type { AuthSession } from '@/features/auth/api/auth-session'
 import { GradientAvatar } from '@outpacelabs/avatars'
 import { SignOutIcon } from '@phosphor-icons/react'
 import { useQueryClient } from '@tanstack/react-query'
@@ -14,8 +14,8 @@ import {
   MenuSeparator,
   MenuTrigger,
 } from '@/components/ui/menu'
-import { getAuthSessionQueryOptions } from '@/features/auth/api/get-auth-session'
-import { getAuthClient } from '@/lib/auth-client'
+import { getAuthSessionQueryOptions } from '@/features/auth/api/auth-session'
+import { getAuthClient } from '@/features/auth/lib/auth-client'
 
 export function UserMenu({ user }: { user: AuthSession['user'] }) {
   const queryClient = useQueryClient()

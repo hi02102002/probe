@@ -1,4 +1,4 @@
-import type { AuthSession } from '@/features/auth/api/get-auth-session'
+import type { AuthSession } from '@/features/auth/api/auth-session'
 import { StandardRPCJsonSerializer } from '@orpc/client/standard'
 import {
   defaultShouldDehydrateQuery,

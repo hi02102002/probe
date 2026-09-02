@@ -3,6 +3,7 @@
 @import "@fontsource-variable/inter";
 @import "@fontsource-variable/geist-mono";
 @import "tw-animate-css";
+@plugin "@tailwindcss/typography";
 
 @font-face {
   font-family: 'Inter-fallback';

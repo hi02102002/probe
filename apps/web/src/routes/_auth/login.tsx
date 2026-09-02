@@ -1,7 +1,7 @@
 import { createFileRoute } from '@tanstack/react-router'
 import z from 'zod'
-import { LoginForm } from '@/features/auth'
 import { generateAppSeo } from '@/lib/seo'
+import { LoginForm } from './_components/email-auth-forms'
 
 export const Route = createFileRoute('/_auth/login')({
   component: RouteComponent,

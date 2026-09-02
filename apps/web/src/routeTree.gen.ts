@@ -15,14 +15,14 @@ import { Route as AuthRouteImport } from './routes/_auth'
 import { Route as ProtectedRouteImport } from './routes/_protected'
 import { Route as HealthRouteImport } from './routes/health'
 import { Route as OgImageRouteImport } from './routes/og-image'
-import { Route as marketingIndexRouteImport } from './routes/(marketing)/index'
-import { Route as marketingPrivacyRouteImport } from './routes/(marketing)/privacy'
-import { Route as marketingTermsRouteImport } from './routes/(marketing)/terms'
+import { Route as marketingIndexRouteRouteImport } from './routes/(marketing)/index/route'
+import { Route as marketingPrivacyRouteRouteImport } from './routes/(marketing)/privacy/route'
+import { Route as marketingTermsRouteRouteImport } from './routes/(marketing)/terms/route'
 import { Route as AuthLoginRouteImport } from './routes/_auth/login'
 import { Route as ProtectedDashboardIndexRouteRouteImport } from './routes/_protected.dashboard/index/route'
 import { Route as ProtectedDashboardBillingRouteRouteImport } from './routes/_protected.dashboard/billing/route'
-import { Route as ProtectedDashboardEndpointsRouteRouteImport } from './routes/_protected.dashboard/endpoints/route'
 import { Route as ProtectedDashboardSettingsRouteRouteImport } from './routes/_protected.dashboard/settings/route'
+import { Route as ProtectedDashboardEndpointsIndexRouteRouteImport } from './routes/_protected.dashboard/endpoints/index/route'
 import { Route as ProtectedDashboardEndpointsEndpointIdRouteRouteImport } from './routes/_protected.dashboard/endpoints_.$endpointId/route'
 
 const SplatRoute = SplatRouteImport.update({
@@ -53,17 +53,17 @@ const OgImageRoute = OgImageRouteImport.update({
   path: '/og-image',
   getParentRoute: () => rootRouteImport,
 } as any)
-const marketingIndexRoute = marketingIndexRouteImport.update({
+const marketingIndexRouteRoute = marketingIndexRouteRouteImport.update({
   id: '/(marketing)/',
-  path: '/',
+  path: '',
   getParentRoute: () => rootRouteImport,
 } as any)
-const marketingPrivacyRoute = marketingPrivacyRouteImport.update({
+const marketingPrivacyRouteRoute = marketingPrivacyRouteRouteImport.update({
   id: '/(marketing)/privacy',
   path: '/privacy',
   getParentRoute: () => rootRouteImport,
 } as any)
-const marketingTermsRoute = marketingTermsRouteImport.update({
+const marketingTermsRouteRoute = marketingTermsRouteRouteImport.update({
   id: '/(marketing)/terms',
   path: '/terms',
   getParentRoute: () => rootRouteImport,
@@ -85,16 +85,16 @@ const ProtectedDashboardBillingRouteRoute =
     path: '/dashboard/billing',
     getParentRoute: () => ProtectedRoute,
   } as any)
-const ProtectedDashboardEndpointsRouteRoute =
-  ProtectedDashboardEndpointsRouteRouteImport.update({
-    id: '/dashboard/endpoints',
-    path: '/dashboard/endpoints',
-    getParentRoute: () => ProtectedRoute,
-  } as any)
 const ProtectedDashboardSettingsRouteRoute =
   ProtectedDashboardSettingsRouteRouteImport.update({
     id: '/dashboard/settings',
     path: '/dashboard/settings',
+    getParentRoute: () => ProtectedRoute,
+  } as any)
+const ProtectedDashboardEndpointsIndexRouteRoute =
+  ProtectedDashboardEndpointsIndexRouteRouteImport.update({
+    id: '/dashboard/endpoints/',
+    path: '/dashboard/endpoints',
     getParentRoute: () => ProtectedRoute,
   } as any)
 const ProtectedDashboardEndpointsEndpointIdRouteRoute =
@@ -107,31 +107,31 @@ const ProtectedDashboardEndpointsEndpointIdRouteRoute =
 export interface FileRoutesByFullPath {
   '/$': typeof SplatRoute
   '/404': typeof R404Route
-  '/': typeof marketingIndexRoute
+  '/': typeof marketingIndexRouteRoute
   '/health': typeof HealthRoute
   '/og-image': typeof OgImageRoute
-  '/privacy': typeof marketingPrivacyRoute
-  '/terms': typeof marketingTermsRoute
+  '/privacy': typeof marketingPrivacyRouteRoute
+  '/terms': typeof marketingTermsRouteRoute
   '/login': typeof AuthLoginRoute
   '/dashboard/': typeof ProtectedDashboardIndexRouteRoute
   '/dashboard/billing': typeof ProtectedDashboardBillingRouteRoute
-  '/dashboard/endpoints': typeof ProtectedDashboardEndpointsRouteRoute
   '/dashboard/settings': typeof ProtectedDashboardSettingsRouteRoute
+  '/dashboard/endpoints/': typeof ProtectedDashboardEndpointsIndexRouteRoute
   '/dashboard/endpoints/$endpointId': typeof ProtectedDashboardEndpointsEndpointIdRouteRoute
 }
 export interface FileRoutesByTo {
   '/$': typeof SplatRoute
   '/404': typeof R404Route
-  '/': typeof marketingIndexRoute
+  '/': typeof marketingIndexRouteRoute
   '/health': typeof HealthRoute
   '/og-image': typeof OgImageRoute
-  '/privacy': typeof marketingPrivacyRoute
-  '/terms': typeof marketingTermsRoute
+  '/privacy': typeof marketingPrivacyRouteRoute
+  '/terms': typeof marketingTermsRouteRoute
   '/login': typeof AuthLoginRoute
   '/dashboard': typeof ProtectedDashboardIndexRouteRoute
   '/dashboard/billing': typeof ProtectedDashboardBillingRouteRoute
-  '/dashboard/endpoints': typeof ProtectedDashboardEndpointsRouteRoute
   '/dashboard/settings': typeof ProtectedDashboardSettingsRouteRoute
+  '/dashboard/endpoints': typeof ProtectedDashboardEndpointsIndexRouteRoute
   '/dashboard/endpoints/$endpointId': typeof ProtectedDashboardEndpointsEndpointIdRouteRoute
 }
 export interface FileRoutesById {
@@ -142,14 +142,14 @@ export interface FileRoutesById {
   '/_protected': typeof ProtectedRouteWithChildren
   '/health': typeof HealthRoute
   '/og-image': typeof OgImageRoute
-  '/(marketing)/privacy': typeof marketingPrivacyRoute
-  '/(marketing)/terms': typeof marketingTermsRoute
+  '/(marketing)/': typeof marketingIndexRouteRoute
+  '/(marketing)/privacy': typeof marketingPrivacyRouteRoute
+  '/(marketing)/terms': typeof marketingTermsRouteRoute
   '/_auth/login': typeof AuthLoginRoute
-  '/(marketing)/': typeof marketingIndexRoute
   '/_protected/dashboard/': typeof ProtectedDashboardIndexRouteRoute
   '/_protected/dashboard/billing': typeof ProtectedDashboardBillingRouteRoute
-  '/_protected/dashboard/endpoints': typeof ProtectedDashboardEndpointsRouteRoute
   '/_protected/dashboard/settings': typeof ProtectedDashboardSettingsRouteRoute
+  '/_protected/dashboard/endpoints/': typeof ProtectedDashboardEndpointsIndexRouteRoute
   '/_protected/dashboard/endpoints_/$endpointId': typeof ProtectedDashboardEndpointsEndpointIdRouteRoute
 }
 export interface FileRouteTypes {
@@ -165,8 +165,8 @@ export interface FileRouteTypes {
     | '/login'
     | '/dashboard/'
     | '/dashboard/billing'
-    | '/dashboard/endpoints'
     | '/dashboard/settings'
+    | '/dashboard/endpoints/'
     | '/dashboard/endpoints/$endpointId'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -180,8 +180,8 @@ export interface FileRouteTypes {
     | '/login'
     | '/dashboard'
     | '/dashboard/billing'
-    | '/dashboard/endpoints'
     | '/dashboard/settings'
+    | '/dashboard/endpoints'
     | '/dashboard/endpoints/$endpointId'
   id:
     | '__root__'
@@ -191,14 +191,14 @@ export interface FileRouteTypes {
     | '/_protected'
     | '/health'
     | '/og-image'
+    | '/(marketing)/'
     | '/(marketing)/privacy'
     | '/(marketing)/terms'
     | '/_auth/login'
-    | '/(marketing)/'
     | '/_protected/dashboard/'
     | '/_protected/dashboard/billing'
-    | '/_protected/dashboard/endpoints'
     | '/_protected/dashboard/settings'
+    | '/_protected/dashboard/endpoints/'
     | '/_protected/dashboard/endpoints_/$endpointId'
   fileRoutesById: FileRoutesById
 }
@@ -209,9 +209,9 @@ export interface RootRouteChildren {
   ProtectedRoute: typeof ProtectedRouteWithChildren
   HealthRoute: typeof HealthRoute
   OgImageRoute: typeof OgImageRoute
-  marketingPrivacyRoute: typeof marketingPrivacyRoute
-  marketingTermsRoute: typeof marketingTermsRoute
-  marketingIndexRoute: typeof marketingIndexRoute
+  marketingIndexRouteRoute: typeof marketingIndexRouteRoute
+  marketingPrivacyRouteRoute: typeof marketingPrivacyRouteRoute
+  marketingTermsRouteRoute: typeof marketingTermsRouteRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -260,23 +260,23 @@ declare module '@tanstack/react-router' {
     }
     '/(marketing)/': {
       id: '/(marketing)/'
-      path: '/'
+      path: ''
       fullPath: '/'
-      preLoaderRoute: typeof marketingIndexRouteImport
+      preLoaderRoute: typeof marketingIndexRouteRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/(marketing)/privacy': {
       id: '/(marketing)/privacy'
       path: '/privacy'
       fullPath: '/privacy'
-      preLoaderRoute: typeof marketingPrivacyRouteImport
+      preLoaderRoute: typeof marketingPrivacyRouteRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/(marketing)/terms': {
       id: '/(marketing)/terms'
       path: '/terms'
       fullPath: '/terms'
-      preLoaderRoute: typeof marketingTermsRouteImport
+      preLoaderRoute: typeof marketingTermsRouteRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/_auth/login': {
@@ -300,18 +300,18 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ProtectedDashboardBillingRouteRouteImport
       parentRoute: typeof ProtectedRoute
     }
-    '/_protected/dashboard/endpoints': {
-      id: '/_protected/dashboard/endpoints'
-      path: '/dashboard/endpoints'
-      fullPath: '/dashboard/endpoints'
-      preLoaderRoute: typeof ProtectedDashboardEndpointsRouteRouteImport
-      parentRoute: typeof ProtectedRoute
-    }
     '/_protected/dashboard/settings': {
       id: '/_protected/dashboard/settings'
       path: '/dashboard/settings'
       fullPath: '/dashboard/settings'
       preLoaderRoute: typeof ProtectedDashboardSettingsRouteRouteImport
+      parentRoute: typeof ProtectedRoute
+    }
+    '/_protected/dashboard/endpoints/': {
+      id: '/_protected/dashboard/endpoints/'
+      path: '/dashboard/endpoints'
+      fullPath: '/dashboard/endpoints/'
+      preLoaderRoute: typeof ProtectedDashboardEndpointsIndexRouteRouteImport
       parentRoute: typeof ProtectedRoute
     }
     '/_protected/dashboard/endpoints_/$endpointId': {
@@ -337,16 +337,17 @@ const AuthRouteWithChildren = AuthRoute._addFileChildren(AuthRouteChildren)
 interface ProtectedRouteChildren {
   ProtectedDashboardIndexRouteRoute: typeof ProtectedDashboardIndexRouteRoute
   ProtectedDashboardBillingRouteRoute: typeof ProtectedDashboardBillingRouteRoute
-  ProtectedDashboardEndpointsRouteRoute: typeof ProtectedDashboardEndpointsRouteRoute
   ProtectedDashboardSettingsRouteRoute: typeof ProtectedDashboardSettingsRouteRoute
+  ProtectedDashboardEndpointsIndexRouteRoute: typeof ProtectedDashboardEndpointsIndexRouteRoute
   ProtectedDashboardEndpointsEndpointIdRouteRoute: typeof ProtectedDashboardEndpointsEndpointIdRouteRoute
 }
 
 const ProtectedRouteChildren: ProtectedRouteChildren = {
   ProtectedDashboardIndexRouteRoute: ProtectedDashboardIndexRouteRoute,
   ProtectedDashboardBillingRouteRoute: ProtectedDashboardBillingRouteRoute,
-  ProtectedDashboardEndpointsRouteRoute: ProtectedDashboardEndpointsRouteRoute,
   ProtectedDashboardSettingsRouteRoute: ProtectedDashboardSettingsRouteRoute,
+  ProtectedDashboardEndpointsIndexRouteRoute:
+    ProtectedDashboardEndpointsIndexRouteRoute,
   ProtectedDashboardEndpointsEndpointIdRouteRoute:
     ProtectedDashboardEndpointsEndpointIdRouteRoute,
 }
@@ -362,9 +363,9 @@ const rootRouteChildren: RootRouteChildren = {
   ProtectedRoute: ProtectedRouteWithChildren,
   HealthRoute: HealthRoute,
   OgImageRoute: OgImageRoute,
-  marketingPrivacyRoute: marketingPrivacyRoute,
-  marketingTermsRoute: marketingTermsRoute,
-  marketingIndexRoute: marketingIndexRoute,
+  marketingIndexRouteRoute: marketingIndexRouteRoute,
+  marketingPrivacyRouteRoute: marketingPrivacyRouteRoute,
+  marketingTermsRouteRoute: marketingTermsRouteRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

@@ -39,7 +39,7 @@ const config = defineConfig(() => {
       tanstackStart({
         router: {
           routeFileIgnorePattern:
-            '((^|/)_components(/|$)|\\.content\\.(ts|tsx|js|mjs|cjs|jsx|json|jsonc|json5|md|mdx|yaml|yml)$)',
+            '((^|/)[-_]components(/|$)|(^|/)-|\\.content\\.(ts|tsx|js|mjs|cjs|jsx|json|jsonc|json5|md|mdx|yaml|yml)$)',
         },
       }),
       viteReact(),

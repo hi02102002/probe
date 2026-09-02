@@ -1,5 +1,0 @@
-export { CreateEndpointDialog } from './components/create-endpoint-dialog'
-export type { CreateEndpointDialogProps } from './components/create-endpoint-dialog'
-export { EndpointForm } from './components/endpoint-form'
-export type { EndpointFormProps, EndpointFormValues } from './components/endpoint-form'
-export { EndpointsPage } from './endpoints-page'
