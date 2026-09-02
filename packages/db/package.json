@@ -23,6 +23,16 @@
       "types": "./src/postgres/plus.ts",
       "development": "./src/postgres/plus.ts",
       "import": "./dist/postgres/plus.js"
+    },
+    "./queries": {
+      "types": "./src/queries/index.ts",
+      "development": "./src/queries/index.ts",
+      "import": "./dist/queries/index.js"
+    },
+    "./queries/*": {
+      "types": "./src/queries/*.ts",
+      "development": "./src/queries/*.ts",
+      "import": "./dist/queries/*.js"
     }
   },
   "files": [
@@ -42,6 +52,7 @@
   },
   "dependencies": {
     "@repo/utils": "workspace:*",
+    "better-result": "^3.0.1",
     "drizzle-orm": "1.0.0-rc.4",
     "drizzle-plus": "1.0.0-rc.4",
     "pg": "^8.16.3"
