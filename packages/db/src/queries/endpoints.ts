@@ -1,5 +1,5 @@
 import { createId } from '@repo/utils'
-import { and, asc, count, eq, ilike } from 'drizzle-orm'
+import { and, asc, count, desc, eq, ilike } from 'drizzle-orm'
 import { DatabaseError, NotFoundError } from '../errors/database.error.js'
 import { createPaginatedResult, resolvePagination } from '../helpers/pagination.js'
 import { mapSort } from '../helpers/sort.js'
@@ -58,7 +58,7 @@ export const getAllEndpoints = withDb(async (db, input: GetAllEndpointsInput) =>
     createdAt: endpoint.createdAt,
     lastRequestAt: endpoint.updatedAt,
     name: endpoint.name,
-  }, [asc(endpoint.name)])
+  }, [desc(endpoint.createdAt)])
 
   const { limit, offset, page } = resolvePagination(input.pagination, {
     defaultLimit: 10,

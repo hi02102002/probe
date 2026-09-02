@@ -8,7 +8,7 @@ import { PricingSection } from './components/pricing-section'
 
 export function HomePage() {
   return (
-    <div className="dark min-h-svh bg-background text-foreground selection:bg-primary selection:text-primary-foreground">
+    <div className="min-h-svh bg-background text-foreground selection:bg-primary selection:text-primary-foreground">
       <HomeHeader />
       <main className="mx-auto max-w-6xl border-x border-border">
         <HeroSection />

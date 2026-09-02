@@ -13,7 +13,7 @@ export function StatusPage({
   title: string
 }) {
   return (
-    <main className="dark flex min-h-svh items-center justify-center bg-background px-6 text-foreground">
+    <main className="flex min-h-svh items-center justify-center bg-background px-6 text-foreground">
       <div className="w-full max-w-xl">
         <Logo />
         <p className="mt-14 text-sm font-medium text-primary">{code}</p>

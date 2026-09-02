@@ -10,6 +10,7 @@ import {
 import { TanStackRouterDevtoolsPanel } from '@tanstack/react-router-devtools'
 import { createMiddleware } from '@tanstack/react-start'
 import { evlogErrorHandler } from 'evlog/nitro/v3'
+import { ThemeProvider } from 'next-themes'
 import { NuqsAdapter } from 'nuqs/adapters/tanstack-router'
 import { NotFoundPage, RootErrorPage } from '@/components/error-pages'
 import { AnchoredToastProvider, ToastProvider } from '@/components/ui/toast'
@@ -76,29 +77,37 @@ function RootDocument() {
 
   useAuthIdentity(session)
   return (
-    <html className="dark" dir="ltr" lang="en">
+    <html dir="ltr" lang="en" suppressHydrationWarning>
       <head>
         <HeadContent />
       </head>
       <body>
-        <NuqsAdapter>
-          <ToastProvider position="top-center">
-            <AnchoredToastProvider>
-              <Outlet />
-            </AnchoredToastProvider>
-          </ToastProvider>
-        </NuqsAdapter>
-        <TanStackDevtools
-          config={{ position: 'bottom-right' }}
-          plugins={[
-            {
-              name: 'Tanstack Router',
-              render: <TanStackRouterDevtoolsPanel />,
-            },
-            TanStackQueryDevtools,
-          ]}
-        />
-        <Scripts />
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="system"
+          disableTransitionOnChange
+          enableSystem
+          storageKey="probe-theme"
+        >
+          <NuqsAdapter>
+            <ToastProvider position="top-center">
+              <AnchoredToastProvider>
+                <Outlet />
+              </AnchoredToastProvider>
+            </ToastProvider>
+          </NuqsAdapter>
+          <TanStackDevtools
+            config={{ position: 'bottom-right' }}
+            plugins={[
+              {
+                name: 'Tanstack Router',
+                render: <TanStackRouterDevtoolsPanel />,
+              },
+              TanStackQueryDevtools,
+            ]}
+          />
+          <Scripts />
+        </ThemeProvider>
       </body>
     </html>
   )

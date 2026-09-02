@@ -1,14 +1,20 @@
 import { Link } from '@tanstack/react-router'
 import { Logo } from '@/components/logo'
+import { ThemeToggle } from '@/components/theme-toggle'
 
 export function HomeFooter() {
   return (
     <footer className="mx-auto grid max-w-6xl gap-10 border-x border-border px-6 py-12 sm:px-10 md:grid-cols-[1.5fr_1fr_1fr]">
-      <div>
-        <Logo classNames={{ container: 'text-foreground' }} />
-        <p className="mt-4 max-w-sm text-sm leading-6 text-muted-foreground">
-          A focused webhook debugger for capturing incoming requests and understanding exactly what was sent.
-        </p>
+      <div className="flex flex-col justify-between">
+        <div>
+          <Logo classNames={{ container: 'text-foreground' }} />
+          <p className="mt-4 max-w-sm text-sm leading-6 text-muted-foreground">
+            A focused webhook debugger for capturing incoming requests and understanding exactly what was sent.
+          </p>
+        </div>
+        <div className="mt-6">
+          <ThemeToggle size="sm" />
+        </div>
         <p className="mt-6 font-mono text-[11px] text-muted-foreground">
           © 2026 Probe. Built for clearer webhook debugging.
         </p>

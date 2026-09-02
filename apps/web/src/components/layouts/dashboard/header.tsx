@@ -23,7 +23,6 @@ export function DashboardHeader() {
       to: '/dashboard',
     },
     {
-      exact: true,
       label: 'Endpoints',
       to: '/dashboard/endpoints',
     },

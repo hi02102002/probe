@@ -4,6 +4,7 @@ import { SignOutIcon } from '@phosphor-icons/react'
 import { useQueryClient } from '@tanstack/react-query'
 import { useRouter } from '@tanstack/react-router'
 import { useState } from 'react'
+import { ThemeToggle } from '@/components/theme-toggle'
 import {
   Menu,
   MenuGroup,
@@ -66,6 +67,11 @@ export function UserMenu({ user }: { user: AuthSession['user'] }) {
             </span>
           </MenuGroupLabel>
         </MenuGroup>
+        <MenuSeparator className="-mx-1" />
+        <div className="flex items-center justify-between px-2.5 py-1.5">
+          <span className="text-foreground text-sm">Theme</span>
+          <ThemeToggle size="sm" />
+        </div>
         <MenuSeparator className="-mx-1" />
         <MenuItem disabled={isSigningOut} onClick={() => void handleSignOut()}>
           <SignOutIcon className="size-4 shrink-0" weight="duotone" />

@@ -250,6 +250,7 @@ body {
   }
 }
 :root {
+  color-scheme: light;
   --background: var(--color-white);
   --foreground: var(--color-neutral-800);
 
@@ -315,6 +316,7 @@ body {
 }
 
 .dark {
+  color-scheme: dark;
   --background: color-mix(in srgb, var(--color-neutral-950) 95%, var(--color-white));
   --foreground: var(--color-neutral-100);
 
@@ -385,6 +387,8 @@ body {
     font-optical-sizing: auto;
     font-synthesis: none;
     text-rendering: optimizeLegibility;
+    overflow-y: scroll;
+    scrollbar-color: color-mix(in srgb, var(--foreground) 20%, transparent) transparent;
   }
   body {
     @apply bg-background text-foreground;

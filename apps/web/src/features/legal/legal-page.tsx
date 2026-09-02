@@ -89,7 +89,7 @@ export function LegalPage({ type = 'terms' }: LegalPageProps) {
   const sections = isPrivacy ? PRIVACY_SECTIONS : TERMS_SECTIONS
 
   return (
-    <div className="dark min-h-screen bg-background text-foreground">
+    <div className="min-h-screen bg-background text-foreground">
       <header className="border-b border-border">
         <div className="mx-auto flex h-16 max-w-5xl items-center justify-between px-6">
           <Logo />

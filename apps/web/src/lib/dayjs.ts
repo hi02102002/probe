@@ -11,7 +11,7 @@ export function formatRelativeTime(date: Date | string | null | undefined): stri
   return dayjs(date).fromNow()
 }
 
-export function formatDate(date: Date | string | null | undefined, formatStr = 'MMM D, YYYY'): string {
+export function formatDate(date: Date | string | null | undefined, formatStr = 'HH:mm MMM D, YYYY'): string {
   if (!date)
     return 'Never'
   return dayjs(date).format(formatStr)

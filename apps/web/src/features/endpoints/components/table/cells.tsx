@@ -29,15 +29,24 @@ function getIngestUrl(token: string, origin: string) {
 
 export function EndpointNameCell({ item }: { item: Endpoint }) {
   return (
-    <div className="flex items-center gap-3">
-      <div className="flex size-9 shrink-0 items-center justify-center rounded-lg border bg-muted/40 shadow-xs/5">
+    <Link
+      className="group inline-flex min-w-0 items-center gap-3 text-left focus-visible:outline-none"
+      params={{ endpointId: item.id }}
+      preload="intent"
+      to="/dashboard/endpoints/$endpointId"
+    >
+      <div className="flex size-9 shrink-0 items-center justify-center rounded-lg border bg-muted/40 shadow-xs/5 transition-colors group-hover:bg-muted/70">
         <BrandIcon className="size-4.5 shrink-0" name={item.name} />
       </div>
       <div className="flex min-w-0 flex-col gap-0.5">
-        <span className="truncate font-medium text-foreground text-sm leading-tight">{item.name}</span>
-        <span className="truncate font-mono text-muted-foreground text-xs leading-tight">{item.id}</span>
+        <span className="truncate font-medium text-foreground text-sm leading-tight transition-colors group-hover:text-primary group-hover:underline">
+          {item.name}
+        </span>
+        <span className="truncate font-mono text-muted-foreground text-xs leading-tight">
+          {item.id}
+        </span>
       </div>
-    </div>
+    </Link>
   )
 }
 
@@ -64,7 +73,10 @@ export function TokenCell({ token }: { token: string }) {
   const displayUrl = ingestUrl.replace(/^https?:\/\//, '')
 
   return (
-    <div className="flex items-center gap-1.5 font-mono text-xs">
+    <div
+      className="flex items-center gap-1.5 font-mono text-xs"
+      onClick={e => e.stopPropagation()}
+    >
       <span
         className="truncate text-muted-foreground"
         title={ingestUrl}

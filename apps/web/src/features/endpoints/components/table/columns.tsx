@@ -37,9 +37,9 @@ export function createEndpointColumns(): ColumnDef<Endpoint>[] {
       header: ({ column }) => (
         <DataTableColumnHeader column={column} title="Ingest URL" />
       ),
-      maxSize: 380,
+      maxSize: 300,
       minSize: 280,
-      size: 340,
+      size: 320,
       cell: ({ row }) => <TokenCell token={row.getValue('token')} />,
     },
     {

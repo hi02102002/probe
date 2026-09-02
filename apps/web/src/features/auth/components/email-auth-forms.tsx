@@ -75,7 +75,7 @@ function SocialButtons({ redirectTo }: {
   return (
     <div className="space-y-2">
       <Button
-        className="h-10 w-full border-white/10 bg-transparent text-foreground shadow-none hover:bg-white/5"
+        className="w-full"
         disabled={Boolean(isSubmitting)}
         loading={isSubmitting === 'github'}
         onClick={() => signInWithSocial('github')}
@@ -86,7 +86,7 @@ function SocialButtons({ redirectTo }: {
         Continue with GitHub
       </Button>
       <Button
-        className="h-10 w-full border-white/10 bg-transparent text-foreground shadow-none hover:bg-white/5"
+        className="w-full"
         disabled={Boolean(isSubmitting)}
         loading={isSubmitting === 'google'}
         onClick={() => signInWithSocial('google')}
@@ -104,9 +104,9 @@ function SocialButtons({ redirectTo }: {
 function FormDivider() {
   return (
     <div className="my-6 flex items-center gap-3">
-      <Separator className="flex-1 bg-white/10 data-[orientation=horizontal]:w-auto" />
+      <Separator className="flex-1 data-[orientation=horizontal]:w-auto" />
       <span className="shrink-0 text-muted-foreground text-xs">or</span>
-      <Separator className="flex-1 bg-white/10 data-[orientation=horizontal]:w-auto" />
+      <Separator className="flex-1 data-[orientation=horizontal]:w-auto" />
     </div>
   )
 }
