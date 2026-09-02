@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import process from 'node:process'
 import { fileURLToPath } from 'node:url'
 import { config } from 'dotenv'
@@ -40,4 +41,3 @@ if (process.argv[1] && fileURLToPath(import.meta.url) === process.argv[1]) {
     process.exit(1)
   })
 }
-
