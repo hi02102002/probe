@@ -37,16 +37,18 @@ export function generateTanStackStartSeo({
 
       const imageUrl = new URL(image.url, site.baseUrl)
       imageUrl.searchParams.set('title', resolvedTitle)
-      imageUrl.searchParams.set(
-        'subtitle',
-        site.siteName ?? site.applicationName ?? 'Probe',
-      )
+      const subtitle
+        = resolvedTitle === (site.siteName ?? site.applicationName)
+          ? 'Developer Tooling'
+          : site.siteName ?? site.applicationName ?? 'Developer Tooling'
+      imageUrl.searchParams.set('subtitle', subtitle)
       if (resolvedDescription) {
         imageUrl.searchParams.set('description', resolvedDescription)
       }
 
       return {
         ...image,
+        type: 'image/png' as const,
         url: `${imageUrl.pathname}${imageUrl.search}`,
       }
     },

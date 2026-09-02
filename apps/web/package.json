@@ -28,6 +28,7 @@
     "@repo/auth": "workspace:^",
     "@repo/env": "workspace:*",
     "@repo/utils": "workspace:*",
+    "@resvg/resvg-js": "^2.6.2",
     "@tailwindcss/vite": "^4.1.18",
     "@tanstack/react-devtools": "latest",
     "@tanstack/react-query": "latest",

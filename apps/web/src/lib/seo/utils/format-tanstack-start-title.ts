@@ -7,7 +7,12 @@ export function formatTanStackStartTitle({
   site: TanStackStartSeoSite
   title: string
 }): string {
-  if (!site.titleTemplate) {
+  if (
+    !site.titleTemplate
+    || title === site.defaultTitle
+    || title === site.siteName
+    || title === site.applicationName
+  ) {
     return title
   }
 

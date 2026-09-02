@@ -17,7 +17,7 @@ export const seoSite = {
     {
       alt: 'Probe',
       height: 630,
-      type: 'image/svg+xml',
+      type: 'image/png',
       url: '/og-image',
       width: 1200,
     },

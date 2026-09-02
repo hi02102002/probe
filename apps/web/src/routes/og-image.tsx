@@ -1,3 +1,4 @@
+import { Resvg } from '@resvg/resvg-js'
 import { createFileRoute } from '@tanstack/react-router'
 import { z } from 'zod'
 import { PROBE_LOGO_BASE64 } from '@/assets/logo-base64'
@@ -80,7 +81,7 @@ function renderOgImage({
 
   const badgeText
     = !subtitle || subtitle.toLowerCase() === 'probe'
-      ? 'WEBHOOK PLATFORM'
+      ? 'DEVELOPER TOOLING'
       : subtitle.toUpperCase()
   const badgeWidth = Math.max(90, Math.round(badgeText.length * 8.2 + 42))
 
@@ -291,10 +292,16 @@ export const Route = createFileRoute('/og-image')({
         const description
           = searchParams.get('description')?.trim() || DEFAULT_DESCRIPTION
 
-        return new Response(renderOgImage({ description, subtitle, title }), {
+        const svg = renderOgImage({ description, subtitle, title })
+        const resvg = new Resvg(svg, {
+          fitTo: { mode: 'width', value: 1200 },
+        })
+        const pngBuffer = resvg.render().asPng()
+
+        return new Response(new Uint8Array(pngBuffer), {
           headers: {
             'Cache-Control': 'public, max-age=3600, s-maxage=86400',
-            'Content-Type': 'image/svg+xml; charset=utf-8',
+            'Content-Type': 'image/png',
           },
         })
       },
