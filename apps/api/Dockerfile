@@ -39,9 +39,10 @@ RUN apt-get update \
     && rm -rf /var/lib/apt/lists/*
 
 COPY --from=builder --chown=node:node /app/deploy ./
+COPY --from=builder --chown=node:node /app/packages/db/drizzle ./drizzle
 
 USER node
 
 EXPOSE 3001
 
-CMD ["node", "dist/index.js"]
+CMD ["sh", "-c", "node dist/migrate.js && node dist/index.js"]
