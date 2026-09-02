@@ -22,8 +22,8 @@ export interface GetAllEndpointsInput {
     order: 'asc' | 'desc'
   }
   pagination?: {
-    page: number
-    limit: number
+    page?: number
+    limit?: number
   }
 }
 
@@ -34,7 +34,7 @@ export const createEndpoint = withDb(async (
   const [newEndpoint] = await db
     .insert(endpoint)
     .values({
-      id: input.id,
+      id: input.id ?? createId('ept', 32),
       name: input.name,
       token: input.token ?? createId('ept', 32),
       userId: input.userId,

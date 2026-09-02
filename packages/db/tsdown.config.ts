@@ -4,6 +4,6 @@ export default defineConfig({
   entry: ['src/**/*.ts'],
   dts: true,
   fixedExtension: false,
-  platform: 'neutral',
+  platform: 'node',
   sourcemap: true,
 })

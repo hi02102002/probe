@@ -9,6 +9,11 @@
       "development": "./src/index.ts",
       "import": "./dist/index.js"
     },
+    "./migrate": {
+      "types": "./src/migrate.ts",
+      "development": "./src/migrate.ts",
+      "import": "./dist/migrate.js"
+    },
     "./schema": {
       "types": "./src/postgres/schema.ts",
       "development": "./src/postgres/schema.ts",
@@ -36,7 +41,8 @@
     }
   },
   "files": [
-    "dist"
+    "dist",
+    "drizzle"
   ],
   "scripts": {
     "build": "tsdown",
@@ -44,6 +50,7 @@
     "db:check": "drizzle-kit check --config=drizzle.config.ts",
     "db:generate": "drizzle-kit generate --config=drizzle.config.ts",
     "db:migrate": "drizzle-kit migrate --config=drizzle.config.ts",
+    "db:migrate:prod": "node --env-file-if-exists=../../.env.local --env-file-if-exists=../../.env dist/migrate.js",
     "db:push": "drizzle-kit push --config=drizzle.config.ts",
     "db:studio": "drizzle-kit studio --config=drizzle.config.ts",
     "format": "eslint . --fix",
@@ -53,6 +60,7 @@
   "dependencies": {
     "@repo/utils": "workspace:*",
     "better-result": "^3.0.1",
+    "dotenv": "^17.4.2",
     "drizzle-orm": "1.0.0-rc.4",
     "drizzle-plus": "1.0.0-rc.4",
     "pg": "^8.16.3"
@@ -61,7 +69,6 @@
     "@repo/eslint-config": "workspace:*",
     "@repo/typescript-config": "workspace:*",
     "@types/pg": "^8.15.5",
-    "dotenv": "^17.4.2",
     "drizzle-kit": "1.0.0-rc.4",
     "eslint": "^10.4.0",
     "tsdown": "^0.22.14",
