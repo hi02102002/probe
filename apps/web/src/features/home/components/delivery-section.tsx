@@ -36,16 +36,18 @@ function Attempt({
   tone: 'error' | 'success'
 }) {
   const toneClasses = tone === 'success'
-    ? 'bg-success/10 text-success-foreground ring-success/20'
-    : 'bg-destructive/10 text-destructive-foreground ring-destructive/20'
+    ? 'bg-emerald-500/10 text-emerald-600 ring-emerald-500/20 dark:text-emerald-400'
+    : 'bg-rose-500/10 text-rose-600 ring-rose-500/20 dark:text-rose-400'
 
   return (
-    <div className={`probe-delivery-attempt flex h-7 items-center gap-1.5 rounded-full border border-border bg-card px-1.5 shadow-sm ring-2 ring-background ${className}`}>
+    <div className={`probe-delivery-attempt flex h-7 items-center gap-1.5 rounded-full border border-border bg-card px-2 shadow-sm ring-2 ring-background ${className}`}>
       <span className={`flex size-4 shrink-0 items-center justify-center rounded-full ring-1 ring-inset ${toneClasses}`}>
         {icon}
       </span>
-      <span className="whitespace-nowrap text-[10px] font-medium text-foreground">{label}</span>
-      <span className={`rounded-full px-1 font-mono text-[9px] font-semibold ring-1 ring-inset ${toneClasses}`}>{badge}</span>
+      <span className="whitespace-nowrap font-medium text-[10px] text-foreground leading-none">{label}</span>
+      <span className={`inline-flex h-4 min-w-4 shrink-0 items-center justify-center rounded-full px-1 font-mono font-semibold text-[9px] leading-none ring-1 ring-inset ${toneClasses}`}>
+        {badge}
+      </span>
     </div>
   )
 }
@@ -65,8 +67,8 @@ function DeliveryDiagram() {
       <div className="absolute left-1/2 top-[8.33%] -translate-x-1/2 -translate-y-1/2">
         <div className="flex h-7 items-center gap-1.5 whitespace-nowrap rounded-full border border-border bg-card px-2 shadow-sm ring-2 ring-background">
           <LightningIcon className="size-3.5 shrink-0 text-accent-foreground" weight="fill" />
-          <span className="text-[11px] font-medium text-foreground">payment.succeeded</span>
-          <span className="rounded-full bg-primary/10 px-1 font-mono text-[9px] font-semibold text-accent-foreground ring-1 ring-primary/15 ring-inset">evt_8kPz</span>
+          <span className="font-medium text-[11px] text-foreground leading-none">payment.succeeded</span>
+          <span className="inline-flex h-4 min-w-4 shrink-0 items-center justify-center rounded-full bg-primary/10 px-1 font-mono font-semibold text-[9px] text-accent-foreground leading-none ring-1 ring-primary/15 ring-inset">evt_8kPz</span>
         </div>
       </div>
 
