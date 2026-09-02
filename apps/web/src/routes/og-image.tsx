@@ -1,6 +1,7 @@
 import { Resvg } from '@resvg/resvg-js'
 import { createFileRoute } from '@tanstack/react-router'
 import { z } from 'zod'
+import { GEIST_MONO_BASE64, INTER_BASE64 } from '@/assets/fonts-base64'
 import { PROBE_LOGO_BASE64 } from '@/assets/logo-base64'
 
 const DEFAULT_TITLE = 'Probe'
@@ -89,6 +90,16 @@ function renderOgImage({
   <title id="title">${escapeXml(title)}</title>
   <desc id="description">${escapeXml(description)}</desc>
   <defs>
+    <style>
+      @font-face {
+        font-family: 'Inter';
+        src: url(data:font/woff2;base64,${INTER_BASE64}) format('woff2');
+      }
+      @font-face {
+        font-family: 'Geist Mono';
+        src: url(data:font/woff2;base64,${GEIST_MONO_BASE64}) format('woff2');
+      }
+    </style>
     <linearGradient id="brandGrad" x1="0%" y1="0%" x2="100%" y2="100%">
       <stop offset="0%" stop-color="#00a6ff" />
       <stop offset="35%" stop-color="#3b82f6" />
