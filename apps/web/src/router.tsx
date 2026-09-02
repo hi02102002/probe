@@ -1,5 +1,6 @@
 import { createRouter as createTanStackRouter } from '@tanstack/react-router'
 import { setupRouterSsrQueryIntegration } from '@tanstack/react-router-ssr-query'
+import nprogress from 'nprogress'
 import {
   getContext,
 } from '@/integrations/tanstack-query/root-provider'
@@ -17,6 +18,20 @@ export function getRouter() {
   })
 
   setupRouterSsrQueryIntegration({ router, queryClient: context.queryClient })
+
+  if (typeof window !== 'undefined') {
+    nprogress.configure({ showSpinner: false })
+
+    router.subscribe('onBeforeLoad', ({ pathChanged }) => {
+      if (pathChanged) {
+        nprogress.start()
+      }
+    })
+
+    router.subscribe('onLoad', () => {
+      nprogress.done()
+    })
+  }
 
   return router
 }

@@ -1,5 +1,5 @@
 import { createId } from '@repo/utils'
-import { and, asc, count, desc, eq, ilike } from 'drizzle-orm'
+import { and, count, desc, eq, ilike } from 'drizzle-orm'
 import { DatabaseError, NotFoundError } from '../errors/database.error.js'
 import { createPaginatedResult, resolvePagination } from '../helpers/pagination.js'
 import { mapSort } from '../helpers/sort.js'
