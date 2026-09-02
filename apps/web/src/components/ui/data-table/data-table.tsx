@@ -260,10 +260,12 @@ export function DataTable<TData, TValue = unknown>({
               {headerGroup.headers.map((header) => {
                 const columnSize = header.column.getSize()
                 const minSize = header.column.columnDef.minSize
+                const maxSize = header.column.columnDef.maxSize
                 return (
                   <TableHead
                     key={header.id}
                     style={{
+                      maxWidth: maxSize ? `${maxSize}px` : undefined,
                       minWidth: minSize ? `${minSize}px` : undefined,
                       width: columnSize && columnSize !== 150 ? `${columnSize}px` : undefined,
                     }}
@@ -308,10 +310,12 @@ export function DataTable<TData, TValue = unknown>({
                       {row.getVisibleCells().map((cell) => {
                         const columnSize = cell.column.getSize()
                         const minSize = cell.column.columnDef.minSize
+                        const maxSize = cell.column.columnDef.maxSize
                         return (
                           <TableCell
                             key={cell.id}
                             style={{
+                              maxWidth: maxSize ? `${maxSize}px` : undefined,
                               minWidth: minSize ? `${minSize}px` : undefined,
                               width: columnSize && columnSize !== 150 ? `${columnSize}px` : undefined,
                             }}

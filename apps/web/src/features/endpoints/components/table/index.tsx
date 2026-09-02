@@ -1,5 +1,4 @@
-export type { ActionsCellProps, Endpoint } from './cells'
-export type { CreateEndpointColumnsOptions } from './columns'
+export type { Endpoint } from './cells'
 export {
   EndpointsTable,
   type EndpointsTableProps,

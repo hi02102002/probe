@@ -1,6 +1,6 @@
 import { createId } from '@repo/utils'
 import { and, asc, count, eq, ilike } from 'drizzle-orm'
-import { DatabaseError } from '../errors/database.error.js'
+import { DatabaseError, NotFoundError } from '../errors/database.error.js'
 import { createPaginatedResult, resolvePagination } from '../helpers/pagination.js'
 import { mapSort } from '../helpers/sort.js'
 import { withDb } from '../helpers/with-db.js'
@@ -90,4 +90,92 @@ export const getAllEndpoints = withDb(async (db, input: GetAllEndpointsInput) =>
     page,
     limit,
   })
+})
+
+export const deleteEndpoint = withDb(async (db, { id, userId }: {
+  id: string
+  userId: string
+}) => {
+  const existingEndpoint = await db.query.endpoint.findFirst({
+    where: {
+      id,
+      userId,
+    },
+    columns: {
+      id: true,
+    },
+  })
+
+  if (!existingEndpoint) {
+    throw new NotFoundError({
+      entity: 'endpoint',
+      message: `Endpoint with id ${id} not found for user ${userId}`,
+    })
+  }
+
+  const deleted = await db.delete(endpoint).where(eq(endpoint.id, id)).returning({
+    id: endpoint.id,
+  })
+
+  const deletedEndpoint = deleted[0]
+
+  if (!deletedEndpoint) {
+    throw new DatabaseError({
+      entity: 'endpoint',
+      operation: 'delete',
+      message: `Failed to delete endpoint with id ${id} for user ${userId}`,
+    })
+  }
+
+  return deletedEndpoint
+})
+
+export const updateEndpoint = withDb(async (
+  db,
+  endpointId: string,
+  userId: string,
+  data: {
+    name?: string
+    status?: 'active' | 'inactive' | 'paused'
+  },
+) => {
+  const existingEndpoint = await db.query.endpoint.findFirst({
+    where: {
+      id: endpointId,
+      userId,
+    },
+    columns: {
+      id: true,
+    },
+  })
+
+  if (!existingEndpoint) {
+    throw new NotFoundError({
+      entity: 'endpoint',
+      message: `Endpoint with id ${endpointId} not found for user ${userId}`,
+    })
+  }
+
+  const updated = await db
+    .update(endpoint)
+    .set(data)
+    .where(and(
+      eq(endpoint.id, endpointId),
+      eq(endpoint.userId, userId),
+    ))
+    .returning({
+      id: endpoint.id,
+    })
+
+  const updatedEndpoint = updated[0]
+
+  if (!updatedEndpoint) {
+    throw new DatabaseError({
+      entity: 'endpoint',
+      operation: 'update',
+      message: `Failed to update endpoint with id ${endpointId} for user ${userId}`,
+    })
+  }
+
+  return updatedEndpoint
 })

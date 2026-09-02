@@ -23,6 +23,7 @@ import { Route as ProtectedDashboardIndexRouteRouteImport } from './routes/_prot
 import { Route as ProtectedDashboardBillingRouteRouteImport } from './routes/_protected.dashboard/billing/route'
 import { Route as ProtectedDashboardEndpointsRouteRouteImport } from './routes/_protected.dashboard/endpoints/route'
 import { Route as ProtectedDashboardSettingsRouteRouteImport } from './routes/_protected.dashboard/settings/route'
+import { Route as ProtectedDashboardEndpointsEndpointIdRouteRouteImport } from './routes/_protected.dashboard/endpoints_.$endpointId/route'
 
 const SplatRoute = SplatRouteImport.update({
   id: '/$',
@@ -96,6 +97,12 @@ const ProtectedDashboardSettingsRouteRoute =
     path: '/dashboard/settings',
     getParentRoute: () => ProtectedRoute,
   } as any)
+const ProtectedDashboardEndpointsEndpointIdRouteRoute =
+  ProtectedDashboardEndpointsEndpointIdRouteRouteImport.update({
+    id: '/dashboard/endpoints_/$endpointId',
+    path: '/dashboard/endpoints/$endpointId',
+    getParentRoute: () => ProtectedRoute,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/$': typeof SplatRoute
@@ -110,6 +117,7 @@ export interface FileRoutesByFullPath {
   '/dashboard/billing': typeof ProtectedDashboardBillingRouteRoute
   '/dashboard/endpoints': typeof ProtectedDashboardEndpointsRouteRoute
   '/dashboard/settings': typeof ProtectedDashboardSettingsRouteRoute
+  '/dashboard/endpoints/$endpointId': typeof ProtectedDashboardEndpointsEndpointIdRouteRoute
 }
 export interface FileRoutesByTo {
   '/$': typeof SplatRoute
@@ -124,6 +132,7 @@ export interface FileRoutesByTo {
   '/dashboard/billing': typeof ProtectedDashboardBillingRouteRoute
   '/dashboard/endpoints': typeof ProtectedDashboardEndpointsRouteRoute
   '/dashboard/settings': typeof ProtectedDashboardSettingsRouteRoute
+  '/dashboard/endpoints/$endpointId': typeof ProtectedDashboardEndpointsEndpointIdRouteRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -141,6 +150,7 @@ export interface FileRoutesById {
   '/_protected/dashboard/billing': typeof ProtectedDashboardBillingRouteRoute
   '/_protected/dashboard/endpoints': typeof ProtectedDashboardEndpointsRouteRoute
   '/_protected/dashboard/settings': typeof ProtectedDashboardSettingsRouteRoute
+  '/_protected/dashboard/endpoints_/$endpointId': typeof ProtectedDashboardEndpointsEndpointIdRouteRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -157,6 +167,7 @@ export interface FileRouteTypes {
     | '/dashboard/billing'
     | '/dashboard/endpoints'
     | '/dashboard/settings'
+    | '/dashboard/endpoints/$endpointId'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/$'
@@ -171,6 +182,7 @@ export interface FileRouteTypes {
     | '/dashboard/billing'
     | '/dashboard/endpoints'
     | '/dashboard/settings'
+    | '/dashboard/endpoints/$endpointId'
   id:
     | '__root__'
     | '/$'
@@ -187,6 +199,7 @@ export interface FileRouteTypes {
     | '/_protected/dashboard/billing'
     | '/_protected/dashboard/endpoints'
     | '/_protected/dashboard/settings'
+    | '/_protected/dashboard/endpoints_/$endpointId'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -301,6 +314,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ProtectedDashboardSettingsRouteRouteImport
       parentRoute: typeof ProtectedRoute
     }
+    '/_protected/dashboard/endpoints_/$endpointId': {
+      id: '/_protected/dashboard/endpoints_/$endpointId'
+      path: '/dashboard/endpoints/$endpointId'
+      fullPath: '/dashboard/endpoints/$endpointId'
+      preLoaderRoute: typeof ProtectedDashboardEndpointsEndpointIdRouteRouteImport
+      parentRoute: typeof ProtectedRoute
+    }
   }
 }
 
@@ -319,6 +339,7 @@ interface ProtectedRouteChildren {
   ProtectedDashboardBillingRouteRoute: typeof ProtectedDashboardBillingRouteRoute
   ProtectedDashboardEndpointsRouteRoute: typeof ProtectedDashboardEndpointsRouteRoute
   ProtectedDashboardSettingsRouteRoute: typeof ProtectedDashboardSettingsRouteRoute
+  ProtectedDashboardEndpointsEndpointIdRouteRoute: typeof ProtectedDashboardEndpointsEndpointIdRouteRoute
 }
 
 const ProtectedRouteChildren: ProtectedRouteChildren = {
@@ -326,6 +347,8 @@ const ProtectedRouteChildren: ProtectedRouteChildren = {
   ProtectedDashboardBillingRouteRoute: ProtectedDashboardBillingRouteRoute,
   ProtectedDashboardEndpointsRouteRoute: ProtectedDashboardEndpointsRouteRoute,
   ProtectedDashboardSettingsRouteRoute: ProtectedDashboardSettingsRouteRoute,
+  ProtectedDashboardEndpointsEndpointIdRouteRoute:
+    ProtectedDashboardEndpointsEndpointIdRouteRoute,
 }
 
 const ProtectedRouteWithChildren = ProtectedRoute._addFileChildren(

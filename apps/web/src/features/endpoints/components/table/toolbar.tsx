@@ -15,7 +15,21 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select'
+import { cn } from '@/lib/cn'
 import { endpointSearchParams } from '../../search-params'
+
+interface StatusOption {
+  label: string
+  value: string
+  dotColor?: string
+}
+
+const statusOptions: StatusOption[] = [
+  { label: 'All status', value: 'all' },
+  { dotColor: 'bg-emerald-500', label: 'Active', value: 'active' },
+  { dotColor: 'bg-muted-foreground/64', label: 'Inactive', value: 'inactive' },
+  { dotColor: 'bg-amber-500', label: 'Paused', value: 'paused' },
+]
 
 export function EndpointsToolbar() {
   const [params, setParams] = useQueryStates(endpointSearchParams)
@@ -54,6 +68,7 @@ export function EndpointsToolbar() {
         </InputGroup>
 
         <Select
+          items={statusOptions}
           onValueChange={(val) => {
             setParams({
               page: 1,
@@ -63,32 +78,19 @@ export function EndpointsToolbar() {
           value={params.status ?? 'all'}
         >
           <SelectTrigger className="w-36">
-            <SelectValue placeholder="All Status" />
+            <SelectValue placeholder="All status" />
           </SelectTrigger>
           <SelectPopup>
-            <SelectItem value="all">
-              <div className="flex items-center gap-2">
-                <span>All Status</span>
-              </div>
-            </SelectItem>
-            <SelectItem value="active">
-              <div className="flex items-center gap-2">
-                <span className="size-2 rounded-full bg-emerald-500" />
-                <span>Active</span>
-              </div>
-            </SelectItem>
-            <SelectItem value="inactive">
-              <div className="flex items-center gap-2">
-                <span className="size-2 rounded-full bg-muted-foreground/64" />
-                <span>Inactive</span>
-              </div>
-            </SelectItem>
-            <SelectItem value="paused">
-              <div className="flex items-center gap-2">
-                <span className="size-2 rounded-full bg-amber-500" />
-                <span>Paused</span>
-              </div>
-            </SelectItem>
+            {statusOptions.map(option => (
+              <SelectItem key={option.value} value={option.value}>
+                <div className="flex items-center gap-2">
+                  {option.dotColor && (
+                    <span className={cn('size-2 rounded-full', option.dotColor)} />
+                  )}
+                  <span>{option.label}</span>
+                </div>
+              </SelectItem>
+            ))}
           </SelectPopup>
         </Select>
 

@@ -5,23 +5,27 @@ export class DatabaseError extends TaggedError('DatabaseError')<{
   cause?: unknown
   entity?: string
   operation?: 'create' | 'delete' | 'read' | 'update'
+  message?: string
 }> {}
 
 export class NotFoundError extends TaggedError('NotFoundError')<{
   cause?: unknown
   entity: string
   identifier?: string
+  message?: string
 }> {}
 
 export class ConflictError extends TaggedError('ConflictError')<{
   cause?: unknown
   entity: string
   field?: string
+  message?: string
 }> {}
 
 export class InvalidInputError extends TaggedError('InvalidInputError')<{
   cause?: unknown
   field?: string
+  message?: string
 }> {}
 
 export type CommonDatabaseError

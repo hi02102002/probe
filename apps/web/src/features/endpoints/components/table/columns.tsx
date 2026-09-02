@@ -10,22 +10,14 @@ import {
   TokenCell,
 } from './cells'
 
-export interface CreateEndpointColumnsOptions {
-  onEdit?: (item: Endpoint) => void
-  onDelete?: (item: Endpoint) => void
-}
-
-export function createEndpointColumns(
-  options: CreateEndpointColumnsOptions = {},
-): ColumnDef<Endpoint>[] {
+export function createEndpointColumns(): ColumnDef<Endpoint>[] {
   return [
     {
       accessorKey: 'name',
       header: ({ column }) => (
         <DataTableColumnHeader column={column} title="Endpoint Name" />
       ),
-      minSize: 220,
-      size: 260,
+      minSize: 160,
       cell: ({ row }) => <EndpointNameCell item={row.original} />,
     },
     {
@@ -34,18 +26,20 @@ export function createEndpointColumns(
       header: ({ column }) => (
         <DataTableColumnHeader column={column} title="Status" />
       ),
-      minSize: 110,
-      size: 120,
+      maxSize: 100,
+      minSize: 85,
+      size: 90,
       cell: ({ row }) => <StatusCell status={row.getValue('status')} />,
     },
     {
       accessorKey: 'token',
       enableSorting: false,
       header: ({ column }) => (
-        <DataTableColumnHeader column={column} title="Ingest URL / Token" />
+        <DataTableColumnHeader column={column} title="Ingest URL" />
       ),
-      minSize: 240,
-      size: 260,
+      maxSize: 380,
+      minSize: 280,
+      size: 340,
       cell: ({ row }) => <TokenCell token={row.getValue('token')} />,
     },
     {
@@ -53,8 +47,9 @@ export function createEndpointColumns(
       header: ({ column }) => (
         <DataTableColumnHeader column={column} title="Last Active" />
       ),
-      minSize: 120,
-      size: 130,
+      maxSize: 110,
+      minSize: 90,
+      size: 100,
       cell: ({ row }) => (
         <LastActiveCell lastRequestAt={row.getValue('lastRequestAt')} />
       ),
@@ -64,23 +59,19 @@ export function createEndpointColumns(
       header: ({ column }) => (
         <DataTableColumnHeader column={column} title="Created" />
       ),
-      minSize: 120,
-      size: 130,
+      maxSize: 120,
+      minSize: 100,
+      size: 110,
       cell: ({ row }) => <CreatedAtCell createdAt={row.getValue('createdAt')} />,
     },
     {
       id: 'actions',
       enableHiding: false,
       enableSorting: false,
-      minSize: 48,
-      size: 48,
-      cell: ({ row }) => (
-        <ActionsCell
-          item={row.original}
-          onDelete={options.onDelete}
-          onEdit={options.onEdit}
-        />
-      ),
+      maxSize: 40,
+      minSize: 40,
+      size: 40,
+      cell: ({ row }) => <ActionsCell item={row.original} />,
     },
   ]
 }
