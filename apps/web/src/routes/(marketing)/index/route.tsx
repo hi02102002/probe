@@ -8,11 +8,47 @@ import { HomeFooter } from './_components/home-footer'
 import { HomeHeader } from './_components/home-header'
 import { PricingSection } from './_components/pricing-section'
 
+const structuredData = {
+  '@context': 'https://schema.org',
+  '@graph': [
+    {
+      '@type': 'WebSite',
+      '@id': 'https://probe.monobase.io.vn/#website',
+      'description':
+        'Capture, inspect, and debug incoming webhook requests from a clean developer-focused dashboard.',
+      'name': 'Probe',
+      'url': 'https://probe.monobase.io.vn/',
+    },
+    {
+      '@type': 'SoftwareApplication',
+      '@id': 'https://probe.monobase.io.vn/#software',
+      'applicationCategory': 'DeveloperApplication',
+      'description':
+        'Capture, inspect, and debug incoming webhook requests from a clean developer-focused dashboard.',
+      'name': 'Probe',
+      'offers': {
+        '@type': 'Offer',
+        'price': '0',
+        'priceCurrency': 'USD',
+      },
+      'operatingSystem': 'All',
+      'url': 'https://probe.monobase.io.vn/',
+    },
+  ],
+}
+
 export const Route = createFileRoute('/(marketing)/')({
   component: HomePage,
-  head: () => generateAppSeo({
-    pathname: '/',
-  }),
+  head: () =>
+    generateAppSeo({
+      pathname: '/',
+      scripts: [
+        {
+          children: JSON.stringify(structuredData),
+          type: 'application/ld+json',
+        },
+      ],
+    }),
 })
 
 function HomePage() {

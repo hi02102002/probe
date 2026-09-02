@@ -1,0 +1,10 @@
+# https://www.robotstxt.org/robotstxt.html
+User-agent: *
+Allow: /
+Disallow: /dashboard
+Disallow: /endpoints
+Disallow: /settings
+Disallow: /api/
+
+Sitemap: https://probe.monobase.io.vn/sitemap.xml
+

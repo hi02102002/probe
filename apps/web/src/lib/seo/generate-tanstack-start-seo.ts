@@ -1,6 +1,7 @@
 import type {
   GenerateTanStackStartSeoParams,
   TanStackStartSeoHead,
+  TanStackStartSeoLinkTag,
   TanStackStartSeoMetaTag,
 } from './types'
 import {
@@ -18,9 +19,11 @@ export function generateTanStackStartSeo({
   images,
   includeDocumentMeta = false,
   openGraphType = 'website',
+  pathname = '/',
   robots,
   scripts,
   site,
+  themeColor = site.themeColor ?? '#07080c',
   title,
 }: GenerateTanStackStartSeoParams): TanStackStartSeoHead {
   const resolvedDescription = description ?? site.defaultDescription
@@ -53,13 +56,28 @@ export function generateTanStackStartSeo({
       }
     },
   )
+
+  const normalizedPathname = pathname.startsWith('/') ? pathname : `/${pathname}`
+  const defaultCanonicalUrl = resolveRelativePathToAbsoluteUrl(
+    alternates?.canonicalPath ?? (normalizedPathname as `/${string}`),
+    { baseUrl: site.baseUrl },
+  )
+
+  const defaultLinks: TanStackStartSeoLinkTag[] = [
+    {
+      href: defaultCanonicalUrl,
+      rel: 'canonical',
+    },
+  ]
+
   const links = alternates
     ? generateTanStackStartAlternateLinks({
         ...alternates,
         baseUrl: site.baseUrl,
       })
-    : undefined
-  const canonicalUrl = links?.find(link => link.rel === 'canonical')?.href
+    : defaultLinks
+
+  const canonicalUrl = links?.find(link => link.rel === 'canonical')?.href ?? defaultCanonicalUrl
   const robotsContent = robots
     ? formatTanStackStartRobotsContent(robots)
     : undefined
@@ -81,6 +99,12 @@ export function generateTanStackStartSeo({
       ? {
           content: site.applicationName,
           name: 'application-name',
+        }
+      : undefined,
+    includeDocumentMeta && themeColor
+      ? {
+          content: themeColor,
+          name: 'theme-color',
         }
       : undefined,
     includeDocumentMeta

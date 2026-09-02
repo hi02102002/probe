@@ -9,6 +9,7 @@ export function HomeFooter() {
 
   return (
     <footer className="mx-auto grid max-w-6xl gap-10 border-border border-x px-6 py-12 sm:px-10 md:grid-cols-[1.5fr_1fr_1fr_1fr]">
+      <h2 className="sr-only">Footer</h2>
       <div className="flex flex-col justify-between">
         <div>
           <Logo classNames={{ container: 'text-foreground' }} />
@@ -23,16 +24,16 @@ export function HomeFooter() {
           © 2026 Probe. Built for clearer webhook debugging.
         </p>
       </div>
-      <div>
-        <p className="font-semibold text-foreground text-sm">Product</p>
+      <nav aria-label="Product Links">
+        <h3 className="font-semibold text-foreground text-sm">Product</h3>
         <div className="mt-4 flex flex-col items-start gap-2.5 text-muted-foreground text-sm">
-          <a className="hover:text-foreground" href="/#features">Inspect</a>
-          <a className="hover:text-foreground" href="/#compare">How it works</a>
-          <a className="hover:text-foreground" href="/#pricing">Pricing</a>
+          <a className="hover:text-foreground" href="#features">Inspect</a>
+          <a className="hover:text-foreground" href="#compare">How it works</a>
+          <a className="hover:text-foreground" href="#pricing">Pricing</a>
         </div>
-      </div>
-      <div>
-        <p className="font-semibold text-foreground text-sm">Account</p>
+      </nav>
+      <nav aria-label="Account Links">
+        <h3 className="font-semibold text-foreground text-sm">Account</h3>
         <div className="mt-4 flex flex-col items-start gap-2.5 text-muted-foreground text-sm">
           {session?.user
             ? (
@@ -43,14 +44,14 @@ export function HomeFooter() {
               )}
           <Link className="hover:text-foreground" to="/dashboard">Start debugging</Link>
         </div>
-      </div>
-      <div>
-        <p className="font-semibold text-foreground text-sm">Legal</p>
+      </nav>
+      <nav aria-label="Legal Links">
+        <h3 className="font-semibold text-foreground text-sm">Legal</h3>
         <div className="mt-4 flex flex-col items-start gap-2.5 text-muted-foreground text-sm">
           <Link className="hover:text-foreground" to="/terms">Terms of Service</Link>
           <Link className="hover:text-foreground" to="/privacy">Privacy Policy</Link>
         </div>
-      </div>
+      </nav>
     </footer>
   )
 }

@@ -24,7 +24,11 @@ export function Logo({
       <img
         alt="Probe"
         className={cn('size-8 shrink-0 object-contain', classNames?.logo)}
+        height={32}
+        loading="eager"
         src="/app-mark.png"
+        title="Probe"
+        width={32}
       />
       {isShowText && <span>Probe</span>}
     </Link>

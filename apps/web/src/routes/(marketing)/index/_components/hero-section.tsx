@@ -90,7 +90,7 @@ function RequestCanvas() {
 
 export function HeroSection() {
   return (
-    <section className="relative isolate overflow-hidden border-b border-border px-4 pb-16 pt-24 sm:px-8 sm:pb-24 sm:pt-32">
+    <div className="relative isolate overflow-hidden border-b border-border px-4 pb-16 pt-24 sm:px-8 sm:pb-24 sm:pt-32">
       <div className="probe-hero-glow absolute inset-x-0 -top-32 -z-10 mx-auto h-96 max-w-3xl" />
       <div className="mx-auto max-w-4xl text-center">
         <div className="mx-auto mb-6 inline-flex items-center gap-2 border border-border bg-card/50 px-3 py-1.5 font-mono text-[10px] uppercase tracking-[0.16em] text-muted-foreground sm:text-xs">
@@ -113,6 +113,6 @@ export function HeroSection() {
         </div>
       </div>
       <RequestCanvas />
-    </section>
+    </div>
   )
 }

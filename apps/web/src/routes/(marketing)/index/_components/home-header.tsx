@@ -16,7 +16,8 @@ export function HomeHeader() {
       </a>
       <div className="mx-auto flex h-14 max-w-6xl items-center justify-between gap-4 border-border border-b border-x px-4 sm:px-5">
         <Logo classNames={{ container: 'text-foreground' }} />
-        <nav className="hidden items-center gap-1 md:flex" aria-label="Main navigation">
+        <nav aria-label="Main Navigation" className="hidden items-center gap-1 md:flex">
+          <h2 className="sr-only">Main Navigation</h2>
           <a className="px-3 py-2 text-muted-foreground text-sm transition-colors hover:text-foreground" href="#features">Inspect</a>
           <a className="px-3 py-2 text-muted-foreground text-sm transition-colors hover:text-foreground" href="#compare">How it works</a>
           <a className="px-3 py-2 text-muted-foreground text-sm transition-colors hover:text-foreground" href="#pricing">Start</a>

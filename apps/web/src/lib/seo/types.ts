@@ -57,6 +57,7 @@ export interface TanStackStartSeoSite {
   defaultTitle: string
   defaultTwitterCard?: 'app' | 'player' | 'summary' | 'summary_large_image'
   siteName?: string
+  themeColor?: string
   titleTemplate?: string
   twitterCreator?: string
   twitterSite?: string
@@ -79,5 +80,6 @@ export interface GenerateTanStackStartSeoParams {
   robots?: TanStackStartSeoRobots
   scripts?: TanStackStartSeoScriptTag[]
   site: TanStackStartSeoSite
+  themeColor?: string
   title?: string
 }
