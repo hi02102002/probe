@@ -20,6 +20,7 @@
   },
   "dependencies": {
     "@orpc/contract": "^1.14.12",
+    "@repo/schemas": "workspace:*",
     "zod": "^4.4.3"
   },
   "devDependencies": {
