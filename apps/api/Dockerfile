@@ -45,4 +45,4 @@ USER node
 
 EXPOSE 3001
 
-CMD ["sh", "-c", "node dist/migrate.js && node dist/index.js"]
+CMD ["sh", "-c", "echo '[startup] Running database migrations...' && node dist/migrate.js && echo '[startup] Database migrations complete. Starting API...' && exec node dist/index.js"]
