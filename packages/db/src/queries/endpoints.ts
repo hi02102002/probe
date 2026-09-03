@@ -54,11 +54,17 @@ export const createEndpoint = withDb(async (
 })
 
 export const getAllEndpoints = withDb(async (db, input: GetAllEndpointsInput) => {
-  const orderBy = mapSort(input.sort, {
+  const baseOrder = mapSort(input.sort, {
     createdAt: endpoint.createdAt,
-    lastRequestAt: endpoint.updatedAt,
+    lastRequestAt: endpoint.lastRequestAt,
     name: endpoint.name,
   }, [desc(endpoint.createdAt)])
+
+  const orderBy = [
+    ...baseOrder,
+    ...(input.sort?.by && input.sort.by !== 'createdAt' ? [desc(endpoint.createdAt)] : []),
+    desc(endpoint.id),
+  ]
 
   const { limit, offset, page } = resolvePagination(input.pagination, {
     defaultLimit: 10,
