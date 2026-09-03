@@ -33,8 +33,7 @@ The database package centrally enables PostgreSQL drizzle-plus query extensions,
 ## Local setup
 
 ```bash
-cp apps/api/.env.example apps/api/.env
-cp apps/web/.env.example apps/web/.env
+cp .env.example .env
 docker compose up -d
 pnpm install
 pnpm db:push
