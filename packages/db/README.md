@@ -2,7 +2,7 @@
 
 PostgreSQL setup using Drizzle ORM v1 RC, `pg` (node-postgres), and `drizzle-plus`.
 
-The package uses Drizzle Relational Queries v2 via `defineRelations()` and passes `relations` to the database instance. The schema intentionally contains only Better Auth tables; add application tables to `src/postgres/schema.ts` and extend `src/postgres/relations.ts` as the product grows.
+The package uses Drizzle Relational Queries v2 via `defineRelations()` and passes `relations` to the database instance. Add application tables to `src/postgres/schema.ts` and extend `src/postgres/relations.ts` as the product grows.
 
 ## drizzle-plus
 
