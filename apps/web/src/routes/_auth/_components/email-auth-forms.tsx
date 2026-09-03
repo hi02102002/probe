@@ -11,36 +11,19 @@ import { Input } from '@/components/ui/input'
 import { Separator } from '@/components/ui/separator'
 import { toastManager } from '@/components/ui/toast'
 import { getAuthClient } from '@/features/auth/lib/auth-client'
+import { getSafeRedirectPath, getSafeRedirectUrl } from '@/lib/safe-redirect'
 
 const MAGIC_LINK_COOLDOWN_SECONDS = 60
 
 function getAuthCallbackURL(redirectTo: string | undefined) {
-  const fallbackURL = new URL('/dashboard', window.location.origin)
-
-  if (!redirectTo) {
-    return fallbackURL.toString()
-  }
-
-  try {
-    const callbackURL = new URL(redirectTo, window.location.origin)
-
-    return callbackURL.origin === window.location.origin
-      ? callbackURL.toString()
-      : fallbackURL.toString()
-  }
-  catch {
-    return fallbackURL.toString()
-  }
+  return getSafeRedirectUrl(redirectTo, '/dashboard')
 }
 
 function getAuthErrorCallbackURL(redirectTo: string | undefined) {
-  const callbackURL = new URL(getAuthCallbackURL(redirectTo))
+  const safeRedirect = getSafeRedirectPath(redirectTo, '/dashboard')
   const errorCallbackURL = new URL('/login', window.location.origin)
 
-  errorCallbackURL.searchParams.set(
-    'redirect',
-    `${callbackURL.pathname}${callbackURL.search}${callbackURL.hash}`,
-  )
+  errorCallbackURL.searchParams.set('redirect', safeRedirect)
 
   return errorCallbackURL.toString()
 }

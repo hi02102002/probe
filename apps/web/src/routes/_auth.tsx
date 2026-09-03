@@ -3,11 +3,19 @@ import { z } from 'zod'
 import { Logo } from '@/components/logo'
 import { ThemeToggle } from '@/components/theme-toggle'
 
+import { getSafeRedirectPath } from '@/lib/safe-redirect'
+
+export { getSafeRedirectPath }
+
 export const Route = createFileRoute('/_auth')({
   beforeLoad: async ({ context, search }) => {
     if (context.session) {
       if (search.redirect) {
-        throw redirect({ href: search.redirect })
+        const safeRedirect = getSafeRedirectPath(search.redirect)
+
+        if (safeRedirect !== '/dashboard') {
+          throw redirect({ href: safeRedirect })
+        }
       }
 
       throw redirect({
