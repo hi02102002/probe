@@ -43,6 +43,7 @@ RUN apt-get update \
     && rm -rf /var/lib/apt/lists/*
 
 COPY --from=builder --chown=node:node /app/apps/web/.output ./
+COPY --from=builder --chown=node:node /app/apps/web/assets/fonts/ /app/fonts/
 
 USER node
 

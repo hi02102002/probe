@@ -1,13 +1,44 @@
+import fs from 'node:fs'
+import path from 'node:path'
+import process from 'node:process'
 import { Resvg } from '@resvg/resvg-js'
 import { createFileRoute } from '@tanstack/react-router'
 import { z } from 'zod'
-import { GEIST_MONO_BASE64, INTER_BASE64 } from '@/assets/fonts-base64'
 import { PROBE_LOGO_BASE64 } from '@/assets/logo-base64'
 
 const DEFAULT_TITLE = 'Probe'
 const DEFAULT_SUBTITLE = 'Developer Tooling'
 const DEFAULT_DESCRIPTION
   = 'Capture, inspect, and debug incoming webhook requests in real time.'
+
+function findFontPath(filename: string): string | undefined {
+  const candidateDirs = [
+    path.resolve(process.cwd(), 'public/fonts'),
+    path.resolve(process.cwd(), 'apps/web/public/fonts'),
+    path.resolve(process.cwd(), '.output/public/fonts'),
+    path.resolve(process.cwd(), 'assets/fonts'),
+    path.resolve(process.cwd(), 'apps/web/assets/fonts'),
+    path.resolve(process.cwd(), 'fonts'),
+    '/app/public/fonts',
+    '/app/fonts',
+  ]
+
+  for (const dir of candidateDirs) {
+    const fullPath = path.join(dir, filename)
+    if (fs.existsSync(fullPath)) {
+      return fullPath
+    }
+  }
+
+  return undefined
+}
+
+function getOgFontFiles(): string[] {
+  const inter = findFontPath('inter.ttf')
+  const geistMono = findFontPath('geist-mono.ttf')
+
+  return [inter, geistMono].filter((p): p is string => Boolean(p))
+}
 
 function escapeXml(value: string): string {
   return value
@@ -90,16 +121,6 @@ function renderOgImage({
   <title id="title">${escapeXml(title)}</title>
   <desc id="description">${escapeXml(description)}</desc>
   <defs>
-    <style>
-      @font-face {
-        font-family: 'Inter';
-        src: url(data:font/woff2;base64,${INTER_BASE64}) format('woff2');
-      }
-      @font-face {
-        font-family: 'Geist Mono';
-        src: url(data:font/woff2;base64,${GEIST_MONO_BASE64}) format('woff2');
-      }
-    </style>
     <linearGradient id="brandGrad" x1="0%" y1="0%" x2="100%" y2="100%">
       <stop offset="0%" stop-color="#00a6ff" />
       <stop offset="35%" stop-color="#3b82f6" />
@@ -237,7 +258,7 @@ function renderOgImage({
       <rect width="450" height="280" rx="10" fill="url(#codeGrad)" stroke="#ffffff" stroke-opacity="0.06" stroke-width="1" />
 
       <!-- Syntax Highlighted JSON Content -->
-      <g transform="translate(20, 26)" font-family="'Geist Mono', ui-monospace, SFMono-Regular, monospace" font-size="12" line-height="22">
+      <g transform="translate(20, 26)" font-family="'Geist Mono', ui-monospace, SFMono-Regular, monospace" font-size="12">
         <text y="0" fill="#64748b">{</text>
         <text y="24">
           <tspan x="14" fill="#38bdf8">&quot;id&quot;</tspan><tspan fill="#64748b">: </tspan><tspan fill="#a7f3d0">&quot;evt_3O9xL2eZvKYlo2&quot;</tspan><tspan fill="#64748b">,</tspan>
@@ -304,8 +325,17 @@ export const Route = createFileRoute('/og-image')({
           = searchParams.get('description')?.trim() || DEFAULT_DESCRIPTION
 
         const svg = renderOgImage({ description, subtitle, title })
+        const fontFiles = getOgFontFiles()
+
         const resvg = new Resvg(svg, {
           fitTo: { mode: 'width', value: 1200 },
+          font: {
+            defaultFontFamily: 'Inter',
+            fontFiles: fontFiles.length > 0 ? fontFiles : undefined,
+            loadSystemFonts: false,
+            monospaceFamily: 'Geist Mono',
+            sansSerifFamily: 'Inter',
+          },
         })
         const pngBuffer = resvg.render().asPng()
 
