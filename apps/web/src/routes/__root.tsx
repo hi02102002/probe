@@ -24,10 +24,11 @@ const evlogMiddleware = createMiddleware().server(evlogErrorHandler)
 
 export const Route = createRootRouteWithContext<RouterContext>()({
   errorComponent: RootErrorPage,
-  head: () => {
+  head: ({ matches }: { matches: Array<{ pathname: string }> }) => {
+    const leafPathname = matches[matches.length - 1]?.pathname ?? '/'
     const seo = generateAppSeo({
       includeDocumentMeta: true,
-      pathname: '/',
+      pathname: leafPathname,
     })
 
     return {
