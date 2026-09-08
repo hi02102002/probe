@@ -1,3 +1,4 @@
+import { getProductionSamplingConfig } from '@repo/utils'
 import evlog from 'evlog/nitro/v3'
 import { defineConfig } from 'nitro'
 
@@ -18,6 +19,7 @@ export default defineConfig({
         '/assets/**',
       ],
       redact: true,
+      sampling: getProductionSamplingConfig(),
     }),
   ],
 })

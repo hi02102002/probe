@@ -1,3 +1,4 @@
+import { getProductionSamplingConfig } from '@repo/utils'
 /** biome-ignore-all lint/suspicious/noExplicitAny: <hono> */
 import babel from '@rolldown/plugin-babel'
 import tailwindcss from '@tailwindcss/vite'
@@ -15,6 +16,7 @@ const EVLOG_CONFIG = {
     '/assets/**',
   ],
   redact: true,
+  sampling: getProductionSamplingConfig(),
 }
 
 const config = defineConfig(() => {

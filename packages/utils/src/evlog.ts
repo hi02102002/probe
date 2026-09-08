@@ -1,9 +1,22 @@
-import type { EnrichContext } from 'evlog'
+import type {
+  EnrichContext,
+  SamplingConfig,
+  SamplingRates,
+  TailSamplingCondition,
+  TailSamplingContext,
+} from 'evlog'
 import type { EnricherOptions } from 'evlog/enrichers'
 import { createDefaultEnrichers } from 'evlog/enrichers'
 import { composeEnrichers, defineEnricher, getHeader } from 'evlog/toolkit'
 
-export type { EnrichContext, EnricherOptions }
+export type {
+  EnrichContext,
+  EnricherOptions,
+  SamplingConfig,
+  SamplingRates,
+  TailSamplingCondition,
+  TailSamplingContext,
+}
 
 export interface CloudflareInfo {
   rayId?: string
@@ -60,4 +73,26 @@ export function createAppEnricher(
     ],
     { name: 'app-enricher' },
   )
+}
+
+export const defaultSamplingConfig: SamplingConfig = {
+  rates: {
+    info: 10,
+    warn: 50,
+    debug: 0,
+    error: 100,
+  },
+  keep: [
+    { status: 400 },
+    { duration: 1000 },
+    { path: '/api/critical/**' },
+  ],
+}
+
+declare const process: { env?: Record<string, string | undefined> } | undefined
+
+export function getProductionSamplingConfig(
+  isProduction = typeof process !== 'undefined' && process.env?.NODE_ENV === 'production',
+): SamplingConfig | undefined {
+  return isProduction ? defaultSamplingConfig : undefined
 }
