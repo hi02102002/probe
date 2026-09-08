@@ -8,6 +8,11 @@
       "types": "./src/index.ts",
       "development": "./src/index.ts",
       "import": "./dist/index.js"
+    },
+    "./evlog": {
+      "types": "./src/evlog.ts",
+      "development": "./src/evlog.ts",
+      "import": "./dist/evlog.js"
     }
   },
   "files": [
@@ -21,6 +26,7 @@
     "lint:fix": "eslint . --fix"
   },
   "dependencies": {
+    "evlog": "^2.24.0",
     "nanoid": "^5.1.6"
   },
   "devDependencies": {

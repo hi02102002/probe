@@ -6,7 +6,7 @@ import { requestId } from 'hono/request-id'
 import { secureHeaders } from 'hono/secure-headers'
 import { getAuth } from '#/auth.js'
 import { env } from '#/env.js'
-import { getAuthIdentifier } from '#/libs/evlog.js'
+import { createAppEnricher, getAuthIdentifier } from '#/libs/evlog.js'
 import { createORPCContext } from '#/libs/orpc/context.js'
 import { createRpcHandler } from '#/libs/orpc/handlers.js'
 import { router } from '#/routers/index.js'
@@ -36,6 +36,7 @@ export function createApp() {
       '/api/rpc/**',
     ],
     redact: true,
+    enrich: createAppEnricher(),
   }))
   app.use('*', async (c, next) => {
     const log = c.get('log')

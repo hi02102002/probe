@@ -9,7 +9,7 @@ import {
   ResponseHeadersPlugin,
 } from '@orpc/server/plugins'
 import { useLogger, withEvlog } from 'evlog/orpc'
-import { getAuthIdentifier } from '#/libs/evlog.js'
+import { createAppEnricher, getAuthIdentifier } from '#/libs/evlog.js'
 
 const maxBodySize = 1024 * 1024
 
@@ -36,6 +36,7 @@ export function createRpcHandler<R extends AnyRouter>(router: R) {
   })
 
   return withEvlog(handler, {
+    enrich: createAppEnricher(),
     redact: true,
   })
 }

@@ -1,3 +1,8 @@
+export {
+  type CloudflareInfo,
+  createAppEnricher,
+  createCloudflareEnricher,
+} from './evlog.js'
 export { resolveHttpUrl } from './http-url.js'
 export {
   ALPHANUMERIC,

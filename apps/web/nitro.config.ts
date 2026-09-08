@@ -5,6 +5,9 @@ export default defineConfig({
   experimental: {
     asyncContext: true,
   },
+  plugins: [
+    './server/plugins/evlog-enrich.ts',
+  ],
   modules: [
     evlog({
       env: {
