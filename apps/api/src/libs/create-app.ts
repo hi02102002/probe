@@ -6,7 +6,7 @@ import { requestId } from 'hono/request-id'
 import { secureHeaders } from 'hono/secure-headers'
 import { getAuth } from '#/auth.js'
 import { env } from '#/env.js'
-import { createAppEnricher, getAuthIdentifier } from '#/libs/evlog.js'
+import { createAppEnricher, enrichLogger, getAuthIdentifier } from '#/libs/evlog.js'
 import { createORPCContext } from '#/libs/orpc/context.js'
 import { createRpcHandler } from '#/libs/orpc/handlers.js'
 import { router } from '#/routers/index.js'
@@ -49,6 +49,7 @@ export function createApp() {
 
     if (log) {
       await getAuthIdentifier()(log, c.req.raw.headers, c.req.path)
+      await enrichLogger(log, c.req.raw.headers)
     }
 
     await next()

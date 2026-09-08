@@ -1,6 +1,7 @@
 import {
   createAppEnricher,
   createCloudflareEnricher,
+  enrichLogger,
   getProductionSamplingConfig,
 } from '@repo/utils'
 import { initLogger } from 'evlog'
@@ -14,7 +15,7 @@ initLogger({
   sampling: getProductionSamplingConfig(),
 })
 
-export { createAppEnricher, createCloudflareEnricher }
+export { createAppEnricher, createCloudflareEnricher, enrichLogger }
 
 let identifyAuth: ReturnType<typeof createAuthMiddleware> | undefined
 

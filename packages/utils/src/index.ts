@@ -3,6 +3,7 @@ export {
   createAppEnricher,
   createCloudflareEnricher,
   defaultSamplingConfig,
+  enrichLogger,
   getProductionSamplingConfig,
   type SamplingConfig,
   type SamplingRates,

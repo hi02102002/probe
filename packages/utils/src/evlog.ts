@@ -96,3 +96,31 @@ export function getProductionSamplingConfig(
 ): SamplingConfig | undefined {
   return isProduction ? defaultSamplingConfig : undefined
 }
+
+export async function enrichLogger(
+  log?: { set: (fields: Record<string, unknown>) => void },
+  headers?: unknown,
+) {
+  if (!log || !headers)
+    return
+
+  const safeHeaders: Record<string, string> = {}
+  if (typeof (headers as { forEach?: unknown }).forEach === 'function') {
+    (headers as Headers).forEach((value, key) => {
+      safeHeaders[key] = value
+    })
+  }
+  else if (typeof headers === 'object' && headers !== null) {
+    for (const [key, value] of Object.entries(headers)) {
+      if (typeof value === 'string')
+        safeHeaders[key] = value
+    }
+  }
+
+  const enrich = createAppEnricher()
+  const ctx = { event: {} as Record<string, unknown>, headers: safeHeaders }
+  await enrich(ctx as any)
+  if (Object.keys(ctx.event).length > 0) {
+    log.set(ctx.event)
+  }
+}

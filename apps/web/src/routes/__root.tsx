@@ -1,5 +1,6 @@
 import type { RouterContext } from '@/integrations/tanstack-query/root-provider'
 import interWoff2 from '@fontsource-variable/inter/files/inter-latin-wght-normal.woff2?url'
+import { enrichLogger } from '@repo/utils'
 import { TanStackDevtools } from '@tanstack/react-devtools'
 import {
   createRootRouteWithContext,
@@ -20,7 +21,19 @@ import TanStackQueryDevtools from '@/integrations/tanstack-query/devtools'
 import { generateAppSeo } from '@/lib/seo'
 import appCss from '@/styles.css?url'
 
-const evlogMiddleware = createMiddleware().server(evlogErrorHandler)
+const evlogMiddleware = createMiddleware().server(async (options) => {
+  try {
+    const { useRequest } = await import('nitro/context')
+    const req = useRequest()
+    const log = req?.context?.log as { set: (fields: Record<string, unknown>) => void } | undefined
+    if (log && req?.headers) {
+      await enrichLogger(log, req.headers)
+    }
+  }
+  catch {}
+
+  return evlogErrorHandler(options)
+})
 
 export const Route = createRootRouteWithContext<RouterContext>()({
   errorComponent: RootErrorPage,
