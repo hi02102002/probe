@@ -168,10 +168,13 @@ export function DataTable<TData, TValue = unknown>({
 
   const urlPagination: PaginationState = useMemo(
     () => ({
-      pageIndex: Math.max(0, (params.page ?? 1) - 1),
+      pageIndex: Math.min(
+        Math.max(0, (params.page ?? 1) - 1),
+        Math.max(0, (pageCount ?? Number.MAX_SAFE_INTEGER) - 1),
+      ),
       pageSize: params.limit ?? initialPageSize,
     }),
-    [params.page, params.limit, initialPageSize],
+    [params.page, params.limit, initialPageSize, pageCount],
   )
 
   const urlSorting: SortingState = useMemo(() => {
