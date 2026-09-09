@@ -50,7 +50,7 @@
     "db:check": "drizzle-kit check --config=drizzle.config.ts",
     "db:generate": "drizzle-kit generate --config=drizzle.config.ts",
     "db:migrate": "drizzle-kit migrate --config=drizzle.config.ts",
-    "db:migrate:prod": "node --env-file-if-exists=../../.env.local --env-file-if-exists=../../.env dist/migrate.js",
+    "db:migrate:prod": "node --env-file-if-exists=../../.env --env-file-if-exists=../../.env.local dist/migrate.js",
     "db:push": "drizzle-kit push --config=drizzle.config.ts",
     "db:studio": "drizzle-kit studio --config=drizzle.config.ts",
     "format": "eslint . --fix",
