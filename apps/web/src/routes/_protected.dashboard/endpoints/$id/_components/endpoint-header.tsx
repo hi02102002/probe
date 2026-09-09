@@ -19,7 +19,7 @@ export function EndpointHeader() {
 
   return (
     <div
-      className="flex flex-col gap-4"
+      className="flex flex-col gap-5"
     >
       <Breadcrumb>
         <BreadcrumbList

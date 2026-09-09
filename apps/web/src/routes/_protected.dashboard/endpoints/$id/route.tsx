@@ -1,6 +1,8 @@
 import { createFileRoute, Outlet } from '@tanstack/react-router'
 import { AppShell } from '@/components/layouts/dashboard'
+import { Divider } from '@/components/ui/divider'
 import { EndpointHeader } from './_components/endpoint-header'
+import { EndPointTabs } from './_components/endpoint-tabs'
 
 export const Route = createFileRoute('/_protected/dashboard/endpoints/$id')({
   component: RouteComponent,
@@ -29,7 +31,13 @@ export const Route = createFileRoute('/_protected/dashboard/endpoints/$id')({
 function RouteComponent() {
   return (
     <AppShell>
-      <EndpointHeader />
+      <div
+        className="flex flex-col gap-5"
+      >
+        <EndpointHeader />
+        <Divider />
+        <EndPointTabs />
+      </div>
       <Outlet />
     </AppShell>
   )

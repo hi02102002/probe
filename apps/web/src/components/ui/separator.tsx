@@ -20,4 +20,4 @@ export function Separator({
   )
 }
 
-export { SeparatorPrimitive }
+export { Separator as Divider, SeparatorPrimitive }
