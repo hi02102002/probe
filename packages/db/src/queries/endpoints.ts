@@ -1,6 +1,7 @@
 import { createId } from '@repo/utils'
 import { and, count, desc, eq, ilike } from 'drizzle-orm'
 import { DatabaseError, NotFoundError } from '../errors/database.error.js'
+import { escapeLike } from '../helpers/like.js'
 import { createPaginatedResult, resolvePagination } from '../helpers/pagination.js'
 import { mapSort } from '../helpers/sort.js'
 import { withDb } from '../helpers/with-db.js'
@@ -74,7 +75,7 @@ export const getAllEndpoints = withDb(async (db, input: GetAllEndpointsInput) =>
   const whereClause = and(
     eq(endpoint.userId, input.userId),
     input.status ? eq(endpoint.status, input.status) : undefined,
-    input.query ? ilike(endpoint.name, `%${input.query}%`) : undefined,
+    input.query ? ilike(endpoint.name, `%${escapeLike(input.query)}%`) : undefined,
   )
 
   const [
