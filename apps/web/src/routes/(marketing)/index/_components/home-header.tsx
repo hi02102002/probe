@@ -20,6 +20,7 @@ export function HomeHeader() {
           <h2 className="sr-only">Main Navigation</h2>
           <a className="px-3 py-2 text-muted-foreground text-sm transition-colors hover:text-foreground" href="#features">Inspect</a>
           <a className="px-3 py-2 text-muted-foreground text-sm transition-colors hover:text-foreground" href="#compare">How it works</a>
+          <a className="px-3 py-2 text-muted-foreground text-sm transition-colors hover:text-foreground" href="#faq">FAQ</a>
           <a className="px-3 py-2 text-muted-foreground text-sm transition-colors hover:text-foreground" href="#pricing">Start</a>
         </nav>
         <div className="flex items-center gap-2">

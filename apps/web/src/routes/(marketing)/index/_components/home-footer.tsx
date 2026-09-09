@@ -29,6 +29,7 @@ export function HomeFooter() {
         <div className="mt-4 flex flex-col items-start gap-2.5 text-muted-foreground text-sm">
           <a className="hover:text-foreground" href="#features">Inspect</a>
           <a className="hover:text-foreground" href="#compare">How it works</a>
+          <a className="hover:text-foreground" href="#faq">FAQ</a>
           <a className="hover:text-foreground" href="#pricing">Pricing</a>
         </div>
       </nav>

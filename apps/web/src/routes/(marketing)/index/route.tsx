@@ -2,6 +2,7 @@ import { createFileRoute } from '@tanstack/react-router'
 import { generateAppSeo } from '@/lib/seo'
 import { ComparisonSection } from './_components/comparison-section'
 import { DeliverySection } from './_components/delivery-section'
+import { faqs, FaqSection } from './_components/faq-section'
 import { FeaturesSection } from './_components/features-section'
 import { HeroSection } from './_components/hero-section'
 import { HomeFooter } from './_components/home-footer'
@@ -54,6 +55,18 @@ const structuredData = {
       'screenshot': 'https://probe.monobase.io.vn/og-image',
       'url': 'https://probe.monobase.io.vn/',
     },
+    {
+      '@type': 'FAQPage',
+      '@id': 'https://probe.monobase.io.vn/#faq',
+      'mainEntity': faqs.map(faq => ({
+        '@type': 'Question',
+        'acceptedAnswer': {
+          '@type': 'Answer',
+          'text': faq.answer,
+        },
+        'name': faq.question,
+      })),
+    },
   ],
 }
 
@@ -83,6 +96,7 @@ function HomePage() {
         <FeaturesSection />
         <DeliverySection />
         <ComparisonSection />
+        <FaqSection />
         <PricingSection />
       </main>
       <HomeFooter />
