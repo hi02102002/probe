@@ -1,50 +1,81 @@
-# Probe starter
+# Probe
 
-Clean monorepo starter extracted from the original source.
+A developer-focused webhook inspection and debugging platform. Capture, inspect, and analyze incoming HTTP requests in real time.
 
 ## Stack
 
-- TanStack Start + React
-- Hono API
-- oRPC
-- Better Auth 1.7
-- Drizzle ORM v1 RC + Relational Queries v2 + drizzle-plus + PostgreSQL (`pg`)
-- pnpm workspaces + Turborepo
+- **Frontend**: TanStack Start (React 19), Vite, Tailwind CSS v4, Base UI
+- **Backend**: Hono API (`@hono/node-server`)
+- **API / RPC**: oRPC
+- **Database**: PostgreSQL, Drizzle ORM v1 RC, drizzle-plus
+- **Auth**: Better Auth 1.7 (Magic Link, OAuth)
+- **Email**: React Email, Resend
+- **Validation**: Zod
+- **Tooling**: Turborepo, pnpm workspaces
 
-## Apps
+## Architecture
 
-- `apps/web` - TanStack Start UI, auth pages, protected dashboard, SEO helpers
-- `apps/api` - Hono API, Better Auth handler, oRPC handler
+![Probe system architecture](docs/architecture/probe-system.png)
 
-## Packages
+[Open editable tldraw source](docs/architecture/probe-system.tldraw)
 
-- `packages/auth` - Better Auth 1.7 client/server factory
-- `packages/db` - Drizzle schema, PostgreSQL client, drizzle-plus extensions, migrations
-- `packages/api-contracts` - oRPC contracts
-- `packages/env` - validated env helpers
-- `packages/utils` - small shared utilities
-- `packages/eslint-config` - shared ESLint config
-- `packages/typescript-config` - shared TypeScript config
+## Structure
 
-## drizzle-plus
+### Apps
 
-The database package centrally enables PostgreSQL drizzle-plus query extensions, so consumers only import the database from `@repo/db`. Enabled by default: `count`, `create`, `findUnique`, `findManyAndCount`, `$cursor`, `updateMany`, and `upsert`. SQL helpers are available from `@repo/db/plus`.
+- `apps/web` – TanStack Start web app (marketing, auth flows, dashboard)
+- `apps/api` – Hono API server (Better Auth handler, oRPC procedures)
 
-## Local setup
+### Packages
+
+- `packages/api-contracts` – Shared oRPC contracts and schemas
+- `packages/auth` – Better Auth configuration, client, and server utilities
+- `packages/db` – Drizzle schema, PostgreSQL client, drizzle-plus extensions, migrations
+- `packages/email` – React Email templates and Resend delivery client
+- `packages/env` – Type-safe environment variables (`@t3-oss/env-core`, Zod)
+- `packages/schemas` – Shared Zod validation schemas
+- `packages/utils` – Shared utility helpers and logging
+- `packages/eslint-config` – Shared ESLint configuration
+- `packages/typescript-config` – Shared TypeScript configurations
+
+## Quick Start
+
+### 1. Environment & Database
 
 ```bash
 cp .env.example .env
 docker compose up -d
+```
+
+### 2. Dependencies & Schema
+
+```bash
 pnpm install
 pnpm db:push
+```
+
+### 3. Start Development
+
+```bash
 pnpm dev
 ```
 
-Web: http://localhost:3000
-API: http://localhost:3001
+| Service | URL |
+| :--- | :--- |
+| **Web** | http://localhost:3000 |
+| **API** | http://localhost:3001 |
+| **Email Preview** | http://localhost:3002 (`pnpm email:dev`) |
 
-## Drizzle v1 / Better Auth 1.7 note
+## Scripts
 
-This starter is already on Drizzle ORM v1 RC and Relational Queries v2. It has no legacy Drizzle migration history, so `drizzle-kit up` is not required for this repository.
-
-For a fresh local database, `pnpm db:push` is enough. If you point this code at an existing Better Auth 1.6 database with account rows, do not apply the new account schema blindly; use the Better Auth 1.7 migration plan/apply flow first because v1.7 adds the required account `issuer` identity.
+| Command | Description |
+| :--- | :--- |
+| `pnpm dev` | Start development servers |
+| `pnpm build` | Build all apps and packages |
+| `pnpm check-types` | Type-check all workspaces |
+| `pnpm lint` / `pnpm format` | Lint and auto-format code |
+| `pnpm db:push` | Push schema changes directly to PostgreSQL |
+| `pnpm db:generate` | Generate Drizzle migrations |
+| `pnpm db:migrate` | Run pending database migrations |
+| `pnpm db:studio` | Open Drizzle Studio web interface |
+| `pnpm email:dev` | Start React Email template preview |
