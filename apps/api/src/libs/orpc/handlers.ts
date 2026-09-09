@@ -40,11 +40,5 @@ export function createRpcHandler<R extends AnyRouter>(router: R) {
   return withEvlog(handler, {
     enrich: createAppEnricher(),
     redact: true,
-    keep(ctx) {
-      const user = ctx.context?.user as { isPremium?: boolean, plan?: string } | undefined
-      if (user?.isPremium || user?.plan === 'enterprise') {
-        ctx.shouldKeep = true
-      }
-    },
   })
 }

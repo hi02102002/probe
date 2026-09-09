@@ -37,12 +37,6 @@ export function createApp() {
     ],
     redact: true,
     enrich: createAppEnricher(),
-    keep(ctx) {
-      const user = ctx.context?.user as { isPremium?: boolean, plan?: string } | undefined
-      if (user?.isPremium || user?.plan === 'enterprise') {
-        ctx.shouldKeep = true
-      }
-    },
   }))
   app.use('*', async (c, next) => {
     const log = c.get('log')
