@@ -60,11 +60,11 @@ pnpm db:push
 pnpm dev
 ```
 
-| Service | URL |
-| :--- | :--- |
-| **Web** | http://localhost:3000 |
-| **API** | http://localhost:3001 |
-| **Email Preview** | http://localhost:3002 (`pnpm email:dev`) |
+| Service | Local | Production |
+| :--- | :--- | :--- |
+| **Web** | http://localhost:3000 | https://probe.monobase.io.vn |
+| **API** | http://localhost:3001 | https://probe-api.monobase.io.vn |
+| **Email Preview** | http://localhost:3002 (`pnpm email:dev`) | — |
 
 ## Scripts
 
