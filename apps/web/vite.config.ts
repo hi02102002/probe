@@ -38,15 +38,13 @@ const config = defineConfig(() => {
       evlog(EVLOG_CONFIG as any),
       nitro({ rollupConfig: { external: [/^@sentry\//] } }),
       tailwindcss(),
-      tanstackStart({
-        router: {
-          routeFileIgnorePattern:
-            '((^|/)[-_]components(/|$)|(^|/)-|\\.content\\.(ts|tsx|js|mjs|cjs|jsx|json|jsonc|json5|md|mdx|yaml|yml)$)',
-        },
-      }),
+      tanstackStart(),
       viteReact(),
       babel({ presets: [reactCompilerPreset()] }),
     ],
+    optimizeDeps: {
+      exclude: ['@resvg/resvg-js'],
+    },
     resolve: { tsconfigPaths: true },
   }
 })

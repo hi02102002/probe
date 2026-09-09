@@ -186,3 +186,24 @@ export const updateEndpoint = withDb(async (
 
   return updatedEndpoint
 })
+
+export const getEndpointById = withDb(async (db, { id, userId }: {
+  id: string
+  userId: string
+}) => {
+  const endpoint = await db.query.endpoint.findFirst({
+    where: {
+      id,
+      userId,
+    },
+  })
+
+  if (!endpoint) {
+    throw new NotFoundError({
+      entity: 'endpoint',
+      message: `Endpoint with id ${id} not found for user ${userId}`,
+    })
+  }
+
+  return endpoint
+})

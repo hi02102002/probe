@@ -1,6 +1,5 @@
 import type { RouterContext } from '@/integrations/tanstack-query/root-provider'
 import interWoff2 from '@fontsource-variable/inter/files/inter-latin-wght-normal.woff2?url'
-import { enrichLogger } from '@repo/utils'
 import { TanStackDevtools } from '@tanstack/react-devtools'
 import {
   createRootRouteWithContext,
@@ -10,7 +9,6 @@ import {
 } from '@tanstack/react-router'
 import { TanStackRouterDevtoolsPanel } from '@tanstack/react-router-devtools'
 import { createMiddleware } from '@tanstack/react-start'
-import { evlogErrorHandler } from 'evlog/nitro/v3'
 import { ThemeProvider } from 'next-themes'
 import { NuqsAdapter } from 'nuqs/adapters/tanstack-router'
 import { NotFoundPage, RootErrorPage } from '@/components/error-pages'
@@ -23,7 +21,10 @@ import appCss from '@/styles.css?url'
 
 const evlogMiddleware = createMiddleware().server(async (options) => {
   try {
-    const { useRequest } = await import('nitro/context')
+    const [{ useRequest }, { enrichLogger }] = await Promise.all([
+      import('nitro/context'),
+      import('@repo/utils'),
+    ])
     const req = useRequest()
     const log = req?.context?.log as { set: (fields: Record<string, unknown>) => void } | undefined
     if (log && req?.headers) {
@@ -32,6 +33,7 @@ const evlogMiddleware = createMiddleware().server(async (options) => {
   }
   catch {}
 
+  const { evlogErrorHandler } = await import('evlog/nitro/v3')
   return evlogErrorHandler(options)
 })
 

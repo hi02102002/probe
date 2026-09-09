@@ -18,7 +18,7 @@ import { RulesTab } from './_components/rules-tab'
 import { MOCK_ENDPOINT, MOCK_REQUESTS } from './_data'
 
 export const Route = createFileRoute(
-  '/_protected/dashboard/endpoints_/$endpointId',
+  '/_protected/dashboard/endpoints_/mock/$endpointId',
 )({
   component: EndpointDetailPage,
   head: () => generateAppSeo({

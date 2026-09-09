@@ -23,7 +23,12 @@ import { Route as ProtectedDashboardIndexRouteRouteImport } from './routes/_prot
 import { Route as ProtectedDashboardBillingRouteRouteImport } from './routes/_protected.dashboard/billing/route'
 import { Route as ProtectedDashboardSettingsRouteRouteImport } from './routes/_protected.dashboard/settings/route'
 import { Route as ProtectedDashboardEndpointsIndexRouteRouteImport } from './routes/_protected.dashboard/endpoints/index/route'
-import { Route as ProtectedDashboardEndpointsEndpointIdRouteRouteImport } from './routes/_protected.dashboard/endpoints_.$endpointId/route'
+import { Route as ProtectedDashboardEndpointsIdRouteRouteImport } from './routes/_protected.dashboard/endpoints/$id/route'
+import { Route as ProtectedDashboardEndpointsIdIndexRouteRouteImport } from './routes/_protected.dashboard/endpoints/$id/index/route'
+import { Route as ProtectedDashboardEndpointsIdReplayRouteRouteImport } from './routes/_protected.dashboard/endpoints/$id/replay/route'
+import { Route as ProtectedDashboardEndpointsIdRequestsRouteRouteImport } from './routes/_protected.dashboard/endpoints/$id/requests/route'
+import { Route as ProtectedDashboardEndpointsIdRulesRouteRouteImport } from './routes/_protected.dashboard/endpoints/$id/rules/route'
+import { Route as ProtectedDashboardEndpointsMockEndpointIdRouteRouteImport } from './routes/_protected.dashboard/endpoints_.mock.$endpointId/route'
 
 const SplatRoute = SplatRouteImport.update({
   id: '/$',
@@ -97,10 +102,40 @@ const ProtectedDashboardEndpointsIndexRouteRoute =
     path: '/dashboard/endpoints',
     getParentRoute: () => ProtectedRoute,
   } as any)
-const ProtectedDashboardEndpointsEndpointIdRouteRoute =
-  ProtectedDashboardEndpointsEndpointIdRouteRouteImport.update({
-    id: '/dashboard/endpoints_/$endpointId',
-    path: '/dashboard/endpoints/$endpointId',
+const ProtectedDashboardEndpointsIdRouteRoute =
+  ProtectedDashboardEndpointsIdRouteRouteImport.update({
+    id: '/dashboard/endpoints/$id',
+    path: '/dashboard/endpoints/$id',
+    getParentRoute: () => ProtectedRoute,
+  } as any)
+const ProtectedDashboardEndpointsIdIndexRouteRoute =
+  ProtectedDashboardEndpointsIdIndexRouteRouteImport.update({
+    id: '/',
+    path: '',
+    getParentRoute: () => ProtectedDashboardEndpointsIdRouteRoute,
+  } as any)
+const ProtectedDashboardEndpointsIdReplayRouteRoute =
+  ProtectedDashboardEndpointsIdReplayRouteRouteImport.update({
+    id: '/replay',
+    path: '/replay',
+    getParentRoute: () => ProtectedDashboardEndpointsIdRouteRoute,
+  } as any)
+const ProtectedDashboardEndpointsIdRequestsRouteRoute =
+  ProtectedDashboardEndpointsIdRequestsRouteRouteImport.update({
+    id: '/requests',
+    path: '/requests',
+    getParentRoute: () => ProtectedDashboardEndpointsIdRouteRoute,
+  } as any)
+const ProtectedDashboardEndpointsIdRulesRouteRoute =
+  ProtectedDashboardEndpointsIdRulesRouteRouteImport.update({
+    id: '/rules',
+    path: '/rules',
+    getParentRoute: () => ProtectedDashboardEndpointsIdRouteRoute,
+  } as any)
+const ProtectedDashboardEndpointsMockEndpointIdRouteRoute =
+  ProtectedDashboardEndpointsMockEndpointIdRouteRouteImport.update({
+    id: '/dashboard/endpoints_/mock/$endpointId',
+    path: '/dashboard/endpoints/mock/$endpointId',
     getParentRoute: () => ProtectedRoute,
   } as any)
 
@@ -117,7 +152,12 @@ export interface FileRoutesByFullPath {
   '/dashboard/billing': typeof ProtectedDashboardBillingRouteRoute
   '/dashboard/settings': typeof ProtectedDashboardSettingsRouteRoute
   '/dashboard/endpoints/': typeof ProtectedDashboardEndpointsIndexRouteRoute
-  '/dashboard/endpoints/$endpointId': typeof ProtectedDashboardEndpointsEndpointIdRouteRoute
+  '/dashboard/endpoints/$id': typeof ProtectedDashboardEndpointsIdRouteRouteWithChildren
+  '/dashboard/endpoints/$id/': typeof ProtectedDashboardEndpointsIdIndexRouteRoute
+  '/dashboard/endpoints/$id/replay': typeof ProtectedDashboardEndpointsIdReplayRouteRoute
+  '/dashboard/endpoints/$id/requests': typeof ProtectedDashboardEndpointsIdRequestsRouteRoute
+  '/dashboard/endpoints/$id/rules': typeof ProtectedDashboardEndpointsIdRulesRouteRoute
+  '/dashboard/endpoints/mock/$endpointId': typeof ProtectedDashboardEndpointsMockEndpointIdRouteRoute
 }
 export interface FileRoutesByTo {
   '/$': typeof SplatRoute
@@ -132,7 +172,11 @@ export interface FileRoutesByTo {
   '/dashboard/billing': typeof ProtectedDashboardBillingRouteRoute
   '/dashboard/settings': typeof ProtectedDashboardSettingsRouteRoute
   '/dashboard/endpoints': typeof ProtectedDashboardEndpointsIndexRouteRoute
-  '/dashboard/endpoints/$endpointId': typeof ProtectedDashboardEndpointsEndpointIdRouteRoute
+  '/dashboard/endpoints/$id': typeof ProtectedDashboardEndpointsIdIndexRouteRoute
+  '/dashboard/endpoints/$id/replay': typeof ProtectedDashboardEndpointsIdReplayRouteRoute
+  '/dashboard/endpoints/$id/requests': typeof ProtectedDashboardEndpointsIdRequestsRouteRoute
+  '/dashboard/endpoints/$id/rules': typeof ProtectedDashboardEndpointsIdRulesRouteRoute
+  '/dashboard/endpoints/mock/$endpointId': typeof ProtectedDashboardEndpointsMockEndpointIdRouteRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -150,7 +194,12 @@ export interface FileRoutesById {
   '/_protected/dashboard/billing': typeof ProtectedDashboardBillingRouteRoute
   '/_protected/dashboard/settings': typeof ProtectedDashboardSettingsRouteRoute
   '/_protected/dashboard/endpoints/': typeof ProtectedDashboardEndpointsIndexRouteRoute
-  '/_protected/dashboard/endpoints_/$endpointId': typeof ProtectedDashboardEndpointsEndpointIdRouteRoute
+  '/_protected/dashboard/endpoints/$id': typeof ProtectedDashboardEndpointsIdRouteRouteWithChildren
+  '/_protected/dashboard/endpoints/$id/': typeof ProtectedDashboardEndpointsIdIndexRouteRoute
+  '/_protected/dashboard/endpoints/$id/replay': typeof ProtectedDashboardEndpointsIdReplayRouteRoute
+  '/_protected/dashboard/endpoints/$id/requests': typeof ProtectedDashboardEndpointsIdRequestsRouteRoute
+  '/_protected/dashboard/endpoints/$id/rules': typeof ProtectedDashboardEndpointsIdRulesRouteRoute
+  '/_protected/dashboard/endpoints_/mock/$endpointId': typeof ProtectedDashboardEndpointsMockEndpointIdRouteRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -167,7 +216,12 @@ export interface FileRouteTypes {
     | '/dashboard/billing'
     | '/dashboard/settings'
     | '/dashboard/endpoints/'
-    | '/dashboard/endpoints/$endpointId'
+    | '/dashboard/endpoints/$id'
+    | '/dashboard/endpoints/$id/'
+    | '/dashboard/endpoints/$id/replay'
+    | '/dashboard/endpoints/$id/requests'
+    | '/dashboard/endpoints/$id/rules'
+    | '/dashboard/endpoints/mock/$endpointId'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/$'
@@ -182,7 +236,11 @@ export interface FileRouteTypes {
     | '/dashboard/billing'
     | '/dashboard/settings'
     | '/dashboard/endpoints'
-    | '/dashboard/endpoints/$endpointId'
+    | '/dashboard/endpoints/$id'
+    | '/dashboard/endpoints/$id/replay'
+    | '/dashboard/endpoints/$id/requests'
+    | '/dashboard/endpoints/$id/rules'
+    | '/dashboard/endpoints/mock/$endpointId'
   id:
     | '__root__'
     | '/$'
@@ -199,7 +257,12 @@ export interface FileRouteTypes {
     | '/_protected/dashboard/billing'
     | '/_protected/dashboard/settings'
     | '/_protected/dashboard/endpoints/'
-    | '/_protected/dashboard/endpoints_/$endpointId'
+    | '/_protected/dashboard/endpoints/$id'
+    | '/_protected/dashboard/endpoints/$id/'
+    | '/_protected/dashboard/endpoints/$id/replay'
+    | '/_protected/dashboard/endpoints/$id/requests'
+    | '/_protected/dashboard/endpoints/$id/rules'
+    | '/_protected/dashboard/endpoints_/mock/$endpointId'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -314,11 +377,46 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ProtectedDashboardEndpointsIndexRouteRouteImport
       parentRoute: typeof ProtectedRoute
     }
-    '/_protected/dashboard/endpoints_/$endpointId': {
-      id: '/_protected/dashboard/endpoints_/$endpointId'
-      path: '/dashboard/endpoints/$endpointId'
-      fullPath: '/dashboard/endpoints/$endpointId'
-      preLoaderRoute: typeof ProtectedDashboardEndpointsEndpointIdRouteRouteImport
+    '/_protected/dashboard/endpoints/$id': {
+      id: '/_protected/dashboard/endpoints/$id'
+      path: '/dashboard/endpoints/$id'
+      fullPath: '/dashboard/endpoints/$id'
+      preLoaderRoute: typeof ProtectedDashboardEndpointsIdRouteRouteImport
+      parentRoute: typeof ProtectedRoute
+    }
+    '/_protected/dashboard/endpoints/$id/': {
+      id: '/_protected/dashboard/endpoints/$id/'
+      path: ''
+      fullPath: '/dashboard/endpoints/$id/'
+      preLoaderRoute: typeof ProtectedDashboardEndpointsIdIndexRouteRouteImport
+      parentRoute: typeof ProtectedDashboardEndpointsIdRouteRoute
+    }
+    '/_protected/dashboard/endpoints/$id/replay': {
+      id: '/_protected/dashboard/endpoints/$id/replay'
+      path: '/replay'
+      fullPath: '/dashboard/endpoints/$id/replay'
+      preLoaderRoute: typeof ProtectedDashboardEndpointsIdReplayRouteRouteImport
+      parentRoute: typeof ProtectedDashboardEndpointsIdRouteRoute
+    }
+    '/_protected/dashboard/endpoints/$id/requests': {
+      id: '/_protected/dashboard/endpoints/$id/requests'
+      path: '/requests'
+      fullPath: '/dashboard/endpoints/$id/requests'
+      preLoaderRoute: typeof ProtectedDashboardEndpointsIdRequestsRouteRouteImport
+      parentRoute: typeof ProtectedDashboardEndpointsIdRouteRoute
+    }
+    '/_protected/dashboard/endpoints/$id/rules': {
+      id: '/_protected/dashboard/endpoints/$id/rules'
+      path: '/rules'
+      fullPath: '/dashboard/endpoints/$id/rules'
+      preLoaderRoute: typeof ProtectedDashboardEndpointsIdRulesRouteRouteImport
+      parentRoute: typeof ProtectedDashboardEndpointsIdRouteRoute
+    }
+    '/_protected/dashboard/endpoints_/mock/$endpointId': {
+      id: '/_protected/dashboard/endpoints_/mock/$endpointId'
+      path: '/dashboard/endpoints/mock/$endpointId'
+      fullPath: '/dashboard/endpoints/mock/$endpointId'
+      preLoaderRoute: typeof ProtectedDashboardEndpointsMockEndpointIdRouteRouteImport
       parentRoute: typeof ProtectedRoute
     }
   }
@@ -334,12 +432,37 @@ const AuthRouteChildren: AuthRouteChildren = {
 
 const AuthRouteWithChildren = AuthRoute._addFileChildren(AuthRouteChildren)
 
+interface ProtectedDashboardEndpointsIdRouteRouteChildren {
+  ProtectedDashboardEndpointsIdIndexRouteRoute: typeof ProtectedDashboardEndpointsIdIndexRouteRoute
+  ProtectedDashboardEndpointsIdReplayRouteRoute: typeof ProtectedDashboardEndpointsIdReplayRouteRoute
+  ProtectedDashboardEndpointsIdRequestsRouteRoute: typeof ProtectedDashboardEndpointsIdRequestsRouteRoute
+  ProtectedDashboardEndpointsIdRulesRouteRoute: typeof ProtectedDashboardEndpointsIdRulesRouteRoute
+}
+
+const ProtectedDashboardEndpointsIdRouteRouteChildren: ProtectedDashboardEndpointsIdRouteRouteChildren =
+  {
+    ProtectedDashboardEndpointsIdIndexRouteRoute:
+      ProtectedDashboardEndpointsIdIndexRouteRoute,
+    ProtectedDashboardEndpointsIdReplayRouteRoute:
+      ProtectedDashboardEndpointsIdReplayRouteRoute,
+    ProtectedDashboardEndpointsIdRequestsRouteRoute:
+      ProtectedDashboardEndpointsIdRequestsRouteRoute,
+    ProtectedDashboardEndpointsIdRulesRouteRoute:
+      ProtectedDashboardEndpointsIdRulesRouteRoute,
+  }
+
+const ProtectedDashboardEndpointsIdRouteRouteWithChildren =
+  ProtectedDashboardEndpointsIdRouteRoute._addFileChildren(
+    ProtectedDashboardEndpointsIdRouteRouteChildren,
+  )
+
 interface ProtectedRouteChildren {
   ProtectedDashboardIndexRouteRoute: typeof ProtectedDashboardIndexRouteRoute
   ProtectedDashboardBillingRouteRoute: typeof ProtectedDashboardBillingRouteRoute
   ProtectedDashboardSettingsRouteRoute: typeof ProtectedDashboardSettingsRouteRoute
   ProtectedDashboardEndpointsIndexRouteRoute: typeof ProtectedDashboardEndpointsIndexRouteRoute
-  ProtectedDashboardEndpointsEndpointIdRouteRoute: typeof ProtectedDashboardEndpointsEndpointIdRouteRoute
+  ProtectedDashboardEndpointsIdRouteRoute: typeof ProtectedDashboardEndpointsIdRouteRouteWithChildren
+  ProtectedDashboardEndpointsMockEndpointIdRouteRoute: typeof ProtectedDashboardEndpointsMockEndpointIdRouteRoute
 }
 
 const ProtectedRouteChildren: ProtectedRouteChildren = {
@@ -348,8 +471,10 @@ const ProtectedRouteChildren: ProtectedRouteChildren = {
   ProtectedDashboardSettingsRouteRoute: ProtectedDashboardSettingsRouteRoute,
   ProtectedDashboardEndpointsIndexRouteRoute:
     ProtectedDashboardEndpointsIndexRouteRoute,
-  ProtectedDashboardEndpointsEndpointIdRouteRoute:
-    ProtectedDashboardEndpointsEndpointIdRouteRoute,
+  ProtectedDashboardEndpointsIdRouteRoute:
+    ProtectedDashboardEndpointsIdRouteRouteWithChildren,
+  ProtectedDashboardEndpointsMockEndpointIdRouteRoute:
+    ProtectedDashboardEndpointsMockEndpointIdRouteRoute,
 }
 
 const ProtectedRouteWithChildren = ProtectedRoute._addFileChildren(

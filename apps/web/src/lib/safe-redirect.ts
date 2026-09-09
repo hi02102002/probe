@@ -95,4 +95,3 @@ export function getSafeRedirectUrl(
 
   return new URL(safePath, base).toString()
 }
-

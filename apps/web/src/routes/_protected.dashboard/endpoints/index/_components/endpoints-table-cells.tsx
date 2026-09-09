@@ -1,37 +1,21 @@
 import type { ContractOutputs } from '@repo/api-contracts'
 import { ArrowRightIcon } from '@phosphor-icons/react'
 import { Link } from '@tanstack/react-router'
-import { useSyncExternalStore } from 'react'
 import { BrandIcon } from '@/components/brand-icon'
 import { Button } from '@/components/ui/button'
 import { CopyButton } from '@/components/ui/copy-button'
-import { EndpointStatus } from '@/features/endpoints'
+import { EndpointStatus, getIngestUrl } from '@/features/endpoints'
 import { formatDate, formatRelativeTime } from '@/lib/dayjs'
 
 export type Endpoint = ContractOutputs['endpoint']['list']['items'][number]
-
-const subscribeToOrigin = () => () => {}
-
-function useCurrentOrigin() {
-  return useSyncExternalStore(
-    subscribeToOrigin,
-    () => window.location.origin,
-    () => '',
-  )
-}
-
-function getIngestUrl(token: string, origin: string) {
-  const path = `/ep/${token}`
-  return origin ? `${origin}${path}` : path
-}
 
 export function EndpointNameCell({ item }: { item: Endpoint }) {
   return (
     <Link
       className="group inline-flex min-w-0 items-center gap-3 text-left focus-visible:outline-none"
-      params={{ endpointId: item.id }}
+      params={{ id: item.id }}
       preload="intent"
-      to="/dashboard/endpoints/$endpointId"
+      to="/dashboard/endpoints/$id"
     >
       <div className="flex size-9 shrink-0 items-center justify-center rounded-lg border bg-muted/40 shadow-xs/5 transition-colors group-hover:bg-muted/70">
         <BrandIcon className="size-4.5 shrink-0" name={item.name} />
@@ -53,9 +37,7 @@ export function StatusCell({ status }: { status?: Endpoint['status'] }) {
 }
 
 export function TokenCell({ token }: { token: string }) {
-  const origin = useCurrentOrigin()
-  const ingestUrl = getIngestUrl(token, origin)
-  const displayUrl = ingestUrl.replace(/^https?:\/\//, '')
+  const ingestUrl = getIngestUrl(token)
 
   return (
     <div
@@ -66,7 +48,7 @@ export function TokenCell({ token }: { token: string }) {
         className="truncate text-muted-foreground"
         title={ingestUrl}
       >
-        {displayUrl}
+        {ingestUrl}
       </span>
       <CopyButton
         aria-label="Copy Ingest URL"
@@ -101,9 +83,9 @@ export function ActionsCell({ item }: { item: Endpoint }) {
         aria-label={`View ${item.name} details`}
         render={(
           <Link
-            params={{ endpointId: item.id }}
+            params={{ id: item.id }}
             preload="intent"
-            to="/dashboard/endpoints/$endpointId"
+            to="/dashboard/endpoints/$id"
           />
         )}
         size="icon-sm"

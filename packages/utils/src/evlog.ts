@@ -7,7 +7,73 @@ import type {
 } from 'evlog'
 import type { EnricherOptions } from 'evlog/enrichers'
 import { createDefaultEnrichers } from 'evlog/enrichers'
-import { composeEnrichers, defineEnricher, getHeader } from 'evlog/toolkit'
+
+function getHeader(
+  headers: Record<string, unknown> | undefined,
+  name: string,
+): string | undefined {
+  if (!headers)
+    return undefined
+  if (typeof headers[name] === 'string')
+    return headers[name] as string
+  const lowerName = name.toLowerCase()
+  if (typeof headers[lowerName] === 'string')
+    return headers[lowerName] as string
+  for (const [key, value] of Object.entries(headers)) {
+    if (key.toLowerCase() === lowerName && typeof value === 'string')
+      return value
+  }
+  return undefined
+}
+
+function defineEnricher(
+  def: {
+    name: string
+    field: string
+    compute: (ctx: EnrichContext) => unknown
+  },
+  options: EnricherOptions = {},
+): (ctx: EnrichContext) => void {
+  const { name, field, compute } = def
+  return (ctx: EnrichContext) => {
+    let computed: unknown
+    try {
+      computed = compute(ctx)
+    }
+    catch (err) {
+      console.error(`[evlog/${name}] enrich failed:`, err)
+      return
+    }
+    if (computed === undefined || !field)
+      return
+    const target = (ctx.event as Record<string, unknown>)[field]
+    if (target && typeof target === 'object' && typeof computed === 'object') {
+      ;(ctx.event as Record<string, unknown>)[field] = options.overwrite
+        ? { ...(target as Record<string, unknown>), ...(computed as Record<string, unknown>) }
+        : { ...(computed as Record<string, unknown>), ...(target as Record<string, unknown>) }
+    }
+    else {
+      ;(ctx.event as Record<string, unknown>)[field] = computed
+    }
+  }
+}
+
+function composeEnrichers(
+  enrichers: Array<(ctx: EnrichContext) => void | Promise<void>>,
+  options: { name?: string } = {},
+): (ctx: EnrichContext) => Promise<void> {
+  const label = options.name ?? 'compose-enrichers'
+  return async (ctx: EnrichContext) => {
+    for (const enricher of enrichers) {
+      try {
+        await enricher(ctx)
+      }
+      catch (err) {
+        console.error(`[evlog/${label}] enrich failed:`, err)
+      }
+    }
+  }
+}
 
 export type {
   EnrichContext,

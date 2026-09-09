@@ -1,7 +1,6 @@
 import fs from 'node:fs'
 import path from 'node:path'
 import process from 'node:process'
-import { Resvg } from '@resvg/resvg-js'
 import { createFileRoute } from '@tanstack/react-router'
 import { z } from 'zod'
 import { PROBE_LOGO_BASE64 } from '@/assets/logo-base64'
@@ -316,7 +315,7 @@ export const Route = createFileRoute('/og-image')({
   component: OgImagePage,
   server: {
     handlers: {
-      GET: ({ request }) => {
+      GET: async ({ request }) => {
         const searchParams = new URL(request.url).searchParams
         const title = searchParams.get('title')?.trim() || DEFAULT_TITLE
         const subtitle
@@ -327,6 +326,7 @@ export const Route = createFileRoute('/og-image')({
         const svg = renderOgImage({ description, subtitle, title })
         const fontFiles = getOgFontFiles()
 
+        const { Resvg } = await import('@resvg/resvg-js')
         const resvg = new Resvg(svg, {
           fitTo: { mode: 'width', value: 1200 },
           font: {

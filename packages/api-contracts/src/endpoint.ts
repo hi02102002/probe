@@ -40,6 +40,18 @@ export const endpointContract = {
       query: GetAllEndpointsInputSchema,
     }))
     .output(GetAllEndpointsOutputSchema),
+  getById: oc
+    .route({
+      description: 'Get a single endpoint by its ID',
+      method: 'GET',
+      path: '/endpoints/{id}',
+      summary: 'Get endpoint by ID',
+      tags,
+    })
+    .input(z.object({
+      params: EndpointSchema.pick({ id: true }),
+    }))
+    .output(EndpointSchema),
   update: oc
     .route({
       description: 'Update an endpoint owned by the authenticated user',
