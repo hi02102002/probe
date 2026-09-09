@@ -34,7 +34,7 @@ export const seoSite = {
   applicationName: 'Probe',
   baseUrl: getSiteBaseUrl(),
   defaultDescription:
-    'Capture, inspect, and debug incoming webhook requests from a clean developer-focused dashboard.',
+    'Capture, inspect, and debug incoming webhook requests in real time. Inspect headers, payload bodies, and query parameters from a fast developer dashboard.',
   defaultImages: [
     {
       alt: 'Probe',

@@ -208,7 +208,7 @@ function renderOgImage({
         <text x="22" y="18" fill="#cbd5e1">TLS 1.3 Tunnel</text>
       </g>
     </g>
-    <text x="0" y="52" fill="#64748b" font-family="'Geist Mono', ui-monospace, SFMono-Regular, monospace" font-size="13" letter-spacing="0.5">https://probe.dev</text>
+    <text x="0" y="52" fill="#64748b" font-family="'Geist Mono', ui-monospace, SFMono-Regular, monospace" font-size="13" letter-spacing="0.5">https://probe.monobase.io.vn</text>
   </g>
 
   <!-- RIGHT COLUMN: Webhook Inspector Mockup Card -->

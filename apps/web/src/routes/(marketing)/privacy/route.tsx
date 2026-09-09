@@ -4,7 +4,7 @@ import { generateAppSeo } from '@/lib/seo'
 export const Route = createFileRoute('/(marketing)/privacy')({
   component: PrivacyPage,
   head: () => generateAppSeo({
-    description: 'Privacy Policy governing data collection, webhook payload handling, encryption, and privacy at Probe.',
+    description: 'Privacy Policy governing data collection, webhook payload handling, TLS 1.3 encryption, ephemeral retention, and data security at Probe.',
     pathname: '/privacy',
     title: 'Privacy Policy',
   }),
@@ -220,16 +220,10 @@ function PrivacyPage() {
         <p>
           Probe Privacy &amp; Security Team
           <br />
-          Email:
-          {' '}
-          <a href="mailto:privacy@probe.dev">
-            privacy@probe.dev
-          </a>
-          <br />
           Website:
           {' '}
-          <a href="https://probe.dev" rel="noreferrer" target="_blank">
-            https://probe.dev
+          <a href="https://probe.monobase.io.vn" rel="noreferrer" target="_blank">
+            https://probe.monobase.io.vn
           </a>
         </p>
       </article>

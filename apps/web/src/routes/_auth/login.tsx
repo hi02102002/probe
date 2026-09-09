@@ -7,6 +7,10 @@ export const Route = createFileRoute('/_auth/login')({
   component: RouteComponent,
   head: () => generateAppSeo({
     pathname: '/login',
+    robots: {
+      follow: true,
+      index: false,
+    },
     title: 'Login',
   }),
   validateSearch: z.object({

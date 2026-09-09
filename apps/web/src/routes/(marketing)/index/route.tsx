@@ -12,19 +12,38 @@ const structuredData = {
   '@context': 'https://schema.org',
   '@graph': [
     {
+      '@type': 'Organization',
+      '@id': 'https://probe.monobase.io.vn/#organization',
+      'logo': 'https://probe.monobase.io.vn/logo.png',
+      'name': 'Probe',
+      'url': 'https://probe.monobase.io.vn/',
+    },
+    {
       '@type': 'WebSite',
       '@id': 'https://probe.monobase.io.vn/#website',
       'description':
-        'Capture, inspect, and debug incoming webhook requests from a clean developer-focused dashboard.',
+        'Capture, inspect, and debug incoming webhook requests in real time. Inspect headers, payload bodies, and query parameters from a fast developer dashboard.',
       'name': 'Probe',
+      'publisher': {
+        '@id': 'https://probe.monobase.io.vn/#organization',
+      },
       'url': 'https://probe.monobase.io.vn/',
     },
     {
       '@type': 'SoftwareApplication',
       '@id': 'https://probe.monobase.io.vn/#software',
       'applicationCategory': 'DeveloperApplication',
+      'author': {
+        '@id': 'https://probe.monobase.io.vn/#organization',
+      },
       'description':
-        'Capture, inspect, and debug incoming webhook requests from a clean developer-focused dashboard.',
+        'Capture, inspect, and debug incoming webhook requests in real time. Inspect headers, payload bodies, and query parameters from a fast developer dashboard.',
+      'featureList': [
+        'Instant webhook endpoints',
+        'Real-time header and payload inspection',
+        'Request history and filtering',
+        'Delivery and retry attempt tracking',
+      ],
       'name': 'Probe',
       'offers': {
         '@type': 'Offer',
@@ -32,6 +51,7 @@ const structuredData = {
         'priceCurrency': 'USD',
       },
       'operatingSystem': 'All',
+      'screenshot': 'https://probe.monobase.io.vn/og-image',
       'url': 'https://probe.monobase.io.vn/',
     },
   ],
@@ -41,6 +61,8 @@ export const Route = createFileRoute('/(marketing)/')({
   component: HomePage,
   head: () =>
     generateAppSeo({
+      description:
+        'Capture, inspect, and debug incoming webhook requests in real time. Inspect headers, payload bodies, and query parameters from a fast developer dashboard.',
       pathname: '/',
       scripts: [
         {
@@ -48,6 +70,7 @@ export const Route = createFileRoute('/(marketing)/')({
           type: 'application/ld+json',
         },
       ],
+      title: 'Probe | Webhook Debugger & HTTP Request Inspector',
     }),
 })
 

@@ -4,7 +4,7 @@ import { generateAppSeo } from '@/lib/seo'
 export const Route = createFileRoute('/(marketing)/terms')({
   component: TermsPage,
   head: () => generateAppSeo({
-    description: 'Terms of Service governing the use of Probe webhook debugging platform and API services.',
+    description: 'Terms of Service governing the use of Probe webhook debugging platform, API ingestion services, and account usage policies.',
     pathname: '/terms',
     title: 'Terms of Service',
   }),
@@ -201,16 +201,10 @@ function TermsPage() {
         <p>
           Probe Developer Platform
           <br />
-          Email:
-          {' '}
-          <a href="mailto:support@probe.dev">
-            support@probe.dev
-          </a>
-          <br />
           Website:
           {' '}
-          <a href="https://probe.dev" rel="noreferrer" target="_blank">
-            https://probe.dev
+          <a href="https://probe.monobase.io.vn" rel="noreferrer" target="_blank">
+            https://probe.monobase.io.vn
           </a>
         </p>
       </article>
