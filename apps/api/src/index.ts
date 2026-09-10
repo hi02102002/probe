@@ -1,49 +1,59 @@
 import process from 'node:process'
-import { createAdaptorServer } from '@hono/node-server'
+import { serve } from '@hono/node-server'
 import { closeDatabase } from '#/db.js'
 import { env } from '#/env.js'
 import { createApp } from '#/libs/create-app.js'
 
 const app = createApp()
-const server = createAdaptorServer({
+
+const server = serve({
   fetch: app.fetch,
+  port: env.PORT,
+}, (info) => {
+  process.stdout.write(`API listening on http://localhost:${info.port}\n`)
 })
-
-server.on('listening', () => {
-  const address = server.address()
-  const listeningPort = typeof address === 'object' && address
-    ? address.port
-    : env.PORT
-
-  process.stdout.write(`API listening on http://localhost:${listeningPort}\n`)
-})
-
-server.listen(env.PORT)
 
 let isShuttingDown = false
 
-function shutdown() {
+async function shutdown(signal: string) {
   if (isShuttingDown) {
     return
   }
 
   isShuttingDown = true
+  process.stdout.write(`\nReceived ${signal}. Shutting down gracefully...\n`)
 
-  server.close(async (error) => {
-    if (error) {
-      console.error(error)
-      process.exitCode = 1
+  // Force exit after 10s to prevent hanging on keep-alive/streaming connections
+  const forceExitTimeout = setTimeout(() => {
+    console.error('Graceful shutdown timed out after 10s. Forcing exit.')
+    process.exit(1)
+  }, 10_000).unref()
+
+  try {
+    if ('closeIdleConnections' in server && typeof server.closeIdleConnections === 'function') {
+      server.closeIdleConnections()
     }
 
-    try {
-      await closeDatabase()
-    }
-    catch (databaseError) {
-      console.error(databaseError)
-      process.exitCode = 1
-    }
-  })
+    await new Promise<void>((resolve, reject) => {
+      server.close((error) => {
+        if (error) {
+          reject(error)
+          return
+        }
+        resolve()
+      })
+    })
+
+    await closeDatabase()
+    clearTimeout(forceExitTimeout)
+    process.exit(0)
+  }
+  catch (error) {
+    console.error('Error during shutdown:', error)
+    clearTimeout(forceExitTimeout)
+    process.exit(1)
+  }
 }
 
-process.once('SIGINT', shutdown)
-process.once('SIGTERM', shutdown)
+process.once('SIGINT', () => shutdown('SIGINT'))
+process.once('SIGTERM', () => shutdown('SIGTERM'))

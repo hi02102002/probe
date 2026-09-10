@@ -8,6 +8,7 @@ export const endpointContract = {
   create: oc
     .route({
       description: 'Create a new endpoint for receiving webhooks',
+      inputStructure: 'detailed',
       method: 'POST',
       path: '/endpoints',
       summary: 'Create endpoint',
@@ -20,6 +21,7 @@ export const endpointContract = {
   delete: oc
     .route({
       description: 'Delete an endpoint and its captured webhook requests',
+      inputStructure: 'detailed',
       method: 'DELETE',
       path: '/endpoints/{id}',
       summary: 'Delete endpoint',
@@ -31,6 +33,7 @@ export const endpointContract = {
     .output(EndpointSchema.pick({ id: true })),
   list: oc
     .route({
+      inputStructure: 'detailed',
       method: 'GET',
       path: '/endpoints',
       summary: 'List endpoints with pagination',
@@ -43,6 +46,7 @@ export const endpointContract = {
   getById: oc
     .route({
       description: 'Get a single endpoint by its ID',
+      inputStructure: 'detailed',
       method: 'GET',
       path: '/endpoints/{id}',
       summary: 'Get endpoint by ID',
@@ -55,6 +59,7 @@ export const endpointContract = {
   update: oc
     .route({
       description: 'Update an endpoint owned by the authenticated user',
+      inputStructure: 'detailed',
       method: 'PATCH',
       path: '/endpoints/{id}',
       summary: 'Update endpoint',

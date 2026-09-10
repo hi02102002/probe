@@ -23,7 +23,10 @@
   },
   "dependencies": {
     "@hono/node-server": "^2.0.12",
+    "@orpc/json-schema": "^1.15.0",
+    "@orpc/openapi": "^1.15.0",
     "@orpc/server": "^1.14.12",
+    "@orpc/zod": "^1.15.0",
     "@repo/api-contracts": "workspace:*",
     "@repo/auth": "workspace:*",
     "@repo/db": "workspace:*",

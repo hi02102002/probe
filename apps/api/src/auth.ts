@@ -6,6 +6,35 @@ import { env } from '#/env.js'
 
 let auth: ReturnType<typeof createAppAuth> | undefined
 
+function getGoogleConfig() {
+  if (!env.GOOGLE_CLIENT_ID || !env.GOOGLE_CLIENT_SECRET) {
+    return undefined
+  }
+
+  return {
+    clientId: env.GOOGLE_CLIENT_ID,
+    clientSecret: env.GOOGLE_CLIENT_SECRET,
+  }
+}
+
+function getGithubConfig() {
+  if (!env.GITHUB_CLIENT_ID || !env.GITHUB_CLIENT_SECRET) {
+    return undefined
+  }
+
+  return {
+    clientId: env.GITHUB_CLIENT_ID,
+    clientSecret: env.GITHUB_CLIENT_SECRET,
+  }
+}
+
+const sendMagicLink = createResendMagicLinkSender({
+  apiKey: env.RESEND_API_KEY,
+  appName: env.APP_NAME,
+  fromEmail: env.RESEND_FROM_EMAIL,
+  publicOrigin: env.SERVER_URL,
+})
+
 export function getAuth() {
   if (auth) {
     return auth
@@ -19,25 +48,10 @@ export function getAuth() {
     ),
     cookieDomain: env.AUTH_COOKIE_DOMAIN,
     database: getDatabase(),
-    github: env.GITHUB_CLIENT_ID && env.GITHUB_CLIENT_SECRET
-      ? {
-          clientId: env.GITHUB_CLIENT_ID,
-          clientSecret: env.GITHUB_CLIENT_SECRET,
-        }
-      : undefined,
-    google: env.GOOGLE_CLIENT_ID && env.GOOGLE_CLIENT_SECRET
-      ? {
-          clientId: env.GOOGLE_CLIENT_ID,
-          clientSecret: env.GOOGLE_CLIENT_SECRET,
-        }
-      : undefined,
+    github: getGithubConfig(),
+    google: getGoogleConfig(),
     secret: env.BETTER_AUTH_SECRET,
-    sendMagicLink: createResendMagicLinkSender({
-      apiKey: env.RESEND_API_KEY,
-      appName: env.APP_NAME,
-      fromEmail: env.RESEND_FROM_EMAIL,
-      publicOrigin: env.SERVER_URL,
-    }),
+    sendMagicLink,
     trustedOrigins: env.WEB_URL,
   })
 
