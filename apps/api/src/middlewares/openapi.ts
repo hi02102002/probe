@@ -7,7 +7,7 @@ const openApiHandler = createOpenApiHandler(router)
 
 export const openApiMiddleware: MiddlewareHandler = async (c, next) => {
   const { matched, response } = await openApiHandler.handle(c.req.raw, {
-    context: createORPCContext(),
+    context: createORPCContext(c.req),
     prefix: '/api',
   })
 
@@ -17,4 +17,3 @@ export const openApiMiddleware: MiddlewareHandler = async (c, next) => {
 
   await next()
 }
-

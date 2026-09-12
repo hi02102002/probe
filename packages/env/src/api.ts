@@ -23,6 +23,7 @@ export function createApiEnv(
       RESEND_FROM_EMAIL: runtimeEnv.RESEND_FROM_EMAIL,
       SERVER_URL: serverUrl,
       WEB_URL: runtimeEnv.WEB_URL,
+      REDIS_URL: runtimeEnv.REDIS_URL,
     },
     server: {
       APP_NAME: z.string().min(1).default('Probe'),
@@ -42,6 +43,7 @@ export function createApiEnv(
         .default('http://localhost:3000')
         .transform(value => value.split(',').map(origin => origin.trim()).filter(Boolean))
         .pipe(z.array(z.url()).min(1)),
+      REDIS_URL: z.string().min(1),
     },
   })
 }

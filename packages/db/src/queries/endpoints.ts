@@ -207,3 +207,20 @@ export const getEndpointById = withDb(async (db, { id, userId }: {
 
   return endpoint
 })
+
+export const getEndpointByToken = withDb(async (db, token: string) => {
+  const endpoint = await db.query.endpoint.findFirst({
+    where: {
+      token,
+    },
+  })
+
+  if (!endpoint) {
+    throw new NotFoundError({
+      entity: 'endpoint',
+      message: `Endpoint with token ${token} not found`,
+    })
+  }
+
+  return endpoint
+})

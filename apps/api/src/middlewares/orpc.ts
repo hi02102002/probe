@@ -7,7 +7,7 @@ const rpcHandler = createRpcHandler(router)
 
 export const orpcMiddleware: MiddlewareHandler = async (c, next) => {
   const { matched, response } = await rpcHandler.handle(c.req.raw, {
-    context: createORPCContext(),
+    context: createORPCContext(c.req),
     prefix: '/api/rpc',
   })
 

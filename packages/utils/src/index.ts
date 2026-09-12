@@ -10,7 +10,9 @@ export {
   type TailSamplingCondition,
   type TailSamplingContext,
 } from './evlog.js'
+export { getClientIp, type StandardHeaders, toStandardHeaders } from './headers.js'
 export { resolveHttpUrl } from './http-url.js'
+
 export {
   ALPHANUMERIC,
   createId,
