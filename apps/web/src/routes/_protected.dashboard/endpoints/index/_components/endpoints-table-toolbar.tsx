@@ -39,7 +39,7 @@ export function EndpointsToolbar() {
   return (
     <div className="flex flex-wrap items-center justify-between gap-3">
       <div className="flex flex-1 flex-wrap items-center gap-2">
-        <InputGroup className="w-full sm:max-w-xs">
+        <InputGroup className="w-full sm:w-60">
           <InputGroupAddon align="inline-start">
             <MagnifyingGlassIcon className="size-4 text-muted-foreground" />
           </InputGroupAddon>
@@ -54,10 +54,10 @@ export function EndpointsToolbar() {
             value={params.query ?? ''}
           />
           {Boolean(params.query) && (
-            <InputGroupAddon align="inline-end">
+            <InputGroupAddon align="inline-end" className="me-0">
               <button
                 aria-label="Clear search"
-                className="cursor-pointer rounded-sm p-0.5 text-muted-foreground transition-colors hover:text-foreground"
+                className="inline-flex size-5 cursor-pointer items-center justify-center rounded-sm text-muted-foreground transition-colors hover:text-foreground focus-visible:outline-none [&_svg]:mx-0"
                 onClick={() => setParams({ page: 1, query: null })}
                 type="button"
               >

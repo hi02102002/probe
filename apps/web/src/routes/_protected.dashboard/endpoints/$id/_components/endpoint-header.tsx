@@ -5,7 +5,7 @@ import { BrandIcon } from '@/components/brand-icon'
 import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator } from '@/components/ui/breadcrumb'
 import { Button } from '@/components/ui/button'
 import { CopyButton } from '@/components/ui/copy-button'
-import { EndpointStatus } from '@/features/endpoints'
+import { EndpointStatus, getIngestUrl } from '@/features/endpoints'
 
 import { DeleteEndpointDialog } from '@/features/endpoints/components/del-endpoint-dialog'
 import { ToggleEndpointStatus } from './toggle-endpoint-status'
@@ -21,7 +21,7 @@ export function EndpointHeader() {
 
   const { data: endpoint } = useSuspenseQuery(getEndpointByIdQueryOptions)
 
-  const ingestUrl = `${window.location.origin}/api/ingest/${endpoint.token}`
+  const ingestUrl = getIngestUrl(endpoint.token)
 
   const handleDeletedEndpoint = () => {
     if (isCanGoBack) {
@@ -59,19 +59,19 @@ export function EndpointHeader() {
             </BreadcrumbLink>
           </BreadcrumbItem>
           <BreadcrumbSeparator>/</BreadcrumbSeparator>
-          <BreadcrumbPage>
+          <BreadcrumbPage className="truncate max-w-[160px] sm:max-w-none">
             {endpoint.name}
           </BreadcrumbPage>
         </BreadcrumbList>
       </Breadcrumb>
       <div
-        className="flex flex-col items-stretch gap-3.5 sm:flex-row sm:items-center sm:justify-between"
+        className="flex items-center justify-between gap-3"
       >
         <div
-          className="flex min-w-0 items-center gap-3.5"
+          className="flex min-w-0 items-center gap-3 sm:gap-3.5"
         >
           <div
-            className="flex size-12 shrink-0 items-center justify-center rounded-xl border border-border bg-card shadow-xs"
+            className="flex size-11 shrink-0 items-center justify-center rounded-xl border border-border bg-card shadow-xs sm:size-12"
           >
             <BrandIcon
               name={endpoint.name}
@@ -81,32 +81,45 @@ export function EndpointHeader() {
             className="flex min-w-0 flex-col gap-0.5"
           >
             <div
-              className="flex flex-wrap items-center gap-2"
+              className="flex items-center gap-2"
             >
               <span
-                className="font-semibold text-foreground text-xl tracking-tight sm:text-2xl"
+                className="truncate font-semibold text-foreground text-lg tracking-tight sm:text-2xl"
               >
                 {endpoint.name}
               </span>
-              <EndpointStatus
-                status={endpoint.status}
+              <div className="shrink-0">
+                <EndpointStatus
+                  status={endpoint.status}
+                />
+              </div>
+            </div>
+            <div
+              className="flex items-center gap-1.5 font-mono text-muted-foreground text-xs"
+            >
+              <span className="shrink-0 text-muted-foreground/70">Token:</span>
+              <span
+                className="truncate max-w-[120px] xs:max-w-[180px] sm:max-w-none"
+                title={endpoint.token}
+              >
+                {endpoint.token}
+              </span>
+              <CopyButton
+                aria-label="Copy token"
+                className="size-5 shrink-0 text-muted-foreground/60 hover:text-foreground"
+                size="icon-xs"
+                text={endpoint.token}
+                variant="ghost"
               />
             </div>
-            <span
-              className="break-all font-mono text-muted-foreground text-xs"
-            >
-              Token:
-              {' '}
-              {endpoint.token}
-            </span>
           </div>
         </div>
         <div
-          className="flex shrink-0 items-center gap-2 self-end sm:self-auto"
+          className="flex shrink-0 items-center gap-1.5 sm:gap-2"
         >
           <ToggleEndpointStatus
-            status={endpoint.status}
             id={endpoint.id}
+            status={endpoint.status}
           />
           <UpdateEndpointDialog
             endpointId={endpoint.id}
@@ -123,10 +136,14 @@ export function EndpointHeader() {
             )}
           />
           <DeleteEndpointDialog
+            endpointId={endpoint.id}
+            onDeletedSuccess={handleDeletedEndpoint}
             trigger={props => (
               <Button
-                variant="destructive-outline"
+                aria-label="Delete endpoint"
                 size="icon"
+                title="Delete endpoint"
+                variant="destructive-outline"
                 {...props}
               >
                 <TrashIcon
@@ -134,33 +151,45 @@ export function EndpointHeader() {
                 />
               </Button>
             )}
-            endpointId={endpoint.id}
-            onDeletedSuccess={handleDeletedEndpoint}
           />
         </div>
       </div>
       <div
-        className="flex flex-col rounded-xl gap-2 border border-border bg-muted/30 p-3 sm:flex-row sm:items-center sm:justify-between sm:p-2.5"
+        className="flex flex-col gap-2 rounded-xl border border-border bg-muted/30 p-3 sm:flex-row sm:items-center sm:justify-between sm:p-2.5"
       >
         <div
-          className="flex min-w-0 flex-col gap-1 sm:flex-row sm:items-center sm:gap-2"
+          className="flex min-w-0 flex-col gap-2 sm:flex-row sm:items-center sm:gap-2.5"
         >
-          <div
-            className="shrink-0 rounded-md bg-primary/10 px-2 py-0.5 font-semibold text-[11px] text-primary uppercase"
-          >
-            Ingest URL
+          <div className="flex items-center justify-between gap-2 sm:justify-start">
+            <span
+              className="shrink-0 rounded-md bg-primary/10 px-2 py-0.5 font-semibold text-[11px] text-primary uppercase tracking-wide"
+            >
+              Ingest URL
+            </span>
+            <div className="sm:hidden">
+              <CopyButton
+                aria-label="Copy Ingest URL"
+                size="icon-sm"
+                text={ingestUrl}
+                variant="outline"
+              />
+            </div>
           </div>
           <span
-            className="break-all font-mono text-muted-foreground text-xs sm:text-sm"
+            className="break-all font-mono text-muted-foreground text-xs select-all sm:text-sm"
+            title={ingestUrl}
           >
             {ingestUrl}
           </span>
         </div>
-        <CopyButton
-          variant="outline"
-          text={ingestUrl}
-          size="icon-sm"
-        />
+        <div className="hidden shrink-0 sm:block">
+          <CopyButton
+            aria-label="Copy Ingest URL"
+            size="icon-sm"
+            text={ingestUrl}
+            variant="outline"
+          />
+        </div>
       </div>
     </div>
   )

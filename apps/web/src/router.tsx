@@ -22,8 +22,8 @@ export function getRouter() {
   if (typeof window !== 'undefined') {
     nprogress.configure({ showSpinner: false })
 
-    router.subscribe('onBeforeLoad', ({ pathChanged }) => {
-      if (pathChanged) {
+    router.subscribe('onBeforeLoad', ({ pathChanged, toLocation }) => {
+      if (pathChanged && !toLocation.pathname.startsWith('/dashboard')) {
         nprogress.start()
       }
     })

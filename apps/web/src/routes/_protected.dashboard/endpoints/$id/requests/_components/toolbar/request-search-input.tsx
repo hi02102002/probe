@@ -1,21 +1,38 @@
-import { MagnifyingGlassIcon } from '@phosphor-icons/react'
+import { MagnifyingGlassIcon, XIcon } from '@phosphor-icons/react'
 import { useQueryStates } from 'nuqs'
-import { Input } from '@/components/ui/input'
+import {
+  InputGroup,
+  InputGroupAddon,
+  InputGroupInput,
+} from '@/components/ui/input-group'
 import { requestSearchParams } from '../../_utils/search-params'
 
 export function RequestSearchInput() {
   const [params, setParams] = useQueryStates(requestSearchParams)
 
   return (
-    <div className="relative w-full min-w-0 max-w-md flex-1 sm:min-w-56">
-      <MagnifyingGlassIcon className="absolute top-1/2 left-3 size-4 -translate-y-1/2 text-muted-foreground" />
-      <Input
+    <InputGroup className="w-full sm:w-60">
+      <InputGroupAddon align="inline-start">
+        <MagnifyingGlassIcon className="size-4 text-muted-foreground" />
+      </InputGroupAddon>
+      <InputGroupInput
         aria-label="Search captured requests"
-        className="pl-9"
-        onChange={event => setParams({ query: event.target.value, requestId: null })}
-        placeholder="Search by request ID or URL..."
-        value={params.query}
+        onChange={event => setParams({ query: event.target.value || null, requestId: null })}
+        placeholder="Search requests..."
+        value={params.query ?? ''}
       />
-    </div>
+      {Boolean(params.query) && (
+        <InputGroupAddon align="inline-end" className="me-0">
+          <button
+            aria-label="Clear search"
+            className="inline-flex size-5 cursor-pointer items-center justify-center rounded-sm text-muted-foreground transition-colors hover:text-foreground focus-visible:outline-none [&_svg]:mx-0"
+            onClick={() => setParams({ query: null, requestId: null })}
+            type="button"
+          >
+            <XIcon className="size-3.5" />
+          </button>
+        </InputGroupAddon>
+      )}
+    </InputGroup>
   )
 }

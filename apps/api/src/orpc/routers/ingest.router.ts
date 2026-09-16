@@ -1,7 +1,8 @@
 import type { ContractInputs, ContractOutputs, IngestEvent } from '@repo/api-contracts'
 import type { ORPCContext } from '#/orpc/os.js'
 import { ORPCError } from '@orpc/server'
-import { getEndpointByToken, insertRequest } from '@repo/db'
+import { drizzle, getEndpointByToken, insertRequest } from '@repo/db'
+import { endpoint as sEndpoint } from '@repo/db/schema'
 import { getClientIp, toStandardHeaders } from '@repo/utils'
 import { pub } from '#/orpc/os.js'
 import { mapDatabaseError } from '../errors/map-database-error.js'
@@ -54,8 +55,16 @@ function createIngestHandler(method: Method) {
       await context.publisher.publish(`ingest.${input.params.token}`, inserted.value)
     }
     catch (publishError) {
-      console.error('[Publisher Error] Failed to publish event:', publishError)
+      context.log.error('Failed to publish ingest event', {
+        error: publishError,
+        endpointId: endpoint.value.id,
+        requestId: inserted.value.id,
+      })
     }
+
+    await context.db.update(sEndpoint).set({
+      lastRequestAt: new Date(),
+    }).where(drizzle.eq(sEndpoint.id, endpoint.value.id)).catch(void 0)
 
     return {
       success: true,
