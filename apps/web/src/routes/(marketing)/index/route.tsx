@@ -83,7 +83,7 @@ export const Route = createFileRoute('/(marketing)/')({
           type: 'application/ld+json',
         },
       ],
-      title: 'Probe | Webhook Debugger & HTTP Request Inspector',
+      title: 'Webhook Debugger & HTTP Request Inspector',
     }),
 })
 

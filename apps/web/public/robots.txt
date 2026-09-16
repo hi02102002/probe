@@ -4,6 +4,7 @@ Allow: /
 Disallow: /dashboard
 Disallow: /endpoints
 Disallow: /settings
+Disallow: /login
 Disallow: /api/
 
 Sitemap: https://probe.monobase.io.vn/sitemap.xml

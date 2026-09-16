@@ -8,7 +8,7 @@ export const Route = createFileRoute('/_auth/login')({
   head: () => generateAppSeo({
     pathname: '/login',
     robots: {
-      follow: true,
+      follow: false,
       index: false,
     },
     title: 'Login',
