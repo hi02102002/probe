@@ -100,6 +100,10 @@ function RootDocument() {
   return (
     <html dir="ltr" lang="en" suppressHydrationWarning>
       <head>
+        <meta
+          name="google-site-verification"
+          content="k_VdZO2bs7aGmn50wh5Zit1hK_mNf7UAGWpriJK2eDE"
+        />
         <HeadContent />
       </head>
       <body>
