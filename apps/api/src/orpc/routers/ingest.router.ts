@@ -1,5 +1,6 @@
 import type { ContractInputs, ContractOutputs, IngestEvent } from '@repo/api-contracts'
 import type { ORPCContext } from '#/orpc/os.js'
+import { ORPCError } from '@orpc/server'
 import { getEndpointByToken, insertRequest } from '@repo/db'
 import { getClientIp, toStandardHeaders } from '@repo/utils'
 import { pub } from '#/orpc/os.js'
@@ -24,6 +25,18 @@ function createIngestHandler(method: Method) {
       throw mapDatabaseError(endpoint.error)
     }
 
+    if (endpoint.value.status === 'paused') {
+      throw new ORPCError('BAD_REQUEST', {
+        message: 'Endpoint is paused and cannot accept requests',
+      })
+    }
+
+    if (endpoint.value.status === 'inactive') {
+      throw new ORPCError('BAD_REQUEST', {
+        message: 'Endpoint is inactive and cannot accept requests',
+      })
+    }
+
     const inserted = await insertRequest(context.db, {
       endpointId: endpoint.value.id,
       ip,
@@ -37,7 +50,6 @@ function createIngestHandler(method: Method) {
       throw mapDatabaseError(inserted.error)
     }
 
-    await context.publisher.publish(`ingest.${input.params.token}`, inserted.value)
     try {
       await context.publisher.publish(`ingest.${input.params.token}`, inserted.value)
     }
@@ -70,4 +82,5 @@ export const ingestRouter = pub.ingest.router({
       yield event as IngestEvent
     }
   }),
+
 })

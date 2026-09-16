@@ -101,3 +101,5 @@ export const ingestContract = {
     .input(IngestNoBodyInputSchema)
     .output(eventIterator(WebhookRequest.describe('Webhook request event stream'))),
 }
+
+export type IngestEvent = z.infer<typeof WebhookRequest>

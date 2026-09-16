@@ -74,4 +74,20 @@ export const endpointRouter = pub.endpoint.router({
 
     return result.value
   }),
+  changeStatus: authenticated.endpoint.changeStatus.handler(async ({ context, input }) => {
+    const result = await updateEndpoint(
+      context.db,
+      input.params.id,
+      context.user.id,
+      { status: input.body.status },
+    )
+
+    if (result.isErr()) {
+      throw mapDatabaseError(result.error)
+    }
+
+    return {
+      id: result.value.id,
+    }
+  }),
 })

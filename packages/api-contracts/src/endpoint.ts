@@ -75,4 +75,20 @@ export const endpointContract = {
       ),
     }))
     .output(EndpointSchema.pick({ id: true })),
+  changeStatus: oc
+    .route({
+      description: 'Change the status of an endpoint owned by the authenticated user',
+      inputStructure: 'detailed',
+      method: 'PATCH',
+      path: '/endpoints/{id}/status',
+      summary: 'Change endpoint status',
+      tags,
+    })
+    .input(z.object({
+      params: EndpointSchema.pick({ id: true }),
+      body: z.object({
+        status: EndpointSchema.shape.status,
+      }),
+    }))
+    .output(EndpointSchema.pick({ id: true })),
 }

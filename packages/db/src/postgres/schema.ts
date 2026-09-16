@@ -106,27 +106,37 @@ export const endpoint = pgTable(
   },
 )
 
-export const webhook_request = pgTable('webhook_requests', {
-  id: text('id')
-    .primaryKey()
-    .$defaultFn(() => createId('wr')),
-  endpointId: text('endpoint_id')
-    .notNull()
-    .references(() => endpoint.id, { onDelete: 'cascade' }),
-  method: text('method')
-    .$type<'GET' | 'POST' | 'PUT' | 'DELETE' | 'PATCH'>()
-    .notNull(),
-  url: text('url').notNull(),
-  reqHeaders: jsonb('req_headers').notNull(),
-  reqBody: jsonb('req_body'),
-  resHeaders: jsonb('res_headers'),
-  resBody: jsonb('res_body'),
-  statusCode: text('status_code'),
-  ip: text('ip'),
-  size: text('size'),
-  createdAt: timestamp('created_at', { withTimezone: true }).defaultNow().notNull(),
-  updatedAt: timestamp('updated_at', { withTimezone: true })
-    .defaultNow()
-    .$onUpdate(() => new Date())
-    .notNull(),
-})
+export const webhook_request = pgTable(
+  'webhook_requests',
+  {
+    id: text('id')
+      .primaryKey()
+      .$defaultFn(() => createId('wr')),
+    endpointId: text('endpoint_id')
+      .notNull()
+      .references(() => endpoint.id, { onDelete: 'cascade' }),
+    method: text('method')
+      .$type<'GET' | 'POST' | 'PUT' | 'DELETE' | 'PATCH'>()
+      .notNull(),
+    url: text('url').notNull(),
+    reqHeaders: jsonb('req_headers').notNull(),
+    reqBody: jsonb('req_body'),
+    resHeaders: jsonb('res_headers'),
+    resBody: jsonb('res_body'),
+    statusCode: text('status_code'),
+    ip: text('ip'),
+    size: text('size'),
+    createdAt: timestamp('created_at', { withTimezone: true }).defaultNow().notNull(),
+    updatedAt: timestamp('updated_at', { withTimezone: true })
+      .defaultNow()
+      .$onUpdate(() => new Date())
+      .notNull(),
+  },
+  table => [
+    index('webhook_request_endpoint_created_at_id_idx').on(
+      table.endpointId,
+      table.createdAt,
+      table.id,
+    ),
+  ],
+)

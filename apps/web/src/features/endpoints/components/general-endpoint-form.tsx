@@ -5,8 +5,7 @@ import { BrandIcon } from '@/components/brand-icon'
 import { Button } from '@/components/ui/button'
 import { Field, FieldDescription, FieldError, FieldLabel } from '@/components/ui/field'
 import { Form } from '@/components/ui/form'
-import { Input } from '@/components/ui/input'
-import { InputGroup, InputGroupAddon } from '@/components/ui/input-group'
+import { InputGroup, InputGroupAddon, InputGroupInput } from '@/components/ui/input-group'
 import { cn } from '@/lib/cn'
 
 const endpointFormSchema = z.object({
@@ -22,8 +21,7 @@ export type EndpointFormValues = z.infer<typeof endpointFormSchema>
 export interface EndpointFormProps {
   cancelLabel?: string
   className?: string
-  defaultValues?: Partial<EndpointFormValues>
-  isSubmitting?: boolean
+  initialValues?: EndpointFormValues
   onCancel?: () => void
   onSubmit?: (values: EndpointFormValues) => Promise<void> | void
   submitLabel?: string
@@ -32,14 +30,13 @@ export interface EndpointFormProps {
 export function EndpointForm({
   cancelLabel = 'Cancel',
   className,
-  defaultValues = { name: '' },
-  isSubmitting = false,
+  initialValues = { name: '' },
   onCancel,
   onSubmit,
   submitLabel = 'Create endpoint',
 }: EndpointFormProps) {
   const form = useForm<EndpointFormValues>({
-    defaultValues,
+    defaultValues: initialValues,
     resolver: zodResolver(endpointFormSchema),
   })
 
@@ -51,7 +48,7 @@ export function EndpointForm({
     }
   }
 
-  const isPending = isSubmitting || form.formState.isSubmitting
+  const isPending = form.formState.isSubmitting
 
   return (
     <Form
@@ -71,14 +68,14 @@ export function EndpointForm({
               <InputGroupAddon align="inline-start">
                 <BrandIcon className="size-4" name={watchedName} />
               </InputGroupAddon>
-              <Input
+              <InputGroupInput
                 {...field}
                 aria-describedby={
                   fieldState.error
                     ? 'endpoint-name-error'
                     : 'endpoint-name-description'
                 }
-                aria-invalid={Boolean(fieldState.error)}
+                aria-invalid={fieldState.error ? 'true' : undefined}
                 autoComplete="off"
                 autoFocus
                 id="endpoint-name"

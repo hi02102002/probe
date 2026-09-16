@@ -1,4 +1,4 @@
 {
   "target": "react",
-  "routeFileIgnorePattern": "((^|/)[-_](components|hooks|styles|constants|utils|types|helpers|data|services|queries|mutations)(/|$)|(^|/)-|\\.content\\.(ts|tsx|js|mjs|cjs|jsx|json|jsonc|json5|md|mdx|yaml|yml)$)"
+  "routeFileIgnorePattern": "((^|/)[-_](components|hooks|styles|constants|utils|types|helpers|data|services|queries|mutations|stores)(/|$)|(^|/)-|\\.content\\.(ts|tsx|js|mjs|cjs|jsx|json|jsonc|json5|md|mdx|yaml|yml)$)"
 }

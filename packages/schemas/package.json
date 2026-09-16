@@ -18,6 +18,11 @@
       "types": "./src/pagination.ts",
       "development": "./src/pagination.ts",
       "import": "./dist/pagination.js"
+    },
+    "./wh-request": {
+      "types": "./src/wh-request.ts",
+      "development": "./src/wh-request.ts",
+      "import": "./dist/wh-request.js"
     }
   },
   "files": [

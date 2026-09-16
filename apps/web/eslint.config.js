@@ -1,10 +1,14 @@
 import { reactConfig } from '@repo/eslint-config/react'
+import { plugin as shadcn } from '@shadcn/lint'
 
 export default reactConfig({
   ignores: [
     'README.md',
     'src/routeTree.gen.ts',
   ],
+  plugins: {
+    shadcn,
+  },
 }, {
   name: 'repo/web/react-refresh',
   files: ['src/**/*.tsx'],

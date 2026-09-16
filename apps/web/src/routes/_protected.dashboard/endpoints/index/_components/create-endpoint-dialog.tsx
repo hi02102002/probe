@@ -68,13 +68,9 @@ export function CreateEndpointDialog({
         </DialogHeader>
         <div className="px-6 pb-6">
           <EndpointForm
-            defaultValues={{
-              name: '',
-            }}
             onCancel={() => closeTriggerRef.current?.click()}
             onSubmit={handleSubmit}
             submitLabel="Create endpoint"
-            isSubmitting={createEndpointMutation.isPending}
           />
           <DialogClose
             ref={closeTriggerRef}

@@ -19,13 +19,18 @@ import TanStackQueryDevtools from '@/integrations/tanstack-query/devtools'
 import { generateAppSeo } from '@/lib/seo'
 import appCss from '@/styles.css?url'
 
+if (import.meta.env.DEV && typeof window !== 'undefined') {
+  void import('react-grab')
+  void import('react-scan').then(({ scan }) => scan({ enabled: true }))
+}
+
 const evlogMiddleware = createMiddleware().server(async (options) => {
   try {
-    const [{ useRequest }, { enrichLogger }] = await Promise.all([
+    const [{ useRequest: getRequest }, { enrichLogger }] = await Promise.all([
       import('nitro/context'),
       import('@repo/utils'),
     ])
-    const req = useRequest()
+    const req = getRequest()
     const log = req?.context?.log as { set: (fields: Record<string, unknown>) => void } | undefined
     if (log && req?.headers) {
       await enrichLogger(log, req.headers)

@@ -17,11 +17,13 @@
     "email:dev": "pnpm --filter @repo/api email:dev",
     "format": "eslint . --fix",
     "lint": "eslint .",
-    "lint:fix": "eslint . --fix"
+    "lint:fix": "eslint . --fix",
+    "doctor": "npx react-doctor@latest"
   },
   "devDependencies": {
     "@repo/eslint-config": "workspace:*",
     "eslint": "^10.4.0",
+    "react-doctor": "^0.9.14",
     "turbo": "^2.10.7",
     "typescript": "^6.0.2"
   },

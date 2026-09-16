@@ -220,7 +220,7 @@ export function LoginForm({ redirectTo }: {
               <Input
                 {...field}
                 aria-describedby={fieldState.error ? 'login-email-error' : undefined}
-                aria-invalid={Boolean(fieldState.error)}
+                aria-invalid={fieldState.error ? true : undefined}
                 autoComplete="email"
                 id="login-email"
                 placeholder="you@company.com"

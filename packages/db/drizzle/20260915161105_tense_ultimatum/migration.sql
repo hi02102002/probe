@@ -1,0 +1,1 @@
+CREATE INDEX "webhook_request_endpoint_created_at_id_idx" ON "webhook_requests" ("endpoint_id","created_at","id");
