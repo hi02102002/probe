@@ -5,10 +5,8 @@ import { defineConfig } from 'nitro'
 export default defineConfig({
   prerender: {
     routes: [
-      '/',
       '/terms',
       '/privacy',
-      '/blog',
       '/blog/test-webhooks-locally',
       '/blog/debug-failed-webhook-requests',
       '/blog/test-stripe-webhooks',
