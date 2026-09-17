@@ -59,6 +59,9 @@ function SocialButtons({ redirectTo }: {
     <div className="space-y-2">
       <Button
         className="w-full"
+        data-umami-event="Social login clicked"
+        data-umami-event-button-name="auth__login__continue-github"
+        data-umami-event-provider="github"
         disabled={Boolean(isSubmitting)}
         loading={isSubmitting === 'github'}
         onClick={() => signInWithSocial('github')}
@@ -70,6 +73,9 @@ function SocialButtons({ redirectTo }: {
       </Button>
       <Button
         className="w-full"
+        data-umami-event="Social login clicked"
+        data-umami-event-button-name="auth__login__continue-google"
+        data-umami-event-provider="google"
         disabled={Boolean(isSubmitting)}
         loading={isSubmitting === 'google'}
         onClick={() => signInWithSocial('google')}
@@ -230,7 +236,14 @@ export function LoginForm({ redirectTo }: {
           )}
         />
         {rootError && <p className="text-destructive text-sm">{rootError}</p>}
-        <Button className="h-10 w-full" disabled={isSubmitting || isCoolingDown} loading={isSubmitting} type="submit">
+        <Button
+          className="h-10 w-full"
+          data-umami-event="Magic link sign-in submitted"
+          data-umami-event-button-name="auth__login__send-magic-link"
+          disabled={isSubmitting || isCoolingDown}
+          loading={isSubmitting}
+          type="submit"
+        >
           {isCoolingDown
             ? `Send again in ${cooldownSeconds}s`
             : sentTo

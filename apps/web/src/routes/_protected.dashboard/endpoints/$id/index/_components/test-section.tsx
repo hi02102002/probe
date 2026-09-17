@@ -313,6 +313,8 @@ export function TestSection({ endpointId, ingestUrl }: TestSectionProps) {
                 {!isBodyDisabled && (
                   <button
                     className="inline-flex cursor-pointer items-center gap-1 text-[11px] text-muted-foreground transition-colors hover:text-foreground"
+                    data-umami-event="Reset test payload"
+                    data-umami-event-button-name="dashboard__test__reset-payload"
                     onClick={handleResetPayload}
                     type="button"
                   >
@@ -347,6 +349,9 @@ export function TestSection({ endpointId, ingestUrl }: TestSectionProps) {
             <div className="flex flex-col gap-2 pt-1 sm:flex-row sm:items-center sm:gap-2.5">
               <Button
                 className="w-full sm:w-auto"
+                data-umami-event="Send test webhook request"
+                data-umami-event-button-name="dashboard__test__send-request"
+                data-umami-event-method={method}
                 disabled={isLoading}
                 loading={isLoading}
                 onClick={handleSendTest}
@@ -359,6 +364,8 @@ export function TestSection({ endpointId, ingestUrl }: TestSectionProps) {
 
               <Button
                 className="w-full sm:w-auto"
+                data-umami-event="Navigate to requests tab"
+                data-umami-event-button-name="dashboard__test__go-to-requests"
                 render={(
                   <Link
                     params={{ id: endpointId }}

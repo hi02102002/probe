@@ -43,6 +43,8 @@ export function EndpointHeader() {
           <BreadcrumbItem>
             <BreadcrumbLink
               className="flex items-center gap-1"
+              data-umami-event="Endpoint back to list clicked"
+              data-umami-event-button-name="dashboard__endpoint-header__back-to-endpoints"
               render={(props) => {
                 return (
                   <Link
@@ -127,6 +129,8 @@ export function EndpointHeader() {
               <Button
                 {...props}
                 aria-label="Edit endpoint"
+                data-umami-event="Edit endpoint dialog clicked"
+                data-umami-event-button-name="dashboard__endpoint-header__edit-endpoint"
                 size="icon"
                 title="Edit endpoint"
                 variant="outline"
@@ -141,6 +145,8 @@ export function EndpointHeader() {
             trigger={props => (
               <Button
                 aria-label="Delete endpoint"
+                data-umami-event="Delete endpoint dialog clicked"
+                data-umami-event-button-name="dashboard__endpoint-header__delete-endpoint"
                 size="icon"
                 title="Delete endpoint"
                 variant="destructive-outline"

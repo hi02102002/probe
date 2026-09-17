@@ -52,6 +52,8 @@ export function EndpointHeader({ endpoint }: { endpoint: MockEndpointDetail }) {
       <div className="flex items-center gap-2 text-muted-foreground text-xs">
         <Link
           className="inline-flex items-center gap-1 transition-colors hover:text-foreground"
+          data-umami-event="Mock endpoint back to list clicked"
+          data-umami-event-button-name="dashboard__mock-endpoint__back-to-endpoints"
           to="/dashboard/endpoints"
         >
           <ArrowLeftIcon className="size-3.5" />

@@ -106,7 +106,12 @@ export function HeroSection() {
           Create a webhook URL. When a request arrives, inspect its headers, query, payload, and metadata.
         </p>
         <div className="mt-10 flex justify-center">
-          <Button render={<Link to="/dashboard" />} size="xl">
+          <Button
+            data-umami-event="Hero start debugging clicked"
+            data-umami-event-button-name="home__hero__start-debugging"
+            render={<Link to="/dashboard" />}
+            size="xl"
+          >
             Start debugging
             <ArrowRightIcon weight="bold" />
           </Button>

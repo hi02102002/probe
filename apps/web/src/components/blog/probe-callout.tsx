@@ -37,7 +37,12 @@ export function ProbeCallout({
       </CardHeader>
       <CardPanel className="p-0 pt-4">
         <div className="flex flex-wrap items-center gap-3">
-          <Button render={<Link to="/dashboard" />} size="sm">
+          <Button
+            data-umami-event="Blog callout start debugging clicked"
+            data-umami-event-button-name="blog__callout__start-debugging"
+            render={<Link to="/dashboard" />}
+            size="sm"
+          >
             Start debugging now
             <ArrowRightIcon weight="bold" />
           </Button>

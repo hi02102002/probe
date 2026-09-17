@@ -128,6 +128,8 @@ export function UpdateEndpointDialog({
                     </AlertDescription>
                     <AlertAction>
                       <Button
+                        data-umami-event="Retry load endpoint details"
+                        data-umami-event-button-name="dashboard__update-dialog__retry"
                         loading={endpointQuery.isFetching}
                         onClick={async () => {
                           await endpointQuery.refetch()

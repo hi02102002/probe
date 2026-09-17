@@ -58,7 +58,10 @@ function EndpointsPage() {
           </PageHeaderDescription>
         </PageHeader>
         <CreateEndpointDialog trigger={(
-          <Button>
+          <Button
+            data-umami-event="New endpoint button clicked"
+            data-umami-event-button-name="dashboard__endpoints__new-endpoint"
+          >
             <PlusIcon />
             New endpoint
           </Button>

@@ -35,6 +35,8 @@ export function RelatedGuides({ posts, className }: RelatedGuidesProps) {
         <Link
           to="/blog"
           className="inline-flex items-center gap-1.5 text-xs font-medium text-muted-foreground transition-colors hover:text-foreground"
+          data-umami-event="Related guides view all clicked"
+          data-umami-event-button-name="blog__related__all-articles"
         >
           <span>All articles</span>
           <ArrowRightIcon className="size-3" />
@@ -64,6 +66,9 @@ export function RelatedGuides({ posts, className }: RelatedGuidesProps) {
                   to="/blog/$slug"
                   params={{ slug: related.slug }}
                   className="after:absolute after:inset-0 hover:underline"
+                  data-umami-event="Related guide clicked"
+                  data-umami-event-button-name="blog__related__read-guide"
+                  data-umami-event-slug={related.slug}
                 >
                   {related.title}
                 </Link>

@@ -29,6 +29,9 @@ export function InspectorTabs({ headersCount, queryCount }: InspectorTabsProps) 
                 ? 'border-primary text-foreground'
                 : 'border-transparent text-muted-foreground hover:text-foreground'
             }`}
+            data-umami-event="Inspector tab clicked"
+            data-umami-event-button-name={`dashboard__inspector__${tab.value}-tab`}
+            data-umami-event-tab={tab.value}
             key={tab.value}
             onClick={() => setParams({ tab: tab.value })}
             role="tab"

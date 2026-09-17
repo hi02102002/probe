@@ -73,7 +73,12 @@ export function UserMenu({ user }: { user: AuthSession['user'] }) {
           <ThemeToggle size="sm" />
         </div>
         <MenuSeparator className="-mx-1" />
-        <MenuItem disabled={isSigningOut} onClick={() => void handleSignOut()}>
+        <MenuItem
+          data-umami-event="User sign out clicked"
+          data-umami-event-button-name="dashboard__user-menu__sign-out"
+          disabled={isSigningOut}
+          onClick={() => void handleSignOut()}
+        >
           <SignOutIcon className="size-4 shrink-0" weight="duotone" />
           {isSigningOut ? 'Logging out...' : 'Log out'}
         </MenuItem>

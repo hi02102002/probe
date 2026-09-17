@@ -31,7 +31,12 @@ export function BlogCta({
         {description}
       </p>
       <div className="mt-8 flex justify-center">
-        <Button render={<Link to="/dashboard" />} size="xl">
+        <Button
+          data-umami-event="Blog CTA start debugging clicked"
+          data-umami-event-button-name="blog__cta__start-debugging"
+          render={<Link to="/dashboard" />}
+          size="xl"
+        >
           {buttonText}
           <ArrowRightIcon weight="bold" />
         </Button>

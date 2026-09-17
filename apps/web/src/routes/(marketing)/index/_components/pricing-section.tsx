@@ -8,7 +8,13 @@ export function PricingSection() {
       <div className="mx-auto flex max-w-3xl flex-col items-center text-center">
         <h2 className="mt-4 text-balance text-3xl font-semibold tracking-[-0.035em] text-foreground sm:text-5xl">Give every webhook a place to land.</h2>
         <p className="mt-5 max-w-2xl text-pretty leading-7 text-muted-foreground">Sign in, create your first endpoint, and replace guesswork with the request in front of you.</p>
-        <Button className="mt-8" render={<Link to="/dashboard" />} size="xl">
+        <Button
+          className="mt-8"
+          data-umami-event="Pricing start debugging clicked"
+          data-umami-event-button-name="home__pricing__start-debugging"
+          render={<Link to="/dashboard" />}
+          size="xl"
+        >
           Start debugging
           <ArrowRightIcon weight="bold" />
         </Button>

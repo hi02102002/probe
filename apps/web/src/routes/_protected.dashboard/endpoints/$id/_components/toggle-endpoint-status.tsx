@@ -94,6 +94,9 @@ export function ToggleEndpointStatus({
           weight="duotone"
         />
       ),
+      'data-umami-event': 'Toggle endpoint status',
+      'data-umami-event-button-name': 'dashboard__endpoint-header__toggle-status',
+      'data-umami-event-status': status,
       'disabled': loading,
       'onClick': handleChangeStatus,
       'title': `Change status to ${status === 'active' ? 'paused' : 'active'}`,

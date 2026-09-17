@@ -30,7 +30,11 @@ function PrivacyPage() {
         <p>
           This Privacy Policy explains how we collect, use, store, encrypt, expire, and protect your information when you access our website, create an account, generate endpoints, or use our debugging tools. Please review this document alongside our
           {' '}
-          <Link to="/terms">
+          <Link
+            data-umami-event="Privacy terms link clicked"
+            data-umami-event-button-name="privacy__content__terms"
+            to="/terms"
+          >
             Terms of Service
           </Link>
           .

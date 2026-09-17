@@ -70,6 +70,9 @@ export function ThemeToggle({ className, size = 'sm' }: ThemeToggleProps) {
                 ? 'bg-background text-foreground shadow-xs'
                 : 'text-muted-foreground hover:text-foreground',
             )}
+            data-umami-event="Theme toggle clicked"
+            data-umami-event-button-name={`global__theme-toggle__${value}`}
+            data-umami-event-theme={value}
             onClick={(e) => {
               e.stopPropagation()
               setTheme(value)

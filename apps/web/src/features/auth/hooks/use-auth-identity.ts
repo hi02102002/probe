@@ -7,6 +7,7 @@ import { useEffect } from 'react'
 export function useAuthIdentity(session: AuthSession | null) {
   const userId = session?.user.id
   const userName = session?.user.name
+  const userEmail = session?.user.email
 
   useEffect(() => {
     if (!userId) {
@@ -18,5 +19,12 @@ export function useAuthIdentity(session: AuthSession | null) {
       userId,
       userName,
     })
-  }, [userId, userName])
+
+    if (typeof window !== 'undefined' && window.umami) {
+      window.umami.identify(userId, {
+        email: userEmail,
+        name: userName,
+      })
+    }
+  }, [userId, userName, userEmail])
 }

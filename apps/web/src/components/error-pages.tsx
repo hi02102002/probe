@@ -8,12 +8,21 @@ import { Button } from '@/components/ui/button'
 export function NotFoundPage(props: { homeLink?: ReactElement } | NotFoundRouteProps) {
   const homeLink = 'homeLink' in props && props.homeLink
     ? props.homeLink
-    : <a aria-label="Back to home" href="/" />
+    : (
+        <a
+          aria-label="Back to home"
+          data-umami-event="Back to home clicked"
+          data-umami-event-button-name="error__not-found__back-to-home"
+          href="/"
+        />
+      )
 
   return (
     <StatusPage
       actions={(
         <Button
+          data-umami-event="Back to home clicked"
+          data-umami-event-button-name="error__not-found__back-to-home"
           render={homeLink}
         >
           <ArrowLeftIcon />
@@ -28,7 +37,17 @@ export function NotFoundPage(props: { homeLink?: ReactElement } | NotFoundRouteP
 }
 
 export function LocalizedNotFound() {
-  return <NotFoundPage homeLink={<Link to="/" />} />
+  return (
+    <NotFoundPage
+      homeLink={(
+        <Link
+          data-umami-event="Back to home clicked"
+          data-umami-event-button-name="error__not-found__back-to-home"
+          to="/"
+        />
+      )}
+    />
+  )
 }
 
 export function BadGatewayPage({ onRetry }: { onRetry: () => void }) {
@@ -36,12 +55,25 @@ export function BadGatewayPage({ onRetry }: { onRetry: () => void }) {
     <StatusPage
       actions={(
         <>
-          <Button onClick={onRetry}>
+          <Button
+            data-umami-event="Error retry clicked"
+            data-umami-event-button-name="error__bad-gateway__retry"
+            onClick={onRetry}
+          >
             <ArrowsClockwiseIcon />
             Try again
           </Button>
           <Button
-            render={<a aria-label="Back to home" href="/" />}
+            data-umami-event="Back to home clicked"
+            data-umami-event-button-name="error__bad-gateway__back-to-home"
+            render={(
+              <a
+                aria-label="Back to home"
+                data-umami-event="Back to home clicked"
+                data-umami-event-button-name="error__bad-gateway__back-to-home"
+                href="/"
+              />
+            )}
             variant="outline"
           >
             Back to home

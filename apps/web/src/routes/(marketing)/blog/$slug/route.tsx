@@ -130,11 +130,23 @@ function BlogPostPage() {
             <Breadcrumb>
               <BreadcrumbList className="text-xs text-muted-foreground">
                 <BreadcrumbItem>
-                  <BreadcrumbLink render={<Link to="/" />}>Home</BreadcrumbLink>
+                  <BreadcrumbLink
+                    data-umami-event="Breadcrumb home clicked"
+                    data-umami-event-button-name="blog__breadcrumb__home"
+                    render={<Link to="/" />}
+                  >
+                    Home
+                  </BreadcrumbLink>
                 </BreadcrumbItem>
                 <BreadcrumbSeparator />
                 <BreadcrumbItem>
-                  <BreadcrumbLink render={<Link to="/blog" />}>Blog</BreadcrumbLink>
+                  <BreadcrumbLink
+                    data-umami-event="Breadcrumb blog clicked"
+                    data-umami-event-button-name="blog__breadcrumb__blog"
+                    render={<Link to="/blog" />}
+                  >
+                    Blog
+                  </BreadcrumbLink>
                 </BreadcrumbItem>
                 <BreadcrumbSeparator />
                 <BreadcrumbItem>
@@ -145,8 +157,10 @@ function BlogPostPage() {
               </BreadcrumbList>
             </Breadcrumb>
             <Link
-              to="/blog"
               className="inline-flex items-center gap-1.5 text-xs text-muted-foreground transition-colors hover:text-foreground"
+              data-umami-event="Back to blog list clicked"
+              data-umami-event-button-name="blog__detail__all-articles"
+              to="/blog"
             >
               <ArrowLeftIcon className="size-3.5" />
               <span>All articles</span>
@@ -210,6 +224,9 @@ function BlogPostPage() {
               </div>
 
               <Button
+                data-umami-event="Blog share guide clicked"
+                data-umami-event-button-name="blog__detail__share-guide"
+                data-umami-event-slug={post.slug}
                 onClick={copyArticleLink}
                 size="xs"
                 type="button"

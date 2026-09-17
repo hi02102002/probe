@@ -100,6 +100,12 @@ export function CopyButton({
 
   return (
     <Button
+      data-umami-event="Copy to clipboard"
+      data-umami-event-button-name={
+        typeof label === 'string'
+          ? `copy__clipboard__${label.toLowerCase().replace(/\s+/g, '-')}`
+          : 'copy__clipboard__button'
+      }
       aria-label={ariaLabel}
       aria-live="polite"
       className={cn(

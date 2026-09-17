@@ -26,6 +26,8 @@ export function RequestSearchInput() {
           <button
             aria-label="Clear search"
             className="inline-flex size-5 cursor-pointer items-center justify-center rounded-sm text-muted-foreground transition-colors hover:text-foreground focus-visible:outline-none [&_svg]:mx-0"
+            data-umami-event="Clear request search"
+            data-umami-event-button-name="dashboard__requests__clear-search"
             onClick={() => setParams({ query: null, requestId: null })}
             type="button"
           >

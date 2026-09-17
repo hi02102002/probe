@@ -77,6 +77,8 @@ export function BlogSidebar({
                   <a
                     key={h.id}
                     href={`#${h.id}`}
+                    data-umami-event="Sidebar toc item clicked"
+                    data-umami-event-button-name="blog__sidebar__toc-item"
                     className={cn(
                       'block border-l -ml-px py-1 text-xs leading-5 transition-colors',
                       isActive
@@ -106,6 +108,8 @@ export function BlogSidebar({
           <CardPanel className="p-4 pt-2">
             <Button
               className="w-full"
+              data-umami-event="Sidebar open dashboard clicked"
+              data-umami-event-button-name="blog__sidebar__open-dashboard"
               render={<Link to="/dashboard" />}
               size="sm"
             >
@@ -122,6 +126,8 @@ export function BlogSidebar({
             variant="ghost"
             size="sm"
             onClick={onCopyLink}
+            data-umami-event="Sidebar share guide clicked"
+            data-umami-event-button-name="blog__sidebar__share-guide"
             className="w-full justify-start gap-2 text-xs text-muted-foreground hover:text-foreground"
           >
             {copiedUrl ? <CheckIcon className="size-4 text-success" /> : <ShareNetworkIcon className="size-4" />}

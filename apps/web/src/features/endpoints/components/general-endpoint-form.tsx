@@ -105,6 +105,8 @@ export function EndpointForm({
           </Button>
         )}
         <Button
+          data-umami-event="Endpoint form submitted"
+          data-umami-event-button-name="dashboard__endpoint-form__submit"
           disabled={isPending}
           loading={isPending}
           type="submit"

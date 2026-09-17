@@ -48,6 +48,8 @@ export function AppShell({ breadcrumbs = [], children, className }: AppShellProp
                       ? (
                           <BreadcrumbLink
                             className="inline-flex items-center gap-1.5"
+                            data-umami-event="Dashboard breadcrumb clicked"
+                            data-umami-event-button-name={`dashboard__breadcrumb__${breadcrumb.label.toLowerCase().replace(/[^a-z0-9]+/g, '-')}`}
                             render={<Link to={breadcrumb.to} />}
                           >
                             {content}

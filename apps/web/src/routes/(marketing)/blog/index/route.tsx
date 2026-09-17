@@ -90,6 +90,9 @@ function BlogIndexPage() {
             <button
               type="button"
               onClick={() => setSelectedTag(null)}
+              data-umami-event="Filter blog posts by tag"
+              data-umami-event-button-name="blog__filter__all"
+              data-umami-event-tag="all"
               className={`rounded-md border px-3 py-1 text-xs font-medium transition-colors ${
                 selectedTag === null
                   ? 'border-primary bg-primary text-primary-foreground font-semibold'
@@ -105,6 +108,9 @@ function BlogIndexPage() {
                 key={tag}
                 type="button"
                 onClick={() => setSelectedTag(tag === selectedTag ? null : tag)}
+                data-umami-event="Filter blog posts by tag"
+                data-umami-event-button-name={`blog__filter__${tag.toLowerCase().replace(/[^a-z0-9]+/g, '-')}`}
+                data-umami-event-tag={tag}
                 className={`rounded-md border px-3 py-1 text-xs font-medium transition-colors ${
                   selectedTag === tag
                     ? 'border-primary bg-primary text-primary-foreground font-semibold'
@@ -147,6 +153,9 @@ function BlogIndexPage() {
                     to="/blog/$slug"
                     params={{ slug: featuredPost.slug }}
                     className="hover:text-accent-foreground transition-colors"
+                    data-umami-event="Featured blog post title clicked"
+                    data-umami-event-button-name="blog__featured__read-title"
+                    data-umami-event-slug={featuredPost.slug}
                   >
                     {featuredPost.title}
                   </Link>
@@ -162,7 +171,12 @@ function BlogIndexPage() {
                   ))}
                 </div>
                 <div className="mt-8">
-                  <Button render={<Link to="/blog/$slug" params={{ slug: featuredPost.slug }} />}>
+                  <Button
+                    data-umami-event="Featured blog post button clicked"
+                    data-umami-event-button-name="blog__featured__read-button"
+                    data-umami-event-slug={featuredPost.slug}
+                    render={<Link to="/blog/$slug" params={{ slug: featuredPost.slug }} />}
+                  >
                     Read featured guide
                     <ArrowRightIcon weight="bold" />
                   </Button>
@@ -226,8 +240,11 @@ function BlogIndexPage() {
                   <CardTitle className="mt-4 text-xl font-semibold tracking-[-0.03em] text-foreground transition-colors group-hover:text-accent-foreground sm:text-2xl">
                     <Link
                       className="after:absolute after:inset-0 hover:underline"
-                      to="/blog/$slug"
+                      data-umami-event="Blog post card clicked"
+                      data-umami-event-button-name="blog__card__read-post"
+                      data-umami-event-slug={post.slug}
                       params={{ slug: post.slug }}
+                      to="/blog/$slug"
                     >
                       {post.title}
                     </Link>
@@ -267,6 +284,8 @@ function BlogIndexPage() {
               <button
                 type="button"
                 onClick={() => setSelectedTag(null)}
+                data-umami-event="Reset blog filter clicked"
+                data-umami-event-button-name="blog__filter__reset"
                 className="mt-4 text-xs font-medium text-accent-foreground underline"
               >
                 Reset filter

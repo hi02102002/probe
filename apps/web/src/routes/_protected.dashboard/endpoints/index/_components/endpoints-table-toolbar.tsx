@@ -58,6 +58,8 @@ export function EndpointsToolbar() {
               <button
                 aria-label="Clear search"
                 className="inline-flex size-5 cursor-pointer items-center justify-center rounded-sm text-muted-foreground transition-colors hover:text-foreground focus-visible:outline-none [&_svg]:mx-0"
+                data-umami-event="Clear endpoints search"
+                data-umami-event-button-name="dashboard__endpoints-toolbar__clear-search"
                 onClick={() => setParams({ page: 1, query: null })}
                 type="button"
               >

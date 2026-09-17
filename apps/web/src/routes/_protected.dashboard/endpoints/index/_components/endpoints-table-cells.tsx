@@ -13,6 +13,8 @@ export function EndpointNameCell({ item }: { item: Endpoint }) {
   return (
     <Link
       className="group inline-flex min-w-0 items-center gap-3 text-left focus-visible:outline-none"
+      data-umami-event="View endpoint details"
+      data-umami-event-button-name="dashboard__endpoints__view-endpoint"
       params={{ id: item.id }}
       preload="intent"
       to="/dashboard/endpoints/$id"
@@ -81,6 +83,8 @@ export function ActionsCell({ item }: { item: Endpoint }) {
     <div className="flex items-center justify-end pr-1" onClick={e => e.stopPropagation()}>
       <Button
         aria-label={`View ${item.name} details`}
+        data-umami-event="View endpoint details"
+        data-umami-event-button-name="dashboard__endpoints__action-view-endpoint"
         render={(
           <Link
             params={{ id: item.id }}

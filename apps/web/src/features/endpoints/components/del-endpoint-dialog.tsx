@@ -57,6 +57,8 @@ export function DeleteEndpointDialog({ trigger, endpointId, onDeletedSuccess }: 
         <AlertDialogFooter variant="bare">
           <AlertDialogClose render={(
             <Button
+              data-umami-event="Cancel delete endpoint"
+              data-umami-event-button-name="dashboard__del-dialog__cancel"
               variant="ghost"
               disabled={deleteEndpointMutation.isPending}
             />
@@ -67,6 +69,8 @@ export function DeleteEndpointDialog({ trigger, endpointId, onDeletedSuccess }: 
           <AlertDialogClose
             render={(
               <Button
+                data-umami-event="Confirm delete endpoint"
+                data-umami-event-button-name="dashboard__del-dialog__confirm"
                 variant="destructive"
                 loading={deleteEndpointMutation.isPending}
               />

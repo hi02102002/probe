@@ -29,7 +29,10 @@ function DashboardPage() {
             Create and manage your endpoints.
           </PageHeaderDescription>
         </PageHeader>
-        <Button>
+        <Button
+          data-umami-event="New endpoint button clicked"
+          data-umami-event-button-name="dashboard__index__new-endpoint"
+        >
           <PlusIcon />
           New endpoint
         </Button>
