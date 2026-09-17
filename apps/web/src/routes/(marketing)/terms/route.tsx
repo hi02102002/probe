@@ -31,7 +31,7 @@ function TermsPage() {
           By accessing the website, registering an account, generating an endpoint, or sending HTTP payloads to the Platform, you acknowledge that you have read, understood, and agree to be bound by these Terms and our
           {' '}
           <Link
-            data-umami-event="Terms privacy link clicked"
+            data-umami-link-event="Terms privacy link clicked"
             data-umami-event-button-name="terms__content__privacy"
             to="/privacy"
           >

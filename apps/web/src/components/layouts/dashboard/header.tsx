@@ -40,7 +40,7 @@ export function DashboardHeader() {
     <header className="sticky top-0 z-40 border-b bg-card/80 backdrop-blur-2xl">
       <div className="mx-auto flex h-16 max-w-6xl items-center gap-3 px-4 sm:px-6">
         <Logo
-          data-umami-event="Dashboard logo clicked"
+          data-umami-link-event="Dashboard logo clicked"
           data-umami-event-button-name="dashboard__header__logo"
           to="/dashboard"
         />
@@ -55,7 +55,7 @@ export function DashboardHeader() {
               key={nav.to}
               activeOptions={{ exact: nav.exact }}
               className="relative flex h-full items-center px-2 font-medium text-muted-foreground text-sm transition-colors duration-150 hover:text-foreground data-[status=active]:text-foreground"
-              data-umami-event="Dashboard nav clicked"
+              data-umami-link-event="Dashboard nav clicked"
               data-umami-event-button-name={`dashboard__nav__${nav.label.toLowerCase().replace(/[^a-z0-9]+/g, '-')}`}
               to={nav.to}
             >

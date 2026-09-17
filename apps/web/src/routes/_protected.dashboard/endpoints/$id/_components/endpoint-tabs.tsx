@@ -76,7 +76,7 @@ export function EndPointTabs() {
               'text-foreground hover:text-foreground': activeIndex === index,
             },
           )}
-          data-umami-event="Endpoint tab clicked"
+          data-umami-link-event="Endpoint tab clicked"
           data-umami-event-button-name={`dashboard__endpoint-tabs__${link.label.toLowerCase()}`}
           key={link.toOptions.to}
           {...link.toOptions}

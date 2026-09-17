@@ -63,7 +63,7 @@ export function RequestList() {
             key={request.id}
             render={(
               <Link
-                data-umami-event="Select webhook request"
+                data-umami-link-event="Select webhook request"
                 data-umami-event-button-name="dashboard__requests__select-request"
                 data-umami-event-request-id={request.id}
                 from="/dashboard/endpoints/$id/requests"

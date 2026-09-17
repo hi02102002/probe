@@ -107,8 +107,8 @@ export function HeroSection() {
         </p>
         <div className="mt-10 flex justify-center">
           <Button
-            data-umami-event="Hero start debugging clicked"
             data-umami-event-button-name="home__hero__start-debugging"
+            data-umami-link-event="Hero start debugging clicked"
             render={<Link to="/dashboard" />}
             size="xl"
           >

@@ -15,6 +15,7 @@ import { NotFoundPage, RootErrorPage } from '@/components/error-pages'
 import { AnchoredToastProvider, ToastProvider } from '@/components/ui/toast'
 import { getAuthSessionQueryOptions } from '@/features/auth/api/auth-session'
 import { useAuthIdentity } from '@/features/auth/hooks/use-auth-identity'
+import { useUmamiLinkTracker } from '@/hooks/use-umami-link-tracker'
 import TanStackQueryDevtools from '@/integrations/tanstack-query/devtools'
 import { generateAppSeo } from '@/lib/seo'
 import appCss from '@/styles.css?url'
@@ -97,6 +98,7 @@ function RootDocument() {
   const { session } = Route.useRouteContext()
 
   useAuthIdentity(session)
+  useUmamiLinkTracker()
   return (
     <html dir="ltr" lang="en" suppressHydrationWarning>
       <head>

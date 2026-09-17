@@ -43,7 +43,7 @@ export function EndpointHeader() {
           <BreadcrumbItem>
             <BreadcrumbLink
               className="flex items-center gap-1"
-              data-umami-event="Endpoint back to list clicked"
+              data-umami-link-event="Endpoint back to list clicked"
               data-umami-event-button-name="dashboard__endpoint-header__back-to-endpoints"
               render={(props) => {
                 return (

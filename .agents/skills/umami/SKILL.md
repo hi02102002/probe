@@ -52,15 +52,78 @@ In Next.js:
 
 ## 2. Declarative Tracking with Data Attributes
 
-Umami automatically tracks clicks on any element with `data-umami-event`.
+### ⚠️ Critical Architecture: SPAs & Link Navigation
+
+Umami's official script attaches a document click handler in the capture phase. When it encounters `data-umami-event` on an `<a>` tag:
+```javascript
+// Umami script internal behavior on <a> elements:
+if ("A" === r.tagName && n) {
+  return a || e.preventDefault(), t(r).then(() => {
+    a || (("_top" === i ? u.location : o).href = n)
+  })
+}
+```
+**This causes a hard full-page browser reload** on every internal link click in Single-Page Applications (TanStack Router, Next.js, Remix, Vite SPA), breaking client-side navigation!
+
+To maintain flawless SPA transitions without full-page reloads while tracking every link click in Umami:
+
+| Target Element | Event Attribute | Button Name Attribute | Behavior |
+|---|---|---|---|
+| **Buttons** (`<button>`, `<Button>` without `render={<Link />}`) | `data-umami-event="..."` | `data-umami-event-button-name="screen__section__action"` | Tracked natively by Umami script without interfering. |
+| **Links** (`<Link>`, `<a>`, `<Button render={<Link />} />`) | `data-umami-link-event="..."` | `data-umami-event-button-name="screen__section__action"` | Tracked via custom SPA listener (`useUmamiLinkTracker`) with zero `preventDefault()` and instant client-side routing. |
+
+---
+
+### The `useUmamiLinkTracker` Hook
+
+Mount this hook once at the root layout (e.g. `__root.tsx` or main app shell):
+
+```tsx
+// src/hooks/use-umami-link-tracker.ts
+import { useEffect } from 'react'
+
+export function useUmamiLinkTracker() {
+  useEffect(() => {
+    const handleClick = (e: MouseEvent) => {
+      const target = e.target as HTMLElement | null
+      const linkElement = target?.closest<HTMLElement>('[data-umami-link-event]')
+      if (!linkElement) return
+
+      const eventName = linkElement.getAttribute('data-umami-link-event')
+      if (!eventName) return
+
+      // Extract all data-umami-event-* attributes (e.g. button-name, slug, provider)
+      const data: Record<string, string> = {}
+      for (const attr of Array.from(linkElement.attributes)) {
+        if (attr.name.startsWith('data-umami-event-')) {
+          const key = attr.name.replace('data-umami-event-', '')
+          data[key] = attr.value
+        }
+      }
+
+      if (typeof window !== 'undefined' && window.umami?.track) {
+        window.umami.track(eventName, Object.keys(data).length > 0 ? data : undefined)
+      }
+    }
+
+    document.addEventListener('click', handleClick, { capture: true })
+    return () => {
+      document.removeEventListener('click', handleClick, { capture: true })
+    }
+  }, [])
+}
+```
+
+---
 
 ### Requirement: Track Both Buttons AND Links
-All interactive click targets — including buttons (`<Button>`, `<button>`), navigation links, breadcrumbs, card links, and text links (`<Link>`, `<a>`) — must carry both:
-1. `data-umami-event`: Human-readable action name (max 50 chars).
+All interactive click targets — including buttons (`<Button>`, `<button>`), navigation links, breadcrumbs, card links, and text links (`<Link>`, `<a>`) — must carry:
+1. `data-umami-event` (for buttons) OR `data-umami-link-event` (for links): Human-readable action name (max 50 chars).
 2. `data-umami-event-button-name`: Screen-contextual identifier formatted in **`screen__section__action`** (all lowercase, separated by double underscores `__`, with sub-words in kebab-case).
 
 ### Core Attributes
-- `data-umami-event`: Name of the event (max 50 characters).
+- `data-umami-event`: Name of the event on `<button>` elements (max 50 characters).
+- `data-umami-link-event`: Name of the event on `<Link>`, `<a>`, and `<Button render={<Link />} />` elements (max 50 characters).
 - `data-umami-event-button-name`: Screen-contextual identifier formatted in **`screen__section__action`** (all lowercase, separated by double underscores `__`, with sub-words in kebab-case).
 - `data-umami-event-*`: Additional custom properties (recorded as strings, e.g. `data-umami-event-slug="webhook-security"`).
 
@@ -68,7 +131,7 @@ All interactive click targets — including buttons (`<Button>`, `<button>`), na
 Always use the lowercase `screen__section__action` format for `data-umami-event-button-name` so analytics clearly indicate which screen and component triggered the action:
 
 ```tsx
-// Good: contextual, predictable lowercase screen__section__action on buttons
+// Buttons use data-umami-event
 <Button
   data-umami-event="Hero start debugging clicked"
   data-umami-event-button-name="home__hero__start-debugging"
@@ -84,10 +147,10 @@ Always use the lowercase `screen__section__action` format for `data-umami-event-
   Continue with GitHub
 </Button>
 
-// Good: contextual, predictable lowercase screen__section__action on links
+// Links & Link Buttons use data-umami-link-event (prevents full page reload!)
 <Link
   to="/terms"
-  data-umami-event="Footer legal terms clicked"
+  data-umami-link-event="Footer legal terms clicked"
   data-umami-event-button-name="home__footer__legal-terms"
 >
   Terms of Service
@@ -96,50 +159,51 @@ Always use the lowercase `screen__section__action` format for `data-umami-event-
 <Link
   to="/blog/$slug"
   params={{ slug: post.slug }}
-  data-umami-event="Blog post card clicked"
+  data-umami-link-event="Blog post card clicked"
   data-umami-event-button-name="blog__card__read-post"
   data-umami-event-slug={post.slug}
 >
   {post.title}
 </Link>
 
-<a
-  href="/#features"
-  data-umami-event="Header nav clicked"
-  data-umami-event-button-name="home__nav__features"
-  data-umami-event-nav="features"
->
-  Inspect
-</a>
-
-// Bad: missing screen context or uppercase letters
 <Button
-  data-umami-event="Hero clicked"
-  data-umami-event-button-name="Home__hero__start-debugging" // Do not use uppercase
+  data-umami-link-event="Hero start debugging clicked"
+  data-umami-event-button-name="home__hero__start-debugging"
+  render={<Link to="/dashboard" />}
 >
-```
+  Go to Dashboard
+</Button>
+
+// Bad: using data-umami-event on a Link (causes full-page reload in SPA!)
+<Link
+  to="/dashboard"
+  data-umami-event="Dashboard link clicked" // ❌ Reloads entire page!
+  data-umami-event-button-name="home__nav__dashboard"
+>
+  Dashboard
+</Link>
 
 ### Standard Event Matrix
 
-| Action / Element | `data-umami-event` | `data-umami-event-button-name` | Extra Attributes |
+| Action / Element | Tracking Attribute & Event Name | `data-umami-event-button-name` | Extra Attributes |
 |---|---|---|---|
-| Header Banner | `Header banner clicked` | `home__banner__link` | - |
-| Header Nav Link | `Header nav clicked` | `home__nav__features` | `data-umami-event-nav="features"` |
-| Header Sign In | `Header sign in button clicked` | `home__header__sign-in` | - |
-| Header Dashboard | `Header dashboard button clicked` | `home__header__dashboard` | - |
-| Hero CTA | `Hero start debugging clicked` | `home__hero__start-debugging` | - |
-| Pricing CTA | `Pricing start debugging clicked` | `home__pricing__start-debugging` | - |
-| Footer Nav Link | `Footer nav features clicked` | `home__footer__nav-features` | - |
-| Footer Legal Link | `Footer legal terms clicked` | `home__footer__legal-terms` | - |
-| Blog Card Link | `Blog post card clicked` | `blog__card__read-post` | `data-umami-event-slug="..."` |
-| Blog Breadcrumb Link | `Breadcrumb home clicked` | `blog__breadcrumb__home` | - |
-| Social Login | `Social login clicked` | `auth__login__continue-github` | `data-umami-event-provider="github"` |
-| Form Submit | `Magic link sign-in submitted` | `auth__login__send-magic-link` | - |
-| Copy Button | `Copy to clipboard` | `copy__clipboard__button` | - |
-| Resource Creation | `New endpoint button clicked` | `dashboard__endpoints__new-endpoint` | - |
-| Form Completion | `Endpoint form submitted` | `dashboard__endpoint-form__submit` | - |
-| Test Trigger | `Send test webhook request` | `dashboard__test__send-request` | `data-umami-event-method="POST"` |
-| Tab Navigation | `Endpoint tab clicked` | `dashboard__endpoint-tabs__overview` | - |
+| Header Banner Link | `data-umami-link-event="Header banner clicked"` | `home__banner__link` | - |
+| Header Nav Link | `data-umami-link-event="Header nav clicked"` | `home__nav__features` | `data-umami-event-nav="features"` |
+| Header Sign In (Link) | `data-umami-link-event="Header sign in button clicked"` | `home__header__sign-in` | - |
+| Header Dashboard (Link) | `data-umami-link-event="Header dashboard button clicked"` | `home__header__dashboard` | - |
+| Hero CTA (Link) | `data-umami-link-event="Hero start debugging clicked"` | `home__hero__start-debugging` | - |
+| Pricing CTA (Link) | `data-umami-link-event="Pricing start debugging clicked"` | `home__pricing__start-debugging` | - |
+| Footer Nav Link | `data-umami-link-event="Footer nav features clicked"` | `home__footer__nav-features` | - |
+| Footer Legal Link | `data-umami-link-event="Footer legal terms clicked"` | `home__footer__legal-terms` | - |
+| Blog Card Link | `data-umami-link-event="Blog post card clicked"` | `blog__card__read-post` | `data-umami-event-slug="..."` |
+| Blog Breadcrumb Link | `data-umami-link-event="Breadcrumb home clicked"` | `blog__breadcrumb__home` | - |
+| Tab Navigation (Link) | `data-umami-link-event="Endpoint tab clicked"` | `dashboard__endpoint-tabs__overview` | - |
+| Social Login (Button) | `data-umami-event="Social login clicked"` | `auth__login__continue-github` | `data-umami-event-provider="github"` |
+| Form Submit (Button) | `data-umami-event="Magic link sign-in submitted"` | `auth__login__send-magic-link` | - |
+| Copy Button (Button) | `data-umami-event="Copy to clipboard"` | `copy__clipboard__button` | - |
+| Resource Creation (Button) | `data-umami-event="New endpoint button clicked"` | `dashboard__endpoints__new-endpoint` | - |
+| Form Completion (Button) | `data-umami-event="Endpoint form submitted"` | `dashboard__endpoint-form__submit` | - |
+| Test Trigger (Button) | `data-umami-event="Send test webhook request"` | `dashboard__test__send-request` | `data-umami-event-method="POST"` |
 
 ---
 

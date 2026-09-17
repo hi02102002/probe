@@ -364,7 +364,7 @@ export function TestSection({ endpointId, ingestUrl }: TestSectionProps) {
 
               <Button
                 className="w-full sm:w-auto"
-                data-umami-event="Navigate to requests tab"
+                data-umami-link-event="Navigate to requests tab"
                 data-umami-event-button-name="dashboard__test__go-to-requests"
                 render={(
                   <Link

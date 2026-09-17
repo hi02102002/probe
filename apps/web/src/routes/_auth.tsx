@@ -37,7 +37,7 @@ function AuthLayout() {
       <section className="relative flex min-h-0 w-full flex-col overflow-y-auto border-border bg-card px-6 py-6 lg:w-[40%] lg:min-w-[480px] lg:border-r lg:px-16 xl:min-w-[560px]">
         <div className="flex items-center justify-between">
           <Logo
-            data-umami-event="Auth logo clicked"
+            data-umami-link-event="Auth logo clicked"
             data-umami-event-button-name="auth__header__logo"
           />
         </div>
@@ -52,7 +52,7 @@ function AuthLayout() {
             {' '}
             <Link
               className="text-foreground underline underline-offset-4"
-              data-umami-event="Auth terms link clicked"
+              data-umami-link-event="Auth terms link clicked"
               data-umami-event-button-name="auth__legal__terms"
               to="/terms"
             >
@@ -63,7 +63,7 @@ function AuthLayout() {
             {' '}
             <Link
               className="text-foreground underline underline-offset-4"
-              data-umami-event="Auth privacy link clicked"
+              data-umami-link-event="Auth privacy link clicked"
               data-umami-event-button-name="auth__legal__privacy"
               to="/privacy"
             >

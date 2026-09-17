@@ -38,8 +38,8 @@ export function ProbeCallout({
       <CardPanel className="p-0 pt-4">
         <div className="flex flex-wrap items-center gap-3">
           <Button
-            data-umami-event="Blog callout start debugging clicked"
             data-umami-event-button-name="blog__callout__start-debugging"
+            data-umami-link-event="Blog callout start debugging clicked"
             render={<Link to="/dashboard" />}
             size="sm"
           >

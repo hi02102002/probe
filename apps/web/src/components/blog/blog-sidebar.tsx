@@ -77,8 +77,8 @@ export function BlogSidebar({
                   <a
                     key={h.id}
                     href={`#${h.id}`}
-                    data-umami-event="Sidebar toc item clicked"
                     data-umami-event-button-name="blog__sidebar__toc-item"
+                    data-umami-link-event="Sidebar toc item clicked"
                     className={cn(
                       'block border-l -ml-px py-1 text-xs leading-5 transition-colors',
                       isActive
@@ -108,8 +108,8 @@ export function BlogSidebar({
           <CardPanel className="p-4 pt-2">
             <Button
               className="w-full"
-              data-umami-event="Sidebar open dashboard clicked"
               data-umami-event-button-name="blog__sidebar__open-dashboard"
+              data-umami-link-event="Sidebar open dashboard clicked"
               render={<Link to="/dashboard" />}
               size="sm"
             >

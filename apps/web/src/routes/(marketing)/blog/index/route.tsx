@@ -153,7 +153,7 @@ function BlogIndexPage() {
                     to="/blog/$slug"
                     params={{ slug: featuredPost.slug }}
                     className="hover:text-accent-foreground transition-colors"
-                    data-umami-event="Featured blog post title clicked"
+                    data-umami-link-event="Featured blog post title clicked"
                     data-umami-event-button-name="blog__featured__read-title"
                     data-umami-event-slug={featuredPost.slug}
                   >
@@ -172,7 +172,7 @@ function BlogIndexPage() {
                 </div>
                 <div className="mt-8">
                   <Button
-                    data-umami-event="Featured blog post button clicked"
+                    data-umami-link-event="Featured blog post button clicked"
                     data-umami-event-button-name="blog__featured__read-button"
                     data-umami-event-slug={featuredPost.slug}
                     render={<Link to="/blog/$slug" params={{ slug: featuredPost.slug }} />}
@@ -240,7 +240,7 @@ function BlogIndexPage() {
                   <CardTitle className="mt-4 text-xl font-semibold tracking-[-0.03em] text-foreground transition-colors group-hover:text-accent-foreground sm:text-2xl">
                     <Link
                       className="after:absolute after:inset-0 hover:underline"
-                      data-umami-event="Blog post card clicked"
+                      data-umami-link-event="Blog post card clicked"
                       data-umami-event-button-name="blog__card__read-post"
                       data-umami-event-slug={post.slug}
                       params={{ slug: post.slug }}

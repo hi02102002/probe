@@ -12,8 +12,8 @@ export function HomeHeader() {
     <header className="sticky top-0 z-50 bg-background/90 backdrop-blur-xl">
       <a
         className="flex min-h-10 items-center justify-center gap-2 bg-primary px-4 py-2 text-center font-semibold text-primary-foreground text-xs transition-colors hover:bg-primary/90 sm:text-sm"
-        data-umami-event="Header banner clicked"
         data-umami-event-button-name="home__banner__link"
+        data-umami-link-event="Header banner clicked"
         href="/#pricing"
       >
         <span>Debug your next webhook with Probe.</span>
@@ -25,36 +25,36 @@ export function HomeHeader() {
           <h2 className="sr-only">Main Navigation</h2>
           <a
             className="px-3 py-2 text-muted-foreground text-sm transition-colors hover:text-foreground"
-            data-umami-event="Header nav clicked"
             data-umami-event-button-name="home__nav__features"
             data-umami-event-nav="features"
+            data-umami-link-event="Header nav clicked"
             href="/#features"
           >
             Inspect
           </a>
           <a
             className="px-3 py-2 text-muted-foreground text-sm transition-colors hover:text-foreground"
-            data-umami-event="Header nav clicked"
             data-umami-event-button-name="home__nav__compare"
             data-umami-event-nav="compare"
+            data-umami-link-event="Header nav clicked"
             href="/#compare"
           >
             How it works
           </a>
           <a
             className="px-3 py-2 text-muted-foreground text-sm transition-colors hover:text-foreground"
-            data-umami-event="Header nav clicked"
             data-umami-event-button-name="home__nav__faq"
             data-umami-event-nav="faq"
+            data-umami-link-event="Header nav clicked"
             href="/#faq"
           >
             FAQ
           </a>
           <a
             className="px-3 py-2 text-muted-foreground text-sm transition-colors hover:text-foreground"
-            data-umami-event="Header nav clicked"
             data-umami-event-button-name="home__nav__pricing"
             data-umami-event-nav="pricing"
+            data-umami-link-event="Header nav clicked"
             href="/#pricing"
           >
             Start
@@ -62,9 +62,9 @@ export function HomeHeader() {
           <Link
             activeProps={{ className: 'text-foreground font-medium' }}
             className="px-3 py-2 text-muted-foreground text-sm transition-colors hover:text-foreground"
-            data-umami-event="Header nav clicked"
             data-umami-event-button-name="home__nav__blog"
             data-umami-event-nav="blog"
+            data-umami-link-event="Header nav clicked"
             to="/blog"
           >
             Blog
@@ -74,8 +74,8 @@ export function HomeHeader() {
           {session?.user
             ? (
                 <Button
-                  data-umami-event="Header dashboard button clicked"
                   data-umami-event-button-name="home__header__dashboard"
+                  data-umami-link-event="Header dashboard button clicked"
                   render={<Link to="/dashboard" />}
                 >
                   Dashboard
@@ -83,8 +83,8 @@ export function HomeHeader() {
               )
             : (
                 <Button
-                  data-umami-event="Header sign in button clicked"
                   data-umami-event-button-name="home__header__sign-in"
+                  data-umami-link-event="Header sign in button clicked"
                   render={<Link to="/login" />}
                 >
                   Sign in

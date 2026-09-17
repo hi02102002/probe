@@ -10,8 +10,8 @@ export function PricingSection() {
         <p className="mt-5 max-w-2xl text-pretty leading-7 text-muted-foreground">Sign in, create your first endpoint, and replace guesswork with the request in front of you.</p>
         <Button
           className="mt-8"
-          data-umami-event="Pricing start debugging clicked"
           data-umami-event-button-name="home__pricing__start-debugging"
+          data-umami-link-event="Pricing start debugging clicked"
           render={<Link to="/dashboard" />}
           size="xl"
         >

@@ -131,8 +131,8 @@ function BlogPostPage() {
               <BreadcrumbList className="text-xs text-muted-foreground">
                 <BreadcrumbItem>
                   <BreadcrumbLink
-                    data-umami-event="Breadcrumb home clicked"
                     data-umami-event-button-name="blog__breadcrumb__home"
+                    data-umami-link-event="Breadcrumb home clicked"
                     render={<Link to="/" />}
                   >
                     Home
@@ -141,8 +141,8 @@ function BlogPostPage() {
                 <BreadcrumbSeparator />
                 <BreadcrumbItem>
                   <BreadcrumbLink
-                    data-umami-event="Breadcrumb blog clicked"
                     data-umami-event-button-name="blog__breadcrumb__blog"
+                    data-umami-link-event="Breadcrumb blog clicked"
                     render={<Link to="/blog" />}
                   >
                     Blog
@@ -158,8 +158,8 @@ function BlogPostPage() {
             </Breadcrumb>
             <Link
               className="inline-flex items-center gap-1.5 text-xs text-muted-foreground transition-colors hover:text-foreground"
-              data-umami-event="Back to blog list clicked"
               data-umami-event-button-name="blog__detail__all-articles"
+              data-umami-link-event="Back to blog list clicked"
               to="/blog"
             >
               <ArrowLeftIcon className="size-3.5" />

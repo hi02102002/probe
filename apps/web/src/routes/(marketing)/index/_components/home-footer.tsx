@@ -14,8 +14,8 @@ export function HomeFooter() {
         <div>
           <Logo
             classNames={{ container: 'text-foreground' }}
-            data-umami-event="Footer logo clicked"
             data-umami-event-button-name="home__footer__logo"
+            data-umami-link-event="Footer logo clicked"
           />
           <p className="mt-4 max-w-sm text-muted-foreground text-sm leading-6">
             A focused webhook debugger for capturing incoming requests and understanding exactly what was sent.
@@ -26,40 +26,40 @@ export function HomeFooter() {
           <div className="mt-4 flex flex-col items-start gap-2.5 text-muted-foreground text-sm">
             <a
               className="hover:text-foreground"
-              data-umami-event="Footer nav features clicked"
               data-umami-event-button-name="home__footer__nav-features"
+              data-umami-link-event="Footer nav features clicked"
               href="/#features"
             >
               Inspect
             </a>
             <a
               className="hover:text-foreground"
-              data-umami-event="Footer nav compare clicked"
               data-umami-event-button-name="home__footer__nav-compare"
+              data-umami-link-event="Footer nav compare clicked"
               href="/#compare"
             >
               How it works
             </a>
             <a
               className="hover:text-foreground"
-              data-umami-event="Footer nav faq clicked"
               data-umami-event-button-name="home__footer__nav-faq"
+              data-umami-link-event="Footer nav faq clicked"
               href="/#faq"
             >
               FAQ
             </a>
             <a
               className="hover:text-foreground"
-              data-umami-event="Footer nav pricing clicked"
               data-umami-event-button-name="home__footer__nav-pricing"
+              data-umami-link-event="Footer nav pricing clicked"
               href="/#pricing"
             >
               Pricing
             </a>
             <Link
               className="hover:text-foreground"
-              data-umami-event="Footer nav blog clicked"
               data-umami-event-button-name="home__footer__nav-blog"
+              data-umami-link-event="Footer nav blog clicked"
               to="/blog"
             >
               Blog
@@ -73,8 +73,8 @@ export function HomeFooter() {
               ? (
                   <Link
                     className="hover:text-foreground"
-                    data-umami-event="Footer dashboard link clicked"
                     data-umami-event-button-name="home__footer__dashboard"
+                    data-umami-link-event="Footer dashboard link clicked"
                     to="/dashboard"
                   >
                     Dashboard
@@ -83,8 +83,8 @@ export function HomeFooter() {
               : (
                   <Link
                     className="hover:text-foreground"
-                    data-umami-event="Footer sign in link clicked"
                     data-umami-event-button-name="home__footer__sign-in"
+                    data-umami-link-event="Footer sign in link clicked"
                     to="/login"
                   >
                     Sign in
@@ -92,8 +92,8 @@ export function HomeFooter() {
                 )}
             <Link
               className="hover:text-foreground"
-              data-umami-event="Footer start debugging link clicked"
               data-umami-event-button-name="home__footer__start-debugging"
+              data-umami-link-event="Footer start debugging link clicked"
               to="/dashboard"
             >
               Start debugging
@@ -105,16 +105,16 @@ export function HomeFooter() {
           <div className="mt-4 flex flex-col items-start gap-2.5 text-muted-foreground text-sm">
             <Link
               className="hover:text-foreground"
-              data-umami-event="Footer legal terms clicked"
               data-umami-event-button-name="home__footer__legal-terms"
+              data-umami-link-event="Footer legal terms clicked"
               to="/terms"
             >
               Terms of Service
             </Link>
             <Link
               className="hover:text-foreground"
-              data-umami-event="Footer legal privacy clicked"
               data-umami-event-button-name="home__footer__legal-privacy"
+              data-umami-link-event="Footer legal privacy clicked"
               to="/privacy"
             >
               Privacy Policy

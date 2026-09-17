@@ -11,7 +11,7 @@ export function NotFoundPage(props: { homeLink?: ReactElement } | NotFoundRouteP
     : (
         <a
           aria-label="Back to home"
-          data-umami-event="Back to home clicked"
+          data-umami-link-event="Back to home clicked"
           data-umami-event-button-name="error__not-found__back-to-home"
           href="/"
         />
@@ -21,7 +21,7 @@ export function NotFoundPage(props: { homeLink?: ReactElement } | NotFoundRouteP
     <StatusPage
       actions={(
         <Button
-          data-umami-event="Back to home clicked"
+          data-umami-link-event="Back to home clicked"
           data-umami-event-button-name="error__not-found__back-to-home"
           render={homeLink}
         >
@@ -41,7 +41,7 @@ export function LocalizedNotFound() {
     <NotFoundPage
       homeLink={(
         <Link
-          data-umami-event="Back to home clicked"
+          data-umami-link-event="Back to home clicked"
           data-umami-event-button-name="error__not-found__back-to-home"
           to="/"
         />
@@ -64,12 +64,12 @@ export function BadGatewayPage({ onRetry }: { onRetry: () => void }) {
             Try again
           </Button>
           <Button
-            data-umami-event="Back to home clicked"
+            data-umami-link-event="Back to home clicked"
             data-umami-event-button-name="error__bad-gateway__back-to-home"
             render={(
               <a
                 aria-label="Back to home"
-                data-umami-event="Back to home clicked"
+                data-umami-link-event="Back to home clicked"
                 data-umami-event-button-name="error__bad-gateway__back-to-home"
                 href="/"
               />
