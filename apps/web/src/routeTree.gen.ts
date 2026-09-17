@@ -15,10 +15,13 @@ import { Route as AuthRouteImport } from './routes/_auth'
 import { Route as ProtectedRouteImport } from './routes/_protected'
 import { Route as HealthRouteImport } from './routes/health'
 import { Route as OgImageRouteImport } from './routes/og-image'
+import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
 import { Route as marketingIndexRouteRouteImport } from './routes/(marketing)/index/route'
 import { Route as marketingPrivacyRouteRouteImport } from './routes/(marketing)/privacy/route'
 import { Route as marketingTermsRouteRouteImport } from './routes/(marketing)/terms/route'
 import { Route as AuthLoginRouteImport } from './routes/_auth/login'
+import { Route as marketingBlogIndexRouteRouteImport } from './routes/(marketing)/blog/index/route'
+import { Route as marketingBlogSlugRouteRouteImport } from './routes/(marketing)/blog/$slug/route'
 import { Route as ProtectedDashboardIndexRouteRouteImport } from './routes/_protected.dashboard/index/route'
 import { Route as ProtectedDashboardBillingRouteRouteImport } from './routes/_protected.dashboard/billing/route'
 import { Route as ProtectedDashboardSettingsRouteRouteImport } from './routes/_protected.dashboard/settings/route'
@@ -58,6 +61,11 @@ const OgImageRoute = OgImageRouteImport.update({
   path: '/og-image',
   getParentRoute: () => rootRouteImport,
 } as any)
+const SitemapDotxmlRoute = SitemapDotxmlRouteImport.update({
+  id: '/sitemap.xml',
+  path: '/sitemap.xml',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const marketingIndexRouteRoute = marketingIndexRouteRouteImport.update({
   id: '/(marketing)/',
   path: '',
@@ -77,6 +85,16 @@ const AuthLoginRoute = AuthLoginRouteImport.update({
   id: '/login',
   path: '/login',
   getParentRoute: () => AuthRoute,
+} as any)
+const marketingBlogIndexRouteRoute = marketingBlogIndexRouteRouteImport.update({
+  id: '/(marketing)/blog/',
+  path: '/blog',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const marketingBlogSlugRouteRoute = marketingBlogSlugRouteRouteImport.update({
+  id: '/(marketing)/blog/$slug',
+  path: '/blog/$slug',
+  getParentRoute: () => rootRouteImport,
 } as any)
 const ProtectedDashboardIndexRouteRoute =
   ProtectedDashboardIndexRouteRouteImport.update({
@@ -145,10 +163,13 @@ export interface FileRoutesByFullPath {
   '/': typeof marketingIndexRouteRoute
   '/health': typeof HealthRoute
   '/og-image': typeof OgImageRoute
+  '/sitemap.xml': typeof SitemapDotxmlRoute
   '/privacy': typeof marketingPrivacyRouteRoute
   '/terms': typeof marketingTermsRouteRoute
   '/login': typeof AuthLoginRoute
+  '/blog/': typeof marketingBlogIndexRouteRoute
   '/dashboard/': typeof ProtectedDashboardIndexRouteRoute
+  '/blog/$slug': typeof marketingBlogSlugRouteRoute
   '/dashboard/billing': typeof ProtectedDashboardBillingRouteRoute
   '/dashboard/settings': typeof ProtectedDashboardSettingsRouteRoute
   '/dashboard/endpoints/': typeof ProtectedDashboardEndpointsIndexRouteRoute
@@ -165,10 +186,13 @@ export interface FileRoutesByTo {
   '/': typeof marketingIndexRouteRoute
   '/health': typeof HealthRoute
   '/og-image': typeof OgImageRoute
+  '/sitemap.xml': typeof SitemapDotxmlRoute
   '/privacy': typeof marketingPrivacyRouteRoute
   '/terms': typeof marketingTermsRouteRoute
   '/login': typeof AuthLoginRoute
+  '/blog': typeof marketingBlogIndexRouteRoute
   '/dashboard': typeof ProtectedDashboardIndexRouteRoute
+  '/blog/$slug': typeof marketingBlogSlugRouteRoute
   '/dashboard/billing': typeof ProtectedDashboardBillingRouteRoute
   '/dashboard/settings': typeof ProtectedDashboardSettingsRouteRoute
   '/dashboard/endpoints': typeof ProtectedDashboardEndpointsIndexRouteRoute
@@ -186,11 +210,14 @@ export interface FileRoutesById {
   '/_protected': typeof ProtectedRouteWithChildren
   '/health': typeof HealthRoute
   '/og-image': typeof OgImageRoute
+  '/sitemap.xml': typeof SitemapDotxmlRoute
   '/(marketing)/': typeof marketingIndexRouteRoute
   '/(marketing)/privacy': typeof marketingPrivacyRouteRoute
   '/(marketing)/terms': typeof marketingTermsRouteRoute
   '/_auth/login': typeof AuthLoginRoute
+  '/(marketing)/blog/': typeof marketingBlogIndexRouteRoute
   '/_protected/dashboard/': typeof ProtectedDashboardIndexRouteRoute
+  '/(marketing)/blog/$slug': typeof marketingBlogSlugRouteRoute
   '/_protected/dashboard/billing': typeof ProtectedDashboardBillingRouteRoute
   '/_protected/dashboard/settings': typeof ProtectedDashboardSettingsRouteRoute
   '/_protected/dashboard/endpoints/': typeof ProtectedDashboardEndpointsIndexRouteRoute
@@ -209,10 +236,13 @@ export interface FileRouteTypes {
     | '/'
     | '/health'
     | '/og-image'
+    | '/sitemap.xml'
     | '/privacy'
     | '/terms'
     | '/login'
+    | '/blog/'
     | '/dashboard/'
+    | '/blog/$slug'
     | '/dashboard/billing'
     | '/dashboard/settings'
     | '/dashboard/endpoints/'
@@ -229,10 +259,13 @@ export interface FileRouteTypes {
     | '/'
     | '/health'
     | '/og-image'
+    | '/sitemap.xml'
     | '/privacy'
     | '/terms'
     | '/login'
+    | '/blog'
     | '/dashboard'
+    | '/blog/$slug'
     | '/dashboard/billing'
     | '/dashboard/settings'
     | '/dashboard/endpoints'
@@ -249,11 +282,14 @@ export interface FileRouteTypes {
     | '/_protected'
     | '/health'
     | '/og-image'
+    | '/sitemap.xml'
     | '/(marketing)/'
     | '/(marketing)/privacy'
     | '/(marketing)/terms'
     | '/_auth/login'
+    | '/(marketing)/blog/'
     | '/_protected/dashboard/'
+    | '/(marketing)/blog/$slug'
     | '/_protected/dashboard/billing'
     | '/_protected/dashboard/settings'
     | '/_protected/dashboard/endpoints/'
@@ -272,9 +308,12 @@ export interface RootRouteChildren {
   ProtectedRoute: typeof ProtectedRouteWithChildren
   HealthRoute: typeof HealthRoute
   OgImageRoute: typeof OgImageRoute
+  SitemapDotxmlRoute: typeof SitemapDotxmlRoute
   marketingIndexRouteRoute: typeof marketingIndexRouteRoute
   marketingPrivacyRouteRoute: typeof marketingPrivacyRouteRoute
   marketingTermsRouteRoute: typeof marketingTermsRouteRoute
+  marketingBlogIndexRouteRoute: typeof marketingBlogIndexRouteRoute
+  marketingBlogSlugRouteRoute: typeof marketingBlogSlugRouteRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -321,6 +360,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof OgImageRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/sitemap.xml': {
+      id: '/sitemap.xml'
+      path: '/sitemap.xml'
+      fullPath: '/sitemap.xml'
+      preLoaderRoute: typeof SitemapDotxmlRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/(marketing)/': {
       id: '/(marketing)/'
       path: ''
@@ -348,6 +394,20 @@ declare module '@tanstack/react-router' {
       fullPath: '/login'
       preLoaderRoute: typeof AuthLoginRouteImport
       parentRoute: typeof AuthRoute
+    }
+    '/(marketing)/blog/': {
+      id: '/(marketing)/blog/'
+      path: '/blog'
+      fullPath: '/blog/'
+      preLoaderRoute: typeof marketingBlogIndexRouteRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/(marketing)/blog/$slug': {
+      id: '/(marketing)/blog/$slug'
+      path: '/blog/$slug'
+      fullPath: '/blog/$slug'
+      preLoaderRoute: typeof marketingBlogSlugRouteRouteImport
+      parentRoute: typeof rootRouteImport
     }
     '/_protected/dashboard/': {
       id: '/_protected/dashboard/'
@@ -488,9 +548,12 @@ const rootRouteChildren: RootRouteChildren = {
   ProtectedRoute: ProtectedRouteWithChildren,
   HealthRoute: HealthRoute,
   OgImageRoute: OgImageRoute,
+  SitemapDotxmlRoute: SitemapDotxmlRoute,
   marketingIndexRouteRoute: marketingIndexRouteRoute,
   marketingPrivacyRouteRoute: marketingPrivacyRouteRoute,
   marketingTermsRouteRoute: marketingTermsRouteRoute,
+  marketingBlogIndexRouteRoute: marketingBlogIndexRouteRoute,
+  marketingBlogSlugRouteRoute: marketingBlogSlugRouteRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

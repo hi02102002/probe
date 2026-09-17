@@ -10,7 +10,6 @@ export function ComparisonSection() {
   return (
     <section id="compare" className="scroll-mt-24 border-b border-border">
       <div className="border-b border-border px-6 py-10 sm:px-10">
-        <p className="font-mono text-xs uppercase tracking-[0.18em] text-accent-foreground">A simple debugging loop</p>
         <h2 className="mt-3 text-3xl font-semibold tracking-[-0.03em] text-foreground sm:text-4xl">From endpoint to answer in three steps.</h2>
         <p className="mt-2 max-w-2xl text-sm leading-6 text-muted-foreground">No SDK or local tunnel is required to see what a webhook provider sends.</p>
       </div>

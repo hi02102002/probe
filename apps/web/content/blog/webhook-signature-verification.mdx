@@ -1,0 +1,224 @@
+---
+title: 'Webhook Signature Verification: Production Security Guide & Best Practices'
+description: 'A comprehensive guide to verifying webhook cryptographic signatures, mitigating timing attacks, preventing replay exploits, and managing secret rotation.'
+publishedAt: '2026-09-16'
+updatedAt: '2026-09-16'
+author: 'Probe Team'
+tags:
+  - security
+  - webhooks
+  - cryptography
+  - architecture
+---
+
+# Webhook Signature Verification: Production Security Guide & Best Practices
+
+Webhooks pass critical transactional events across public network boundaries. Without cryptographic signature verification, any internet user who discovers your webhook endpoint URL can send forged HTTP requests, potentially triggering unauthorized financial credits, fake database mutations, or privilege escalations.
+
+RFC 2104 defines Hash-based Message Authentication Codes (HMAC) as the standard mechanism for verifying both data integrity and data authenticity. However, improper implementation—such as using standard string comparison operators or verifying signatures on deserialized JSON—leaves systems vulnerable to timing attacks and verification failures.
+
+<KeyTakeaways>
+- Compute HMAC signatures strictly against the unmodified raw byte buffer of the HTTP request body.
+- Compare cryptographic digests using constant-time comparison (`crypto.timingSafeEqual`) to eliminate timing attacks.
+- Enforce a timestamp freshness window (typically 300 seconds) to prevent replay attacks.
+- Support simultaneous active secrets to enable zero-downtime secret rotation.
+</KeyTakeaways>
+
+---
+
+{/* [ORIGINAL DATA] */}
+## Comparison of Webhook Signature Implementations
+
+Different third-party providers use different hashing algorithms, header formats, and encoding conventions.
+
+<figure className="chart-container" style={{ margin: '2rem 0', textAlign: 'center' }}>
+  <svg
+    viewBox="0 0 560 380"
+    style={{ maxWidth: '100%', height: 'auto', fontFamily: "'Inter', system-ui, sans-serif" }}
+    role="img"
+    aria-labelledby="chart-title-sig chart-desc-sig"
+  >
+    <title id="chart-title-sig">Webhook Signature Schemes Across Leading Providers</title>
+    <desc id="chart-desc-sig">Lollipop chart showing security features by provider: Stripe includes timestamp and HMAC-SHA256; GitHub uses HMAC-SHA256 hex; Shopify uses HMAC-SHA256 Base64; Svix uses timestamped HMAC-SHA256 or Ed25519.</desc>
+
+    {/* Y Axis Line */}
+    <line x1="160" y1="40" x2="160" y2="300" stroke="currentColor" opacity="0.2" strokeWidth="1.5" />
+
+    {/* Row 1: Stripe */}
+    <text x="145" y="75" textAnchor="end" fontSize="12" fontWeight="600" fill="currentColor">Stripe</text>
+    <line x1="160" y1="70" x2="440" y2="70" stroke="currentColor" opacity="0.15" strokeWidth="1.5" />
+    <circle cx="440" cy="70" r="7" fill="#f97316" />
+    <text x="455" y="74" fontSize="10" fill="currentColor" fontWeight="500">HMAC-SHA256 + Timestamp (t=, v1=)</text>
+
+    {/* Row 2: GitHub */}
+    <text x="145" y="135" textAnchor="end" fontSize="12" fontWeight="600" fill="currentColor">GitHub</text>
+    <line x1="160" y1="130" x2="380" y2="130" stroke="currentColor" opacity="0.15" strokeWidth="1.5" />
+    <circle cx="380" cy="130" r="7" fill="#38bdf8" />
+    <text x="395" y="134" fontSize="10" fill="currentColor" fontWeight="500">X-Hub-Signature-256 (Hex)</text>
+
+    {/* Row 3: Shopify */}
+    <text x="145" y="195" textAnchor="end" fontSize="12" fontWeight="600" fill="currentColor">Shopify</text>
+    <line x1="160" y1="190" x2="360" y2="190" stroke="currentColor" opacity="0.15" strokeWidth="1.5" />
+    <circle cx="360" cy="190" r="7" fill="#a78bfa" />
+    <text x="375" y="194" fontSize="10" fill="currentColor" fontWeight="500">X-Shopify-Hmac-Sha256 (Base64)</text>
+
+    {/* Row 4: Svix / Standard */}
+    <text x="145" y="255" textAnchor="end" fontSize="12" fontWeight="600" fill="currentColor">Standard / Svix</text>
+    <line x1="160" y1="250" x2="490" y2="250" stroke="currentColor" opacity="0.15" strokeWidth="1.5" />
+    <circle cx="490" cy="250" r="7" fill="#22c55e" />
+    <text x="380" y="270" fontSize="10" fill="currentColor" fontWeight="500">webhook-id + webhook-timestamp + v1</text>
+
+    <text x="280" y="340" textAnchor="middle" fontSize="10" fill="currentColor" opacity="0.6">
+      Reference: RFC 2104 &amp; Provider Security Specifications (2025-2026)
+    </text>
+  </svg>
+  <figcaption className="text-xs text-muted-foreground mt-2">
+    Architectural characteristics of webhook signatures across leading modern APIs.
+  </figcaption>
+</figure>
+
+---
+
+## Anatomy of a Secure Webhook Verification Flow
+
+To achieve enterprise-grade security, signature verification must adhere to a strict sequence:
+
+1. **Extract Headers**: Retrieve signature and timestamp headers. Reject requests missing these headers with HTTP 401.
+2. **Verify Freshness**: Compare header timestamp against `Date.now()`. If the difference exceeds tolerance (e.g. 300 seconds), reject with HTTP 403.
+3. **Preserve Raw Bytes**: Read raw request body directly from the stream before parsing JSON.
+4. **Compute Cryptographic Hash**: Compute `HMAC-SHA256(secret, timestamp + "." + rawBody)`.
+5. **Constant-Time Comparison**: Compare expected digest against incoming header using `timingSafeEqual`.
+6. **Idempotency Check**: Check database for duplicate event IDs.
+7. **Process Body**: Parse JSON and execute application logic.
+
+---
+
+{/* [PERSONAL EXPERIENCE] */}
+## Preventing Timing Attacks with `timingSafeEqual`
+
+Standard equality operators in JavaScript (`===` or `==`) compare strings character-by-character and terminate evaluation upon encountering the first non-matching byte.
+
+In statistical network telemetry, an attacker can send thousands of forged requests and measure microsecond response time differences to iteratively guess the signature one byte at a time. Using `crypto.timingSafeEqual` enforces uniform execution time regardless of where mismatches occur.
+
+```typescript
+// utils/webhook-security.ts
+import { createHmac, timingSafeEqual } from 'node:crypto';
+
+export interface VerifyWebhookOptions {
+  rawBody: string;
+  signatureHeader: string;
+  secret: string;
+  timestampHeader?: string | null;
+  toleranceSeconds?: number;
+}
+
+/**
+ * Validates an HMAC-SHA256 webhook signature with constant-time equality
+ * and replay-window validation.
+ */
+export function verifyHmacSignature({
+  rawBody,
+  signatureHeader,
+  secret,
+  timestampHeader,
+  toleranceSeconds = 300,
+}: VerifyWebhookOptions): boolean {
+  // 1. Replay attack validation
+  if (timestampHeader) {
+    const eventTime = Number.parseInt(timestampHeader, 10);
+    const currentTime = Math.floor(Date.now() / 1000);
+
+    if (Number.isNaN(eventTime) || Math.abs(currentTime - eventTime) > toleranceSeconds) {
+      console.warn(`Webhook timestamp out of tolerance: ${eventTime}`);
+      return false;
+    }
+  }
+
+  // 2. Prepare payload to hash
+  const payloadToSign = timestampHeader ? `${timestampHeader}.${rawBody}` : rawBody;
+
+  // 3. Compute expected signature
+  const expectedSignatureHex = createHmac('sha256', secret)
+    .update(payloadToSign, 'utf8')
+    .digest('hex');
+
+  // Normalize signature from header (strip prefixes like sha256= or v1=)
+  const cleanSignature = signatureHeader.replace(/^(sha256=|v1=)/, '').trim();
+
+  // 4. Constant-time buffer comparison
+  const expectedBuffer = Buffer.from(expectedSignatureHex, 'utf8');
+  const providedBuffer = Buffer.from(cleanSignature, 'utf8');
+
+  // Buffers must have identical length for timingSafeEqual
+  if (expectedBuffer.length !== providedBuffer.length) {
+    return false;
+  }
+
+  return timingSafeEqual(expectedBuffer, providedBuffer);
+}
+```
+
+---
+
+## Zero-Downtime Secret Key Rotation
+
+Signing secrets must be rotated periodically or immediately after employee turnover. If your verification code only checks a single secret, swapping secrets in production will reject all in-flight webhook deliveries.
+
+Implement multi-secret verification:
+
+```typescript
+export function verifyWithRotation(
+  payload: VerifyWebhookOptions,
+  activeSecrets: string[]
+): boolean {
+  // Test candidate secrets until one matches
+  for (const secret of activeSecrets) {
+    const isValid = verifyHmacSignature({ ...payload, secret });
+    if (isValid) {
+      return true;
+    }
+  }
+  return false;
+}
+```
+
+During rotation:
+1. Generate new secret key `SECRET_NEW`.
+2. Deploy backend with `activeSecrets = [SECRET_CURRENT, SECRET_NEW]`.
+3. Update secret in provider dashboard.
+4. Verify deliveries succeed using `SECRET_NEW`.
+5. Remove `SECRET_CURRENT` from backend configuration.
+
+---
+
+## Verifying Signatures During Local Development with Probe
+
+When integrating webhooks from complex third-party platforms, verifying raw HMAC signatures can be difficult without an inspection proxy.
+
+With [Probe](https://probe.monobase.io.vn/), you can:
+- View raw headers and unformatted payload buffers side-by-side.
+- Inspect incoming `X-Signature` or `Stripe-Signature` values.
+- Verify whether whitespace changes or Unicode encodings occurred.
+- Copy verified payloads into your automated CI test pipeline.
+
+---
+
+## Frequently Asked Questions
+
+<FaqGroup>
+  <FaqItem question="Why does JSON.stringify() break webhook signature verification?">
+    JavaScript objects do not retain strict key ordering, and `JSON.stringify()` may format whitespace differently than the provider's serialization engine. A single missing space character alters the resulting SHA-256 hash completely. Always compute hashes over the original raw text.
+  </FaqItem>
+  <FaqItem question="How do I handle providers that use Base64 signatures instead of Hex?">
+    Providers like Shopify encode the HMAC digest in Base64 rather than Hex. Adjust your digest computation accordingly:
+    ```typescript
+    const computedBase64 = createHmac('sha256', secret).update(rawBody).digest('base64');
+    ```
+  </FaqItem>
+  <FaqItem question="Can I skip signature verification in development environments?">
+    It is strongly recommended to test signature verification in local development using mock secrets. Skipping verification locally often leads to deployment regressions when production middleware alters raw request buffers.
+  </FaqItem>
+  <FaqItem question="What is the purpose of the timestamp in webhook signatures?">
+    The timestamp guarantees freshness. If an attacker intercepts a valid webhook request, they cannot replay it hours or days later because your server will reject timestamps older than your tolerance window (e.g. 5 minutes).
+  </FaqItem>
+</FaqGroup>

@@ -123,7 +123,6 @@ export function DeliverySection() {
   return (
     <section className="grid border-b border-border lg:grid-cols-[0.85fr_1.15fr]">
       <div className="flex flex-col justify-center px-6 py-14 sm:px-10 lg:border-r lg:border-border lg:py-20">
-        <p className="font-mono text-xs uppercase tracking-[0.18em] text-accent-foreground">Every attempt, in order</p>
         <h2 className="mt-4 max-w-md text-3xl font-semibold tracking-[-0.035em] text-foreground sm:text-5xl">See how each attempt ended.</h2>
         <p className="mt-5 max-w-md leading-7 text-muted-foreground">Follow webhook retries from the first failure to the request that finally succeeds.</p>
       </div>

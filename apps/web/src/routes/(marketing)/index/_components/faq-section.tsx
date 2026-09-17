@@ -43,7 +43,6 @@ export function FaqSection() {
     <section id="faq" className="scroll-mt-24 border-b border-border px-6 py-14 sm:px-10 sm:py-20">
       <div className="mx-auto max-w-4xl">
         <div className="mb-10 text-center sm:text-left">
-          <p className="font-mono text-xs uppercase tracking-[0.18em] text-accent-foreground">Frequently asked questions</p>
           <h2 className="mt-3 text-3xl font-semibold tracking-[-0.035em] text-foreground sm:text-4xl">Everything you need to know about Probe.</h2>
           <p className="mt-2 text-sm leading-6 text-muted-foreground">Answers to common questions about webhook inspection, privacy, and debugging workflows.</p>
         </div>

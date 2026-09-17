@@ -3,6 +3,21 @@ import evlog from 'evlog/nitro/v3'
 import { defineConfig } from 'nitro'
 
 export default defineConfig({
+  prerender: {
+    routes: [
+      '/',
+      '/terms',
+      '/privacy',
+      '/blog',
+      '/blog/test-webhooks-locally',
+      '/blog/debug-failed-webhook-requests',
+      '/blog/test-stripe-webhooks',
+      '/blog/webhook-signature-verification',
+      '/blog/webhook-testing-tools',
+      '/sitemap.xml',
+    ],
+    failOnError: true,
+  },
   experimental: {
     asyncContext: true,
   },

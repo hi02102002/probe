@@ -20,10 +20,11 @@ export function HomeFooter() {
         <nav aria-label="Product Links">
           <h3 className="font-semibold text-foreground text-sm">Product</h3>
           <div className="mt-4 flex flex-col items-start gap-2.5 text-muted-foreground text-sm">
-            <a className="hover:text-foreground" href="#features">Inspect</a>
-            <a className="hover:text-foreground" href="#compare">How it works</a>
-            <a className="hover:text-foreground" href="#faq">FAQ</a>
-            <a className="hover:text-foreground" href="#pricing">Pricing</a>
+            <a className="hover:text-foreground" href="/#features">Inspect</a>
+            <a className="hover:text-foreground" href="/#compare">How it works</a>
+            <a className="hover:text-foreground" href="/#faq">FAQ</a>
+            <a className="hover:text-foreground" href="/#pricing">Pricing</a>
+            <Link className="hover:text-foreground" to="/blog">Blog</Link>
           </div>
         </nav>
         <nav aria-label="Account Links">

@@ -10,7 +10,7 @@ export function HomeHeader() {
 
   return (
     <header className="sticky top-0 z-50 bg-background/90 backdrop-blur-xl">
-      <a className="flex min-h-10 items-center justify-center gap-2 bg-primary px-4 py-2 text-center font-semibold text-primary-foreground text-xs transition-colors hover:bg-primary/90 sm:text-sm" href="#pricing">
+      <a className="flex min-h-10 items-center justify-center gap-2 bg-primary px-4 py-2 text-center font-semibold text-primary-foreground text-xs transition-colors hover:bg-primary/90 sm:text-sm" href="/#pricing">
         <span>Debug your next webhook with Probe.</span>
         <ArrowRightIcon className="shrink-0" weight="bold" />
       </a>
@@ -18,10 +18,11 @@ export function HomeHeader() {
         <Logo classNames={{ container: 'text-foreground' }} />
         <nav aria-label="Main Navigation" className="hidden items-center gap-1 md:flex">
           <h2 className="sr-only">Main Navigation</h2>
-          <a className="px-3 py-2 text-muted-foreground text-sm transition-colors hover:text-foreground" href="#features">Inspect</a>
-          <a className="px-3 py-2 text-muted-foreground text-sm transition-colors hover:text-foreground" href="#compare">How it works</a>
-          <a className="px-3 py-2 text-muted-foreground text-sm transition-colors hover:text-foreground" href="#faq">FAQ</a>
-          <a className="px-3 py-2 text-muted-foreground text-sm transition-colors hover:text-foreground" href="#pricing">Start</a>
+          <a className="px-3 py-2 text-muted-foreground text-sm transition-colors hover:text-foreground" href="/#features">Inspect</a>
+          <a className="px-3 py-2 text-muted-foreground text-sm transition-colors hover:text-foreground" href="/#compare">How it works</a>
+          <a className="px-3 py-2 text-muted-foreground text-sm transition-colors hover:text-foreground" href="/#faq">FAQ</a>
+          <a className="px-3 py-2 text-muted-foreground text-sm transition-colors hover:text-foreground" href="/#pricing">Start</a>
+          <Link activeProps={{ className: 'text-foreground font-medium' }} className="px-3 py-2 text-muted-foreground text-sm transition-colors hover:text-foreground" to="/blog">Blog</Link>
         </nav>
         <div className="flex items-center gap-2">
           {session?.user

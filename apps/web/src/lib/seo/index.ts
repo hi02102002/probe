@@ -1,4 +1,4 @@
-export { generateAppSeo, seoSite } from './app-seo'
+export { generateAppSeo, getSiteBaseUrl, seoSite } from './app-seo'
 export { generateTanStackStartSeo } from './generate-tanstack-start-seo'
 export type {
   GenerateTanStackStartSeoParams,

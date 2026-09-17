@@ -1,3 +1,4 @@
+import contentCollections from '@content-collections/vite'
 import { getProductionSamplingConfig } from '@repo/utils'
 /** biome-ignore-all lint/suspicious/noExplicitAny: <hono> */
 import babel from '@rolldown/plugin-babel'
@@ -38,6 +39,7 @@ const config = defineConfig(() => {
       evlog(EVLOG_CONFIG as any),
       nitro({ rollupConfig: { external: [/^@sentry\//] } }),
       tailwindcss(),
+      contentCollections({ configPath: './content-collections.ts' }),
       tanstackStart(),
       viteReact(),
       babel({ presets: [reactCompilerPreset()] }),

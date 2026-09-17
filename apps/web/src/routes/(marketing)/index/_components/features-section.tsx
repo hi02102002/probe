@@ -19,7 +19,6 @@ export function FeaturesSection() {
     <section id="features" className="scroll-mt-24 border-b border-border">
       <div className="grid lg:grid-cols-2">
         <div className="flex flex-col justify-center border-b border-border px-6 py-14 sm:px-10 lg:border-b-0 lg:border-r lg:py-20">
-          <p className="font-mono text-xs uppercase tracking-[0.18em] text-accent-foreground">Everything that arrived</p>
           <h2 className="mt-4 max-w-md text-4xl font-semibold tracking-[-0.035em] text-foreground sm:text-5xl">The request is the evidence.</h2>
           <p className="mt-6 max-w-lg leading-7 text-muted-foreground">Probe keeps the parts of an incoming webhook together, so you can stop reconstructing failures from scattered logs and start with what the provider actually sent.</p>
         </div>
