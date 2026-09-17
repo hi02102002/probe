@@ -104,6 +104,13 @@ function RootDocument() {
           name="google-site-verification"
           content="k_VdZO2bs7aGmn50wh5Zit1hK_mNf7UAGWpriJK2eDE"
         />
+        {import.meta.env.PROD && (
+          <script
+            defer
+            src="https://umami.monobase.io.vn/script.js"
+            data-website-id="54a92f58-5371-4b3a-8158-198fd1eb8bfe"
+          />
+        )}
         <HeadContent />
       </head>
       <body>
