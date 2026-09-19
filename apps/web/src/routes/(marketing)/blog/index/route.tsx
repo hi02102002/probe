@@ -13,7 +13,7 @@ import {
   CardTitle,
 } from '@/components/ui/card'
 import { dayjs } from '@/lib/dayjs'
-import { generateAppSeo } from '@/lib/seo'
+import { generateAppSeo, getSiteBaseUrl } from '@/lib/seo'
 import { HomeFooter } from '../../index/_components/home-footer'
 import { HomeHeader } from '../../index/_components/home-header'
 
@@ -23,13 +23,54 @@ const allPosts = allBlogs
 
 export const Route = createFileRoute('/(marketing)/blog/')({
   component: BlogIndexPage,
-  head: () =>
-    generateAppSeo({
+  head: () => {
+    const baseUrl = getSiteBaseUrl()
+    const structuredData = {
+      '@context': 'https://schema.org',
+      '@graph': [
+        {
+          '@type': 'Blog',
+          '@id': `${baseUrl}/blog#blog`,
+          'description':
+            'Practical guides, security architectures, and debugging checklists for capturing and troubleshooting webhook requests.',
+          'name': 'Probe Webhook Engineering Blog',
+          'publisher': {
+            '@type': 'Organization',
+            'logo': `${baseUrl}/logo.png`,
+            'name': 'Probe',
+            'url': baseUrl,
+          },
+          'url': `${baseUrl}/blog`,
+        },
+        {
+          '@type': 'ItemList',
+          '@id': `${baseUrl}/blog#itemlist`,
+          'itemListElement': allPosts.map((post, index) => ({
+            '@type': 'ListItem',
+            'description': post.description,
+            'name': post.title,
+            'position': index + 1,
+            'url': `${baseUrl}/blog/${post.slug}`,
+          })),
+          'name': 'Webhook Engineering Guides',
+          'numberOfItems': allPosts.length,
+        },
+      ],
+    }
+
+    return generateAppSeo({
       description:
         'Practical guides, security architectures, and debugging checklists for capturing and troubleshooting webhook requests.',
       pathname: '/blog',
+      scripts: [
+        {
+          children: JSON.stringify(structuredData),
+          type: 'application/ld+json',
+        },
+      ],
       title: 'Webhook Engineering Blog | Probe',
-    }),
+    })
+  },
 })
 
 function formatDate(value: string) {

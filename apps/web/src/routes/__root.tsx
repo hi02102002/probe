@@ -77,6 +77,18 @@ export const Route = createRootRouteWithContext<RouterContext>()({
           type: 'image/png',
           href: '/logo.png',
         },
+        {
+          rel: 'alternate',
+          type: 'text/plain',
+          href: '/llms.txt',
+          title: 'LLM Context',
+        },
+        {
+          rel: 'alternate',
+          type: 'text/plain',
+          href: '/llms-full.txt',
+          title: 'LLM Full Context',
+        },
       ],
     }
   },

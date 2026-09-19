@@ -15,15 +15,28 @@ const structuredData = {
     {
       '@type': 'Organization',
       '@id': 'https://probe.monobase.io.vn/#organization',
+      'description':
+        'Developer platform for real-time webhook inspection, payload capture, and debugging.',
+      'knowsAbout': [
+        'Webhooks',
+        'HTTP Request Inspection',
+        'Stripe Webhooks',
+        'HMAC Signatures',
+        'API Debugging',
+        'Payload Analysis',
+      ],
       'logo': 'https://probe.monobase.io.vn/logo.png',
       'name': 'Probe',
+      'sameAs': ['https://github.com/hi02102002/probe'],
       'url': 'https://probe.monobase.io.vn/',
     },
     {
       '@type': 'WebSite',
       '@id': 'https://probe.monobase.io.vn/#website',
+      'alternateName': 'Probe Webhook Debugger',
       'description':
         'Capture, inspect, and debug incoming webhook requests in real time. Inspect headers, payload bodies, and query parameters from a fast developer dashboard.',
+      'inLanguage': 'en-US',
       'name': 'Probe',
       'publisher': {
         '@id': 'https://probe.monobase.io.vn/#organization',
@@ -34,6 +47,7 @@ const structuredData = {
       '@type': 'SoftwareApplication',
       '@id': 'https://probe.monobase.io.vn/#software',
       'applicationCategory': 'DeveloperApplication',
+      'applicationSubCategory': 'Developer Tools',
       'author': {
         '@id': 'https://probe.monobase.io.vn/#organization',
       },
@@ -42,9 +56,14 @@ const structuredData = {
       'featureList': [
         'Instant webhook endpoints',
         'Real-time header and payload inspection',
-        'Request history and filtering',
+        'Sub-millisecond Redis-backed capture stream',
+        'Request history and payload filtering',
         'Delivery and retry attempt tracking',
+        'HMAC signature verification assistance',
+        'One-click cURL export and replay',
       ],
+      'keywords':
+        'webhook debugger, http request inspector, webhook testing, stripe webhook test, payload inspection, hmac verification',
       'name': 'Probe',
       'offers': {
         '@type': 'Offer',
@@ -53,6 +72,7 @@ const structuredData = {
       },
       'operatingSystem': 'All',
       'screenshot': 'https://probe.monobase.io.vn/og-image',
+      'softwareVersion': '1.0.0',
       'url': 'https://probe.monobase.io.vn/',
     },
     {

@@ -1,4 +1,7 @@
 # https://www.robotstxt.org/robotstxt.html
+# Generative Engine Optimization (GEO) & Search Crawlers
+
+# General Crawlers
 User-agent: *
 Allow: /
 Disallow: /dashboard
@@ -7,5 +10,93 @@ Disallow: /settings
 Disallow: /login
 Disallow: /api/
 
-Sitemap: https://probe.monobase.io.vn/sitemap.xml
+# OpenAI / ChatGPT
+User-agent: GPTBot
+Allow: /
+Disallow: /dashboard
+Disallow: /endpoints
+Disallow: /settings
+Disallow: /login
+Disallow: /api/
 
+User-agent: OAI-SearchBot
+Allow: /
+Disallow: /dashboard
+Disallow: /endpoints
+Disallow: /settings
+Disallow: /login
+Disallow: /api/
+
+User-agent: ChatGPT-User
+Allow: /
+Disallow: /dashboard
+Disallow: /endpoints
+Disallow: /settings
+Disallow: /login
+Disallow: /api/
+
+# Anthropic / Claude
+User-agent: ClaudeBot
+Allow: /
+Disallow: /dashboard
+Disallow: /endpoints
+Disallow: /settings
+Disallow: /login
+Disallow: /api/
+
+User-agent: anthropic-ai
+Allow: /
+Disallow: /dashboard
+Disallow: /endpoints
+Disallow: /settings
+Disallow: /login
+Disallow: /api/
+
+# Perplexity AI
+User-agent: PerplexityBot
+Allow: /
+Disallow: /dashboard
+Disallow: /endpoints
+Disallow: /settings
+Disallow: /login
+Disallow: /api/
+
+# Google AI & Extended Crawlers
+User-agent: Google-Extended
+Allow: /
+Disallow: /dashboard
+Disallow: /endpoints
+Disallow: /settings
+Disallow: /login
+Disallow: /api/
+
+User-agent: GoogleOther
+Allow: /
+Disallow: /dashboard
+Disallow: /endpoints
+Disallow: /settings
+Disallow: /login
+Disallow: /api/
+
+# Apple Intelligence
+User-agent: Applebot-Extended
+Allow: /
+Disallow: /dashboard
+Disallow: /endpoints
+Disallow: /settings
+Disallow: /login
+Disallow: /api/
+
+# Cohere AI
+User-agent: cohere-ai
+Allow: /
+Disallow: /dashboard
+Disallow: /endpoints
+Disallow: /settings
+Disallow: /login
+Disallow: /api/
+
+# Sitemaps & LLM Context
+Sitemap: https://probe.monobase.io.vn/sitemap.xml
+# LLM Context: https://probe.monobase.io.vn/llms.txt
+# LLM Full Context: https://probe.monobase.io.vn/llms-full.txt

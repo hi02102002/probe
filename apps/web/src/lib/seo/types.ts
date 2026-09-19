@@ -44,6 +44,8 @@ export interface TanStackStartSeoRobots {
   follow?: boolean
   index?: boolean
   maxImagePreview?: 'large' | 'none' | 'standard'
+  maxSnippet?: number
+  maxVideoPreview?: number
   noarchive?: boolean
   noimageindex?: boolean
   nosnippet?: boolean

@@ -13,6 +13,8 @@ export default defineConfig({
       '/blog/webhook-signature-verification',
       '/blog/webhook-testing-tools',
       '/sitemap.xml',
+      '/llms.txt',
+      '/llms-full.txt',
     ],
     failOnError: true,
   },

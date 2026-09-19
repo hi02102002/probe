@@ -3,6 +3,7 @@ import type {
   TanStackStartSeoHead,
   TanStackStartSeoLinkTag,
   TanStackStartSeoMetaTag,
+  TanStackStartSeoRobots,
 } from './types'
 import {
   buildOpenGraphImageMeta,
@@ -78,9 +79,14 @@ export function generateTanStackStartSeo({
     : defaultLinks
 
   const canonicalUrl = links?.find(link => link.rel === 'canonical')?.href ?? defaultCanonicalUrl
-  const robotsContent = robots
-    ? formatTanStackStartRobotsContent(robots)
-    : undefined
+  const robotsConfig: TanStackStartSeoRobots = robots ?? {
+    follow: true,
+    index: true,
+    maxImagePreview: 'large',
+    maxSnippet: -1,
+    maxVideoPreview: -1,
+  }
+  const robotsContent = formatTanStackStartRobotsContent(robotsConfig)
   const primaryImage = resolvedImages?.[0]
 
   const meta: TanStackStartSeoMetaTag[] = [

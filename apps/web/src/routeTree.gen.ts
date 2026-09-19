@@ -14,6 +14,8 @@ import { Route as R404RouteImport } from './routes/404'
 import { Route as AuthRouteImport } from './routes/_auth'
 import { Route as ProtectedRouteImport } from './routes/_protected'
 import { Route as HealthRouteImport } from './routes/health'
+import { Route as LlmsFullDottxtRouteImport } from './routes/llms-full[.]txt'
+import { Route as LlmsDottxtRouteImport } from './routes/llms[.]txt'
 import { Route as OgImageRouteImport } from './routes/og-image'
 import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
 import { Route as marketingIndexRouteRouteImport } from './routes/(marketing)/index/route'
@@ -54,6 +56,16 @@ const ProtectedRoute = ProtectedRouteImport.update({
 const HealthRoute = HealthRouteImport.update({
   id: '/health',
   path: '/health',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const LlmsFullDottxtRoute = LlmsFullDottxtRouteImport.update({
+  id: '/llms-full.txt',
+  path: '/llms-full.txt',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const LlmsDottxtRoute = LlmsDottxtRouteImport.update({
+  id: '/llms.txt',
+  path: '/llms.txt',
   getParentRoute: () => rootRouteImport,
 } as any)
 const OgImageRoute = OgImageRouteImport.update({
@@ -162,6 +174,8 @@ export interface FileRoutesByFullPath {
   '/404': typeof R404Route
   '/': typeof marketingIndexRouteRoute
   '/health': typeof HealthRoute
+  '/llms-full.txt': typeof LlmsFullDottxtRoute
+  '/llms.txt': typeof LlmsDottxtRoute
   '/og-image': typeof OgImageRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/privacy': typeof marketingPrivacyRouteRoute
@@ -185,6 +199,8 @@ export interface FileRoutesByTo {
   '/404': typeof R404Route
   '/': typeof marketingIndexRouteRoute
   '/health': typeof HealthRoute
+  '/llms-full.txt': typeof LlmsFullDottxtRoute
+  '/llms.txt': typeof LlmsDottxtRoute
   '/og-image': typeof OgImageRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/privacy': typeof marketingPrivacyRouteRoute
@@ -209,6 +225,8 @@ export interface FileRoutesById {
   '/_auth': typeof AuthRouteWithChildren
   '/_protected': typeof ProtectedRouteWithChildren
   '/health': typeof HealthRoute
+  '/llms-full.txt': typeof LlmsFullDottxtRoute
+  '/llms.txt': typeof LlmsDottxtRoute
   '/og-image': typeof OgImageRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/(marketing)/': typeof marketingIndexRouteRoute
@@ -235,6 +253,8 @@ export interface FileRouteTypes {
     | '/404'
     | '/'
     | '/health'
+    | '/llms-full.txt'
+    | '/llms.txt'
     | '/og-image'
     | '/sitemap.xml'
     | '/privacy'
@@ -258,6 +278,8 @@ export interface FileRouteTypes {
     | '/404'
     | '/'
     | '/health'
+    | '/llms-full.txt'
+    | '/llms.txt'
     | '/og-image'
     | '/sitemap.xml'
     | '/privacy'
@@ -281,6 +303,8 @@ export interface FileRouteTypes {
     | '/_auth'
     | '/_protected'
     | '/health'
+    | '/llms-full.txt'
+    | '/llms.txt'
     | '/og-image'
     | '/sitemap.xml'
     | '/(marketing)/'
@@ -307,6 +331,8 @@ export interface RootRouteChildren {
   AuthRoute: typeof AuthRouteWithChildren
   ProtectedRoute: typeof ProtectedRouteWithChildren
   HealthRoute: typeof HealthRoute
+  LlmsFullDottxtRoute: typeof LlmsFullDottxtRoute
+  LlmsDottxtRoute: typeof LlmsDottxtRoute
   OgImageRoute: typeof OgImageRoute
   SitemapDotxmlRoute: typeof SitemapDotxmlRoute
   marketingIndexRouteRoute: typeof marketingIndexRouteRoute
@@ -351,6 +377,20 @@ declare module '@tanstack/react-router' {
       path: '/health'
       fullPath: '/health'
       preLoaderRoute: typeof HealthRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/llms-full.txt': {
+      id: '/llms-full.txt'
+      path: '/llms-full.txt'
+      fullPath: '/llms-full.txt'
+      preLoaderRoute: typeof LlmsFullDottxtRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/llms.txt': {
+      id: '/llms.txt'
+      path: '/llms.txt'
+      fullPath: '/llms.txt'
+      preLoaderRoute: typeof LlmsDottxtRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/og-image': {
@@ -547,6 +587,8 @@ const rootRouteChildren: RootRouteChildren = {
   AuthRoute: AuthRouteWithChildren,
   ProtectedRoute: ProtectedRouteWithChildren,
   HealthRoute: HealthRoute,
+  LlmsFullDottxtRoute: LlmsFullDottxtRoute,
+  LlmsDottxtRoute: LlmsDottxtRoute,
   OgImageRoute: OgImageRoute,
   SitemapDotxmlRoute: SitemapDotxmlRoute,
   marketingIndexRouteRoute: marketingIndexRouteRoute,
@@ -567,3 +609,4 @@ declare module '@tanstack/react-start' {
     router: Awaited<ReturnType<typeof getRouter>>
   }
 }
+

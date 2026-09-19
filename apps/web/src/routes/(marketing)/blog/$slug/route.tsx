@@ -50,28 +50,49 @@ export const Route = createFileRoute('/(marketing)/blog/$slug')({
       })
     }
 
-    const canonicalUrl = `${getSiteBaseUrl()}/blog/${post.slug}`
+    const baseUrl = getSiteBaseUrl()
+    const canonicalUrl = `${baseUrl}/blog/${post.slug}`
     const published = new Date(`${post.publishedAt}T00:00:00Z`).toISOString()
     const modified = new Date(
       `${post.updatedAt ?? post.publishedAt}T00:00:00Z`,
     ).toISOString()
+    const ogImageUrl = new URL('/og-image', baseUrl)
+    ogImageUrl.searchParams.set('title', post.title)
+    ogImageUrl.searchParams.set('subtitle', 'Probe Blog')
+    if (post.description) {
+      ogImageUrl.searchParams.set('description', post.description)
+    }
+
     const structuredData = {
       '@context': 'https://schema.org',
-      '@type': 'BlogPosting',
+      '@type': ['BlogPosting', 'TechArticle'],
+      'about': post.tags.map(tag => ({ '@type': 'Thing', 'name': tag })),
+      'articleSection': post.tags[0] ?? 'Engineering',
       'author': {
         '@type': 'Organization',
         'name': post.author,
-        'url': getSiteBaseUrl(),
+        'url': baseUrl,
       },
       'dateModified': modified,
       'datePublished': published,
       'description': post.description,
       'headline': post.title,
+      'image': ogImageUrl.toString(),
+      'inLanguage': 'en-US',
+      'isAccessibleForFree': true,
+      'isPartOf': {
+        '@type': 'Blog',
+        '@id': `${baseUrl}/blog#blog`,
+        'name': 'Probe Webhook Engineering Blog',
+        'url': `${baseUrl}/blog`,
+      },
+      'keywords': post.tags.join(', '),
       'mainEntityOfPage': { '@type': 'WebPage', '@id': canonicalUrl },
       'publisher': {
         '@type': 'Organization',
+        'logo': `${baseUrl}/logo.png`,
         'name': 'Probe',
-        'url': getSiteBaseUrl(),
+        'url': baseUrl,
       },
       'url': canonicalUrl,
     }
