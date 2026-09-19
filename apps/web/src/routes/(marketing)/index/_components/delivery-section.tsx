@@ -123,8 +123,10 @@ export function DeliverySection() {
   return (
     <section className="grid border-b border-border lg:grid-cols-[0.85fr_1.15fr]">
       <div className="flex flex-col justify-center px-6 py-14 sm:px-10 lg:border-r lg:border-border lg:py-20">
-        <h2 className="mt-4 max-w-md text-3xl font-semibold tracking-[-0.035em] text-foreground sm:text-5xl">See how each attempt ended.</h2>
-        <p className="mt-5 max-w-md leading-7 text-muted-foreground">Track consecutive webhook delivery attempts from 504 gateway timeouts or 400 Bad Request validation errors through to the final 200 OK delivery with per-attempt latencies.</p>
+        <h2 className="mt-4 max-w-md text-3xl font-semibold tracking-[-0.035em] text-foreground sm:text-5xl">Did your retry backoff actually succeed?</h2>
+        <p className="mt-5 max-w-md leading-7 text-muted-foreground">
+          Webhooks rarely fail in clean, linear patterns. An upstream database lock triggers a 504 gateway timeout on round one, your application worker throws a 500 error on round two, and the provider finally gets an HTTP 200 after an exponential backoff. Probe correlates every retry under a single delivery token with exact hop latencies so you know if your handlers handled the spike.
+        </p>
       </div>
       <div className="flex min-h-80 items-center justify-center overflow-hidden border-t border-border bg-card/20 px-4 py-8 lg:border-t-0 sm:px-8">
         <DeliveryDiagram />

@@ -7,6 +7,7 @@ export default defineConfig({
     '/**': {
       headers: {
         'Cache-Control': 'no-cache, must-revalidate',
+        'ETag': 'W/"probe-26e457f"',
         'Content-Security-Policy':
           'default-src \'self\'; script-src \'self\' \'unsafe-inline\' https://umami.monobase.io.vn; style-src \'self\' \'unsafe-inline\'; img-src \'self\' data: blob: https:; font-src \'self\' data:; connect-src \'self\' https://probe-api.monobase.io.vn https://umami.monobase.io.vn; frame-ancestors \'none\'; object-src \'none\'; base-uri \'self\'; form-action \'self\';',
         'Cross-Origin-Embedder-Policy': 'credentialless',
@@ -46,6 +47,7 @@ export default defineConfig({
   },
   plugins: [
     './server/plugins/evlog-enrich.ts',
+    './server/plugins/etag.ts',
   ],
   modules: [
     evlog({

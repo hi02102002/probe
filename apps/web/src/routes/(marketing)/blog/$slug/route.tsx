@@ -69,8 +69,12 @@ export const Route = createFileRoute('/(marketing)/blog/$slug')({
       'about': post.tags.map(tag => ({ '@type': 'Thing', 'name': tag })),
       'articleSection': post.tags[0] ?? 'Engineering',
       'author': {
-        '@type': 'Organization',
+        '@type': 'Person',
         'name': post.author,
+        'sameAs': [
+          'https://www.linkedin.com/in/hoanghuy0210/',
+          'https://github.com/hi02102002',
+        ],
         'url': baseUrl,
       },
       'dateModified': modified,

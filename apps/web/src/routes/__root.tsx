@@ -57,6 +57,19 @@ export const Route = createRootRouteWithContext<RouterContext>()({
       links: [
         ...(seo.links ?? []),
         {
+          rel: 'dns-prefetch',
+          href: 'https://umami.monobase.io.vn',
+        },
+        {
+          rel: 'preconnect',
+          href: 'https://umami.monobase.io.vn',
+          crossOrigin: 'anonymous',
+        },
+        {
+          rel: 'dns-prefetch',
+          href: 'https://probe-api.monobase.io.vn',
+        },
+        {
           rel: 'preload',
           href: interWoff2,
           as: 'font',

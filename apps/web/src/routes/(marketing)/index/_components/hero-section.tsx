@@ -95,15 +95,15 @@ export function HeroSection() {
       <div className="mx-auto max-w-4xl text-center">
         <div className="mx-auto mb-6 inline-flex items-center gap-2 border border-border bg-card/50 px-3 py-1.5 font-mono text-[10px] uppercase tracking-[0.16em] text-muted-foreground sm:text-xs">
           <span className="size-1.5 rounded-full bg-success shadow-[0_0_10px_var(--success)]" />
-          Webhook debugging without the guesswork
+          Live HTTP inspection for modern engineering teams
         </div>
         <h1 className="text-balance text-4xl font-semibold leading-[1.04] tracking-[-0.045em] text-foreground sm:text-6xl lg:text-7xl">
-          Receive the webhook.
+          Stop tailing server logs.
           {' '}
-          <span className="text-accent-foreground">Inspect every detail.</span>
+          <span className="text-accent-foreground">See the real payload.</span>
         </h1>
         <p className="mx-auto mt-7 max-w-2xl text-pretty text-base leading-7 text-muted-foreground sm:text-xl sm:leading-8">
-          Create a webhook URL. When a request arrives, inspect its headers, query, payload, and metadata.
+          We built Probe after spending too many late nights wrestling with broken webhook signatures and silent serialization bugs. Generate a dedicated URL, route your third-party events into it, and inspect the unparsed headers, query strings, and raw JSON bodies as they arrive.
         </p>
         <div className="mt-10 flex justify-center">
           <Button

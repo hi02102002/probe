@@ -8,19 +8,21 @@ import {
 
 export function FeaturesSection() {
   const benefits = [
-    { icon: GaugeIcon, title: 'Unique endpoint', description: 'Name one endpoint for each integration or test.', wide: true },
-    { icon: MagnifyingGlassIcon, title: 'Headers & payload', description: 'View every header and the full JSON payload.' },
-    { icon: LockKeyIcon, title: 'URL & query', description: 'Check the exact path and query values sent.' },
-    { icon: PulseIcon, title: 'Request history', description: 'Review requests by method and received time.' },
-    { icon: CloudArrowUpIcon, title: 'Request metadata', description: 'See status, source IP, and request size.' },
+    { icon: GaugeIcon, title: 'Dedicated URLs', description: 'Create separate endpoints for dev, staging, or individual feature branches.', wide: true },
+    { icon: MagnifyingGlassIcon, title: 'Header inspection', description: 'Inspect Stripe-Signature, X-Hub-Signature-256, and auth tokens directly.' },
+    { icon: LockKeyIcon, title: 'Query & path parsing', description: 'Check custom webhook path parameters and query strings as they landed.' },
+    { icon: PulseIcon, title: 'Timeline replay', description: 'Order events chronologically to catch race conditions across concurrent webhooks.' },
+    { icon: CloudArrowUpIcon, title: 'Wire metadata', description: 'Measure payload sizes down to the exact byte and view origin IP addresses.' },
   ]
 
   return (
     <section id="features" className="scroll-mt-24 border-b border-border">
       <div className="grid lg:grid-cols-2">
         <div className="flex flex-col justify-center border-b border-border px-6 py-14 sm:px-10 lg:border-b-0 lg:border-r lg:py-20">
-          <h2 className="mt-4 max-w-md text-4xl font-semibold tracking-[-0.035em] text-foreground sm:text-5xl">The request is the evidence.</h2>
-          <p className="mt-6 max-w-lg leading-7 text-muted-foreground">Probe preserves raw request bytes, provider cryptographic headers (like Stripe or GitHub HMAC signatures), query parameters, and client source IPs in a unified record—so you inspect what was actually sent across the wire instead of parsing fragmented logs.</p>
+          <h2 className="mt-4 max-w-md text-4xl font-semibold tracking-[-0.035em] text-foreground sm:text-5xl">Raw wire data never lies.</h2>
+          <p className="mt-6 max-w-lg leading-7 text-muted-foreground">
+            Most webhook integration bugs come down to an unexpected character in an HMAC header or a framework silently stripping custom query parameters. When a third-party webhook hits your Probe URL, we capture the exact incoming TCP payload before any parser touches it. You get every header key-value pair, the full unmutated request body, and the sender origin IP right on your dashboard screen.
+          </p>
         </div>
         <div className="grid grid-cols-2 gap-px bg-border">
           {benefits.map(({ icon: Icon, title, description, wide }) => (

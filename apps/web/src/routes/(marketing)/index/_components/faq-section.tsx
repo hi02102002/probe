@@ -8,32 +8,32 @@ import {
 export const faqs = [
   {
     answer:
-      'Probe is a developer platform for capturing, inspecting, and debugging incoming webhook requests and HTTP payloads in real time. It provides unique endpoint URLs to test webhooks from providers like Stripe, GitHub, Shopify, and Slack without requiring local tunnels or complex receiver setups.',
+      'Probe is a dedicated HTTP request capture tool built for developers who integrate third-party APIs and webhooks. Instead of spinning up local tunnels, tailing noisy cloud logs, or deploying temporary catch-all microservices, you get a clean HTTPS endpoint that accepts incoming requests and renders their exact headers, raw body bytes, and metadata in your browser.',
     question: 'What is Probe?',
   },
   {
     answer:
-      'No CLI or local tunnel is required. Probe provisions cloud-hosted HTTPS endpoints instantly. You can paste your unique URL into any webhook provider and inspect incoming requests directly in your browser dashboard.',
+      'No local daemon or binary is required. Every endpoint runs in the cloud with automatic TLS termination. You paste the URL directly into your provider\'s configuration—like the Stripe dashboard or GitHub webhook settings—and inspect the incoming requests from anywhere.',
     question: 'Do I need to install an SDK or run a local tunnel like ngrok?',
   },
   {
     answer:
-      'Probe supports any provider that sends standard HTTP/HTTPS POST, PUT, PATCH, or GET requests. This includes Stripe, GitHub, Shopify, Slack, Twilio, Paddle, and custom services. Supported payload formats include JSON, XML, form-data, and raw text.',
+      'Any service that can fire an HTTP or HTTPS request will work. We regularly test against Stripe, GitHub, Shopify, Slack, Twilio, Paddle, Linear, and custom internal microservices. Payloads can be JSON, URL-encoded forms, XML, multipart form-data, or plain text up to 10MB per request.',
     question: 'Which webhook providers and payload formats are supported?',
   },
   {
     answer:
-      'Probe logs every delivery attempt with full request headers, HTTP status codes, query parameters, payload bodies, and arrival timestamps so you can verify provider signatures, debug schema mismatches, and trace retry sequences.',
+      'When a webhook fails, you usually want to answer three questions: did the provider actually send it, did the cryptographic signature match, and did our endpoint return the right status code in time? Probe records the raw signature headers (such as Stripe-Signature or X-Hub-Signature-256), the exact arrival timestamp down to the millisecond, and every retry attempt so you can trace what broke.',
     question: 'How does Probe help debug webhook delivery failures?',
   },
   {
     answer:
-      'Webhook payloads are stored ephemerally to protect your privacy and automatically purged according to your plan retention window (e.g., 24 hours on the free tier). You can also permanently delete endpoints and purge request logs at any time.',
+      'Free tier endpoints retain captured requests on a rolling 24-hour window, after which they are permanently purged from storage. You can also manually delete individual requests or wipe an entire endpoint whenever you finish a debugging session.',
     question: 'How long are webhook payloads retained?',
   },
   {
     answer:
-      'All traffic in transit is encrypted using TLS 1.3, and data at rest is encrypted with AES-256. Webhook data is strictly isolated to your authenticated account, and Probe never uses payload data for advertising or model training.',
+      'Yes. All traffic terminates over TLS 1.3, and payloads are stored with AES-256 encryption at rest. Each endpoint belongs strictly to your authenticated session. We never inspect your data, we do not train AI models on customer payloads, and we never share data with third parties.',
     question: 'Is my webhook payload data secure and private?',
   },
 ]

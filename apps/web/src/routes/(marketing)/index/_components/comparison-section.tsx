@@ -2,16 +2,16 @@ import { ArrowRightIcon } from '@phosphor-icons/react'
 
 export function ComparisonSection() {
   const steps = [
-    { number: '01', title: 'Create an endpoint', description: 'Give the endpoint a clear name and copy its unique URL.' },
-    { number: '02', title: 'Send a webhook', description: 'Paste the URL into your provider, or send a test request yourself.' },
-    { number: '03', title: 'Inspect what arrived', description: 'Open the captured request and verify every field against your integration.' },
+    { number: '01', title: 'Generate your URL', description: 'Create an isolated endpoint and copy the unique HTTPS URL to your clipboard.' },
+    { number: '02', title: 'Trigger an event', description: 'Paste the URL into Stripe, GitHub, or Shopify, or send a manual curl POST.' },
+    { number: '03', title: 'Inspect the wire', description: 'Click any captured event to inspect raw bytes, headers, and parsed JSON side-by-side.' },
   ]
 
   return (
     <section id="compare" className="scroll-mt-24 border-b border-border">
       <div className="border-b border-border px-6 py-10 sm:px-10">
-        <h2 className="mt-3 text-3xl font-semibold tracking-[-0.03em] text-foreground sm:text-4xl">From endpoint to answer in three steps.</h2>
-        <p className="mt-2 max-w-2xl text-sm leading-6 text-muted-foreground">No SDK or local tunnel is required to see what a webhook provider sends.</p>
+        <h2 className="mt-3 text-3xl font-semibold tracking-[-0.03em] text-foreground sm:text-4xl">Up and running in 30 seconds.</h2>
+        <p className="mt-2 max-w-2xl text-sm leading-6 text-muted-foreground">You shouldn't need a local ngrok agent or a custom auth token just to inspect an incoming POST request from your staging environment.</p>
       </div>
       <div className="grid gap-px bg-border md:grid-cols-3">
         {steps.map((step, index) => (
