@@ -21,7 +21,7 @@ function RequestCanvas() {
             <p className="hidden font-mono text-[10px] uppercase tracking-[0.18em] text-muted-foreground sm:block">Incoming webhooks</p>
             <div className="mt-3 space-y-1.5">
               {requests.map((request, index) => (
-                <div key={request} className={`flex h-8 items-center gap-2 border px-1.5 font-mono text-[10px] ${index === 0 ? 'border-primary/25 bg-primary/10 text-accent-foreground' : 'border-transparent text-muted-foreground'}`}>
+                <div key={request} className={`flex h-8 items-center gap-2 border px-1.5 font-mono text-[10px] ${index === 0 ? 'border-primary/25 bg-primary/10 text-accent-foreground' : 'border-transparent text-foreground/70'}`}>
                   <span className={`size-1.5 shrink-0 rounded-full ${index === 2 ? 'bg-warning' : 'bg-success'}`} />
                   <span className="hidden truncate sm:block">{request}</span>
                 </div>
@@ -31,14 +31,14 @@ function RequestCanvas() {
           <div className="relative overflow-hidden p-4 sm:p-6">
             <div className="probe-scan absolute inset-x-0 top-0 h-px" />
             <div className="flex flex-wrap items-center gap-2 font-mono text-[10px] sm:text-xs">
-              <span className="bg-chart-2/15 px-2 py-1 text-chart-2">POST</span>
+              <span className="bg-violet-500/15 px-2 py-1 text-violet-700 dark:text-violet-300">POST</span>
               <span className="text-foreground">/hooks/ep_checkout</span>
               <span className="ml-auto text-success-foreground">200 OK</span>
-              <span className="text-muted-foreground">Received just now</span>
+              <span className="text-foreground/70">Received just now</span>
             </div>
             <div className="mt-6 grid gap-4 sm:grid-cols-2">
               <div className="border border-border bg-code p-4 font-mono text-[10px] leading-5 sm:text-xs">
-                <p className="mb-2 text-muted-foreground">Request body</p>
+                <p className="mb-2 text-foreground/70">Request body</p>
                 <p className="text-muted-foreground">{'{'}</p>
                 <p className="pl-3">
                   <span className="text-chart-4">&quot;type&quot;</span>
@@ -60,18 +60,18 @@ function RequestCanvas() {
                 <p className="text-muted-foreground">{'}'}</p>
               </div>
               <div className="font-mono text-[10px] sm:text-xs">
-                <p className="mb-3 text-muted-foreground">Request headers</p>
+                <p className="mb-3 text-foreground/70">Request headers</p>
                 <dl className="space-y-3">
                   <div className="grid grid-cols-[5rem_1fr] gap-2">
-                    <dt className="text-muted-foreground">content-type</dt>
+                    <dt className="text-foreground/70">content-type</dt>
                     <dd className="truncate text-foreground">application/json</dd>
                   </div>
                   <div className="grid grid-cols-[5rem_1fr] gap-2">
-                    <dt className="text-muted-foreground">user-agent</dt>
+                    <dt className="text-foreground/70">user-agent</dt>
                     <dd className="truncate text-foreground">Stripe/1.0</dd>
                   </div>
                   <div className="grid grid-cols-[5rem_1fr] gap-2">
-                    <dt className="text-muted-foreground">x-signature</dt>
+                    <dt className="text-foreground/70">x-signature</dt>
                     <dd className="truncate text-foreground">t=1788,v1=3fd92...</dd>
                   </div>
                 </dl>

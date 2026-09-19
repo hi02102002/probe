@@ -37,7 +37,7 @@ function Attempt({
 }) {
   const toneClasses = tone === 'success'
     ? 'bg-emerald-500/10 text-emerald-600 ring-emerald-500/20 dark:text-emerald-400'
-    : 'bg-rose-500/10 text-rose-600 ring-rose-500/20 dark:text-rose-400'
+    : 'bg-rose-500/10 text-rose-700 ring-rose-500/20 dark:text-rose-300'
 
   return (
     <div className={`probe-delivery-attempt flex h-7 items-center gap-1.5 rounded-full border border-border bg-card px-2 shadow-sm ring-2 ring-background ${className}`}>

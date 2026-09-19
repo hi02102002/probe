@@ -39,7 +39,7 @@ export default defineConfig({
       headers: {
         'Cache-Control': 'no-cache, must-revalidate',
         'Content-Security-Policy':
-          'default-src \'self\'; script-src \'self\' \'unsafe-inline\' https://umami.monobase.io.vn; style-src \'self\' \'unsafe-inline\'; img-src \'self\' data: blob: https:; font-src \'self\' data:; connect-src \'self\' https://probe-api.monobase.io.vn https://umami.monobase.io.vn; frame-ancestors \'none\'; object-src \'none\'; base-uri \'self\'; form-action \'self\';',
+          'default-src \'self\'; script-src \'self\' \'unsafe-inline\' https://umami.monobase.io.vn https://static.cloudflareinsights.com; style-src \'self\' \'unsafe-inline\'; img-src \'self\' data: blob: https:; font-src \'self\' data:; connect-src \'self\' https://probe-api.monobase.io.vn https://umami.monobase.io.vn https://cloudflareinsights.com; frame-ancestors \'none\'; object-src \'none\'; base-uri \'self\'; form-action \'self\';',
         'Cross-Origin-Embedder-Policy': 'credentialless',
         'Cross-Origin-Opener-Policy': 'same-origin',
         'Cross-Origin-Resource-Policy': 'same-origin',
