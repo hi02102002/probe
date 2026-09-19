@@ -20,9 +20,15 @@ function getBuildVersion(): string {
 }
 
 const buildVersion = getBuildVersion()
-const etagValue = `"${buildVersion}"`
 
 export default defineConfig({
+  handlers: [
+    {
+      handler: './server/middleware/etag.ts',
+      middleware: true,
+      route: '/**',
+    },
+  ],
   runtimeConfig: {
     app: {
       buildVersion,
@@ -32,7 +38,6 @@ export default defineConfig({
     '/**': {
       headers: {
         'Cache-Control': 'no-cache, must-revalidate',
-        'ETag': etagValue,
         'Content-Security-Policy':
           'default-src \'self\'; script-src \'self\' \'unsafe-inline\' https://umami.monobase.io.vn; style-src \'self\' \'unsafe-inline\'; img-src \'self\' data: blob: https:; font-src \'self\' data:; connect-src \'self\' https://probe-api.monobase.io.vn https://umami.monobase.io.vn; frame-ancestors \'none\'; object-src \'none\'; base-uri \'self\'; form-action \'self\';',
         'Cross-Origin-Embedder-Policy': 'credentialless',
@@ -72,7 +77,6 @@ export default defineConfig({
   },
   plugins: [
     './server/plugins/evlog-enrich.ts',
-    './server/plugins/etag.ts',
   ],
   modules: [
     evlog({
