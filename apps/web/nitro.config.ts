@@ -20,7 +20,7 @@ function getBuildVersion(): string {
 }
 
 const buildVersion = getBuildVersion()
-const etagValue = `W/"probe-${buildVersion}"`
+const etagValue = `"${buildVersion}"`
 
 export default defineConfig({
   runtimeConfig: {

@@ -152,6 +152,7 @@ function RootDocument() {
         />
         {import.meta.env.PROD && (
           <script
+            async
             defer
             src="https://umami.monobase.io.vn/script.js"
             data-website-id="54a92f58-5371-4b3a-8158-198fd1eb8bfe"
@@ -184,16 +185,18 @@ function RootDocument() {
               </AnchoredToastProvider>
             </ToastProvider>
           </NuqsAdapter>
-          <TanStackDevtools
-            config={{ position: 'bottom-right' }}
-            plugins={[
-              {
-                name: 'Tanstack Router',
-                render: <TanStackRouterDevtoolsPanel />,
-              },
-              TanStackQueryDevtools,
-            ]}
-          />
+          {import.meta.env.DEV && (
+            <TanStackDevtools
+              config={{ position: 'bottom-right' }}
+              plugins={[
+                {
+                  name: 'Tanstack Router',
+                  render: <TanStackRouterDevtoolsPanel />,
+                },
+                TanStackQueryDevtools,
+              ]}
+            />
+          )}
           <Scripts />
         </ThemeProvider>
       </body>
