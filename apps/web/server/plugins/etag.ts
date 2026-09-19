@@ -1,3 +1,4 @@
+import process from 'node:process'
 import { definePlugin } from 'nitro'
 import { useRuntimeConfig } from 'nitro/runtime-config'
 

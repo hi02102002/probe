@@ -1,4 +1,5 @@
 import { execSync } from 'node:child_process'
+import process from 'node:process'
 import { getProductionSamplingConfig } from '@repo/utils'
 import evlog from 'evlog/nitro/v3'
 import { defineConfig } from 'nitro'
