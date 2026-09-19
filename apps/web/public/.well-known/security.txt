@@ -1,0 +1,9 @@
+# Probe Security Policy
+# https://www.rfc-editor.org/rfc/rfc9116
+
+Contact: mailto:security@probe.monobase.io.vn
+Expires: 2027-12-31T23:59:59.000Z
+Canonical: https://probe.monobase.io.vn/.well-known/security.txt
+Preferred-Languages: en
+Policy: https://probe.monobase.io.vn/privacy
+

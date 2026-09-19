@@ -20,7 +20,11 @@ export function HomeHeader() {
         <ArrowRightIcon className="shrink-0" weight="bold" />
       </a>
       <div className="mx-auto flex h-14 max-w-6xl items-center justify-between gap-4 border-border border-b border-x px-4 sm:px-5">
-        <Logo classNames={{ container: 'text-foreground' }} />
+        <Logo
+          classNames={{ container: 'text-foreground' }}
+          fetchPriority="high"
+          loading="eager"
+        />
         <nav aria-label="Main Navigation" className="hidden items-center gap-1 md:flex">
           <h2 className="sr-only">Main Navigation</h2>
           <a

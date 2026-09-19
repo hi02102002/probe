@@ -44,7 +44,7 @@ export function FaqSection() {
       <div className="mx-auto max-w-4xl">
         <div className="mb-10 text-center sm:text-left">
           <h2 className="mt-3 text-3xl font-semibold tracking-[-0.035em] text-foreground sm:text-4xl">Everything you need to know about Probe.</h2>
-          <p className="mt-2 text-sm leading-6 text-muted-foreground">Answers to common questions about webhook inspection, privacy, and debugging workflows.</p>
+          <p className="mt-2 text-sm leading-6 text-muted-foreground">Technical architecture, encryption standards, payload retention schedules, and local debugging workflows.</p>
         </div>
         <Accordion className="divide-y divide-border border-y border-border">
           {faqs.map((faq, index) => (

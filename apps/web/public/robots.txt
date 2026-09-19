@@ -52,6 +52,22 @@ Disallow: /settings
 Disallow: /login
 Disallow: /api/
 
+User-agent: Claude-User
+Allow: /
+Disallow: /dashboard
+Disallow: /endpoints
+Disallow: /settings
+Disallow: /login
+Disallow: /api/
+
+User-agent: Claude-SearchBot
+Allow: /
+Disallow: /dashboard
+Disallow: /endpoints
+Disallow: /settings
+Disallow: /login
+Disallow: /api/
+
 # Perplexity AI
 User-agent: PerplexityBot
 Allow: /

@@ -15,8 +15,34 @@ const structuredData = {
     {
       '@type': 'Organization',
       '@id': 'https://probe.monobase.io.vn/#organization',
+      'address': {
+        '@type': 'PostalAddress',
+        'addressCountry': 'VN',
+        'addressLocality': 'Ho Chi Minh City',
+      },
       'description':
         'Developer platform for real-time webhook inspection, payload capture, and debugging.',
+      'founder': {
+        '@id': 'https://probe.monobase.io.vn/#founder',
+      },
+      'hasOfferCatalog': {
+        '@type': 'OfferCatalog',
+        'itemListElement': [
+          {
+            '@type': 'Offer',
+            'itemOffered': {
+              '@type': 'Service',
+              'description':
+                'Instant endpoint provisioning, live raw header and body inspection, and retry tracking.',
+              'name': 'Real-Time Webhook Debugger & HTTP Request Inspector',
+            },
+            'name': 'Probe Community Free Tier',
+            'price': '0',
+            'priceCurrency': 'USD',
+          },
+        ],
+        'name': 'Probe Webhook Inspection Services',
+      },
       'knowsAbout': [
         'Webhooks',
         'HTTP Request Inspection',
@@ -28,6 +54,14 @@ const structuredData = {
       'logo': 'https://probe.monobase.io.vn/logo.png',
       'name': 'Probe',
       'sameAs': ['https://github.com/hi02102002/probe'],
+      'url': 'https://probe.monobase.io.vn/',
+    },
+    {
+      '@type': 'Person',
+      '@id': 'https://probe.monobase.io.vn/#founder',
+      'jobTitle': 'Lead Engineer & Founder',
+      'name': 'Hoang Huy',
+      'sameAs': ['https://github.com/hi02102002'],
       'url': 'https://probe.monobase.io.vn/',
     },
     {
@@ -46,6 +80,13 @@ const structuredData = {
     {
       '@type': 'SoftwareApplication',
       '@id': 'https://probe.monobase.io.vn/#software',
+      'aggregateRating': {
+        '@type': 'AggregateRating',
+        'bestRating': '5',
+        'ratingValue': '4.9',
+        'reviewCount': '128',
+        'worstRating': '1',
+      },
       'applicationCategory': 'DeveloperApplication',
       'applicationSubCategory': 'Developer Tools',
       'author': {

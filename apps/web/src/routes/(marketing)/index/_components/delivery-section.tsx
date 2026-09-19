@@ -124,7 +124,7 @@ export function DeliverySection() {
     <section className="grid border-b border-border lg:grid-cols-[0.85fr_1.15fr]">
       <div className="flex flex-col justify-center px-6 py-14 sm:px-10 lg:border-r lg:border-border lg:py-20">
         <h2 className="mt-4 max-w-md text-3xl font-semibold tracking-[-0.035em] text-foreground sm:text-5xl">See how each attempt ended.</h2>
-        <p className="mt-5 max-w-md leading-7 text-muted-foreground">Follow webhook retries from the first failure to the request that finally succeeds.</p>
+        <p className="mt-5 max-w-md leading-7 text-muted-foreground">Track consecutive webhook delivery attempts from 504 gateway timeouts or 400 Bad Request validation errors through to the final 200 OK delivery with per-attempt latencies.</p>
       </div>
       <div className="flex min-h-80 items-center justify-center overflow-hidden border-t border-border bg-card/20 px-4 py-8 lg:border-t-0 sm:px-8">
         <DeliveryDiagram />

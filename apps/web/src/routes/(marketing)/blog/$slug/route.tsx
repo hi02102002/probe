@@ -219,13 +219,17 @@ function BlogPostPage() {
             <div className="mt-8 flex flex-wrap items-center justify-between gap-4 border-t border-border/60 pt-6">
               <div className="flex items-center gap-3">
                 <div className="flex size-9 shrink-0 items-center justify-center rounded-lg border border-border bg-card">
-                  <img
-                    alt="Probe"
-                    className="size-5 object-contain"
-                    height={20}
-                    src="/app-mark.png"
-                    width={20}
-                  />
+                  <picture className="size-5">
+                    <source srcSet="/app-mark.webp" type="image/webp" />
+                    <img
+                      alt="Probe"
+                      className="size-5 object-contain"
+                      height={20}
+                      loading="eager"
+                      src="/app-mark.png"
+                      width={20}
+                    />
+                  </picture>
                 </div>
                 <div>
                   <p className="text-xs font-semibold text-foreground">{post.author}</p>

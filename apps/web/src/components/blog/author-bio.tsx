@@ -17,13 +17,17 @@ export function AuthorBio({
     <footer className={cn('border-t border-border/80 pt-8', className)}>
       <div className="flex items-start gap-4">
         <div className="flex size-11 shrink-0 items-center justify-center rounded-xl border border-border bg-card">
-          <img
-            alt="Probe"
-            className="size-6 object-contain"
-            height={24}
-            src="/app-mark.png"
-            width={24}
-          />
+          <picture className="size-6">
+            <source srcSet="/app-mark.webp" type="image/webp" />
+            <img
+              alt="Probe"
+              className="size-6 object-contain"
+              height={24}
+              loading="lazy"
+              src="/app-mark.png"
+              width={24}
+            />
+          </picture>
         </div>
         <div>
           <h4 className="text-sm font-semibold text-foreground">{author}</h4>

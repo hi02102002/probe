@@ -144,12 +144,10 @@ export function generateTanStackStartSeo({
           property: 'og:site_name',
         }
       : undefined,
-    alternates?.locale
-      ? {
-          content: alternates.locale,
-          property: 'og:locale',
-        }
-      : undefined,
+    {
+      content: alternates?.locale ?? 'en_US',
+      property: 'og:locale',
+    },
     canonicalUrl
       ? {
           content: canonicalUrl,

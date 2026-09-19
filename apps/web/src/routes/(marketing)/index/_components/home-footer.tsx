@@ -16,6 +16,8 @@ export function HomeFooter() {
             classNames={{ container: 'text-foreground' }}
             data-umami-event-button-name="home__footer__logo"
             data-umami-link-event="Footer logo clicked"
+            fetchPriority="low"
+            loading="lazy"
           />
           <p className="mt-4 max-w-sm text-muted-foreground text-sm leading-6">
             A focused webhook debugger for capturing incoming requests and understanding exactly what was sent.

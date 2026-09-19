@@ -69,13 +69,32 @@ export const Route = createRootRouteWithContext<RouterContext>()({
         },
         {
           rel: 'icon',
+          type: 'image/svg+xml',
+          href: '/favicon.svg',
+        },
+        {
+          rel: 'icon',
           type: 'image/png',
           href: '/favicon.png',
+        },
+        {
+          rel: 'manifest',
+          href: '/manifest.json',
         },
         {
           rel: 'apple-touch-icon',
           type: 'image/png',
           href: '/logo.png',
+        },
+        {
+          rel: 'alternate',
+          hrefLang: 'en',
+          href: 'https://probe.monobase.io.vn/',
+        },
+        {
+          rel: 'alternate',
+          hrefLang: 'x-default',
+          href: 'https://probe.monobase.io.vn/',
         },
         {
           rel: 'alternate',
@@ -128,6 +147,16 @@ function RootDocument() {
         <HeadContent />
       </head>
       <body>
+        <noscript>
+          <div className="border-b border-border bg-card px-4 py-3 text-center text-foreground text-sm">
+            <p className="font-medium">JavaScript is recommended for real-time webhook streaming.</p>
+            <div className="mt-2 flex justify-center gap-4 text-muted-foreground text-xs">
+              <a className="underline hover:text-foreground" href="/blog">Engineering Blog</a>
+              <a className="underline hover:text-foreground" href="/privacy">Privacy Policy</a>
+              <a className="underline hover:text-foreground" href="/terms">Terms of Service</a>
+            </div>
+          </div>
+        </noscript>
         <ThemeProvider
           attribute="class"
           defaultTheme="system"

@@ -20,7 +20,7 @@ export function FeaturesSection() {
       <div className="grid lg:grid-cols-2">
         <div className="flex flex-col justify-center border-b border-border px-6 py-14 sm:px-10 lg:border-b-0 lg:border-r lg:py-20">
           <h2 className="mt-4 max-w-md text-4xl font-semibold tracking-[-0.035em] text-foreground sm:text-5xl">The request is the evidence.</h2>
-          <p className="mt-6 max-w-lg leading-7 text-muted-foreground">Probe keeps the parts of an incoming webhook together, so you can stop reconstructing failures from scattered logs and start with what the provider actually sent.</p>
+          <p className="mt-6 max-w-lg leading-7 text-muted-foreground">Probe preserves raw request bytes, provider cryptographic headers (like Stripe or GitHub HMAC signatures), query parameters, and client source IPs in a unified record—so you inspect what was actually sent across the wire instead of parsing fragmented logs.</p>
         </div>
         <div className="grid grid-cols-2 gap-px bg-border">
           {benefits.map(({ icon: Icon, title, description, wide }) => (
