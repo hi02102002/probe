@@ -72,7 +72,7 @@ export const Route = createFileRoute('/(marketing)/blog/$slug')({
         '@type': 'Person',
         'name': post.author,
         'sameAs': [
-          'https://www.linkedin.com/in/hoanghuy0210/',
+          'https://www.linkedin.com/in/hoanghuydev0210/',
           'https://github.com/hi02102002',
         ],
         'url': baseUrl,
