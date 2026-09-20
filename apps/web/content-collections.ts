@@ -1,10 +1,5 @@
 import { defineCollection, defineConfig } from '@content-collections/core'
-import { compileMDX } from '@content-collections/mdx'
-import { rehypeHighlightCodeBlocks } from '@tanstack/highlight/rehype'
-import rehypeSlug from 'rehype-slug'
-import remarkGfm from 'remark-gfm'
 import { z } from 'zod'
-import { highlighter } from './src/lib/highlighter'
 
 const blog = defineCollection({
   name: 'blog',
@@ -22,16 +17,7 @@ const blog = defineCollection({
     content: z.string().optional(),
     cover: z.string().optional(),
   }),
-  transform: async (document, context) => {
-    // Compile MDX using remark-gfm (GFM tables/autolinks), rehype-slug (heading IDs), and rehypeHighlightCodeBlocks (@tanstack/highlight plugin)
-    const body = await compileMDX(context, document, {
-      remarkPlugins: [remarkGfm],
-      rehypePlugins: [
-        rehypeSlug,
-        [rehypeHighlightCodeBlocks, { highlighter }],
-      ],
-    })
-
+  transform: (document) => {
     const slug = document.slug ?? document._meta.fileName.replace(/\.mdx$/, '')
     const content = document.content ?? ''
 
@@ -62,7 +48,6 @@ const blog = defineCollection({
 
     return {
       ...document,
-      body,
       content,
       headings,
       readingTime,

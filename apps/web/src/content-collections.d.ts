@@ -27,7 +27,6 @@ declare module 'content-collections' {
     content?: string
     headings: BlogPostHeading[]
     readingTime: number
-    body: string
   }
 
   export const allBlogs: BlogPost[]

@@ -1,14 +1,19 @@
 import contentCollections from '@content-collections/vite'
+import mdx from '@mdx-js/rollup'
 import { getProductionSamplingConfig } from '@repo/utils'
-/** biome-ignore-all lint/suspicious/noExplicitAny: <hono> */
 import babel from '@rolldown/plugin-babel'
 import tailwindcss from '@tailwindcss/vite'
 import { devtools } from '@tanstack/devtools-vite'
+import { rehypeHighlightCodeBlocks } from '@tanstack/highlight/rehype'
 import { tanstackStart } from '@tanstack/react-start/plugin/vite'
 import viteReact, { reactCompilerPreset } from '@vitejs/plugin-react'
 import evlog from 'evlog/vite'
 import { nitro } from 'nitro/vite'
+import rehypeSlug from 'rehype-slug'
+import remarkFrontmatter from 'remark-frontmatter'
+import remarkGfm from 'remark-gfm'
 import { defineConfig } from 'vite'
+import { highlighter } from './src/lib/highlighter.ts'
 
 const EVLOG_CONFIG = {
   env: { service: 'probe-web' },
@@ -31,6 +36,16 @@ const config = defineConfig(() => {
       strictPort: true,
     },
     plugins: [
+      {
+        enforce: 'pre',
+        ...mdx({
+          remarkPlugins: [remarkFrontmatter, remarkGfm],
+          rehypePlugins: [
+            rehypeSlug,
+            [rehypeHighlightCodeBlocks, { highlighter }],
+          ],
+        }),
+      },
       devtools({
         consolePiping: {
           enabled: false,
@@ -41,7 +56,7 @@ const config = defineConfig(() => {
       tailwindcss(),
       contentCollections({ configPath: './content-collections.ts' }),
       tanstackStart(),
-      viteReact(),
+      viteReact({ include: /\.(?:js|jsx|md|mdx|ts|tsx)$/ }),
       babel({ presets: [reactCompilerPreset()] }),
     ],
     optimizeDeps: {

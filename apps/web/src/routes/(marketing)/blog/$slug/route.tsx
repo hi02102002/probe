@@ -1,4 +1,4 @@
-import { useMDXComponent } from '@content-collections/mdx/react'
+import type { ComponentType } from 'react'
 import {
   ArrowLeftIcon,
   CheckIcon,
@@ -28,6 +28,15 @@ import { dayjs } from '@/lib/dayjs'
 import { generateAppSeo, getSiteBaseUrl } from '@/lib/seo'
 import { HomeFooter } from '../../index/_components/home-footer'
 import { HomeHeader } from '../../index/_components/home-header'
+
+interface BlogMdxModule {
+  default: ComponentType<{ components?: typeof mdxComponents }>
+}
+
+const blogMdxModules = import.meta.glob<BlogMdxModule>(
+  '/content/blog/*.mdx',
+  { eager: true },
+)
 
 export const Route = createFileRoute('/(marketing)/blog/$slug')({
   component: BlogPostPage,
@@ -140,9 +149,10 @@ function BlogPostPage() {
     }
   }
 
-  // MDX Component compiled at build time by Content Collections with plugins
-  // eslint-disable-next-line react/static-components
-  const Component = useMDXComponent(post.body)
+  const Component = blogMdxModules[`/content/blog/${post._meta.fileName}`]?.default
+  if (!Component) {
+    throw new Error(`Missing compiled MDX module for ${post._meta.fileName}`)
+  }
 
   return (
     <div className="min-h-svh bg-background text-foreground selection:bg-primary selection:text-primary-foreground">
@@ -273,7 +283,6 @@ function BlogPostPage() {
           {/* Main Article Body */}
           <article className="min-w-0 px-6 py-12 sm:px-10 sm:py-16">
             <div className="prose prose-neutral max-w-3xl dark:prose-invert prose-headings:font-semibold prose-headings:tracking-[-0.025em] prose-headings:text-foreground prose-p:leading-7 prose-p:text-muted-foreground prose-a:font-medium prose-a:text-foreground prose-a:underline prose-a:decoration-border prose-a:underline-offset-4 hover:prose-a:decoration-foreground prose-code:rounded prose-code:bg-muted/50 prose-code:px-1.5 prose-code:py-0.5 prose-code:font-mono prose-code:text-xs prose-code:text-foreground prose-strong:text-foreground">
-              {/* eslint-disable-next-line react/static-components */}
               <Component components={mdxComponents} />
             </div>
 
