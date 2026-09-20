@@ -13,7 +13,7 @@ export function getRouter() {
     routeTree,
     context,
     scrollRestoration: true,
-    defaultPreload: 'intent',
+    defaultPreload: 'viewport',
     defaultPreloadStaleTime: 0,
   })
 
