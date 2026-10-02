@@ -36,8 +36,8 @@ const PLANS = [
 
 export function PricingSection() {
   return (
-    <section id="pricing" className="scroll-mt-24 py-16 sm:py-20">
-      <div className="overflow-hidden border-y border-border bg-card">
+    <section id="pricing" className="scroll-mt-24">
+      <div className="overflow-hidden border-b border-border bg-card">
         <div className="border-b border-border px-8 py-10 sm:px-10 lg:px-16">
           <h2 className="text-4xl font-semibold tracking-[-0.035em] text-foreground sm:text-5xl">Priced fairly.</h2>
           <p className="mt-3 text-muted-foreground">Simple, flat-rate plans. No surprise fees.</p>
