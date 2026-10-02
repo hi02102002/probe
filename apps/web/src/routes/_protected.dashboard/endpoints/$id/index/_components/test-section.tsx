@@ -20,6 +20,7 @@ import {
   CardTitle,
 } from '@/components/ui/card'
 import { CodeBlock } from '@/components/ui/code-block'
+import { Field, FieldLabel } from '@/components/ui/field'
 import {
   Select,
   SelectItem,
@@ -258,8 +259,8 @@ export function TestSection({ endpointId, ingestUrl }: TestSectionProps) {
           <CardContent className="flex flex-col gap-4 p-4 pt-0 sm:p-6 sm:pt-0">
             {/* Method & Preset Selectors */}
             <div className="grid grid-cols-1 gap-3 sm:grid-cols-[140px_1fr] sm:gap-3.5">
-              <div className="flex min-w-0 flex-col gap-1.5">
-                <label className="font-medium text-muted-foreground text-xs">HTTP Method</label>
+              <Field className="w-full gap-1.5">
+                <FieldLabel htmlFor="test-http-method">HTTP Method</FieldLabel>
                 <Select
                   items={[
                     { label: 'POST', value: 'POST' },
@@ -271,7 +272,7 @@ export function TestSection({ endpointId, ingestUrl }: TestSectionProps) {
                   onValueChange={val => setMethod((val as HttpMethod) ?? 'POST')}
                   value={method}
                 >
-                  <SelectTrigger className="w-full min-w-0">
+                  <SelectTrigger className="w-full min-w-0" id="test-http-method">
                     <SelectValue placeholder="POST" />
                   </SelectTrigger>
                   <SelectPopup>
@@ -282,17 +283,17 @@ export function TestSection({ endpointId, ingestUrl }: TestSectionProps) {
                     <SelectItem value="DELETE">DELETE</SelectItem>
                   </SelectPopup>
                 </Select>
-              </div>
+              </Field>
 
-              <div className="flex min-w-0 flex-col gap-1.5">
-                <label className="font-medium text-muted-foreground text-xs">Payload Template</label>
+              <Field className="w-full gap-1.5">
+                <FieldLabel htmlFor="test-preset">Payload Template</FieldLabel>
                 <Select
                   disabled={isBodyDisabled}
                   items={PRESETS.map(p => ({ label: p.label, value: p.id }))}
                   onValueChange={handleSelectPreset}
                   value={selectedPresetId}
                 >
-                  <SelectTrigger className="w-full min-w-0">
+                  <SelectTrigger className="w-full min-w-0" id="test-preset">
                     <SelectValue placeholder="Choose a preset" />
                   </SelectTrigger>
                   <SelectPopup>
@@ -303,13 +304,13 @@ export function TestSection({ endpointId, ingestUrl }: TestSectionProps) {
                     ))}
                   </SelectPopup>
                 </Select>
-              </div>
+              </Field>
             </div>
 
             {/* Request Payload Editor */}
-            <div className="flex flex-col gap-1.5">
-              <div className="flex items-center justify-between">
-                <label className="font-medium text-muted-foreground text-xs">JSON Payload</label>
+            <Field className="w-full gap-1.5">
+              <div className="flex w-full items-center justify-between">
+                <FieldLabel htmlFor="test-payload">JSON Payload</FieldLabel>
                 {!isBodyDisabled && (
                   <button
                     className="inline-flex cursor-pointer items-center gap-1 text-[11px] text-muted-foreground transition-colors hover:text-foreground"
@@ -333,6 +334,7 @@ export function TestSection({ endpointId, ingestUrl }: TestSectionProps) {
                 )}
               </div>
               <Textarea
+                id="test-payload"
                 className={cn(
                   'min-h-[160px] font-mono text-xs leading-relaxed',
                   isBodyDisabled && 'opacity-50 cursor-not-allowed',
@@ -343,7 +345,7 @@ export function TestSection({ endpointId, ingestUrl }: TestSectionProps) {
                 rows={8}
                 value={isBodyDisabled ? `// Body is omitted for ${method} requests` : payloadText}
               />
-            </div>
+            </Field>
 
             {/* Action Buttons */}
             <div className="flex flex-col gap-2 pt-1 sm:flex-row sm:items-center sm:gap-2.5">
