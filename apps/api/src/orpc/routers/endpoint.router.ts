@@ -1,9 +1,24 @@
-import { createEndpoint, deleteEndpoint, getAllEndpoints, getEndpointById, updateEndpoint } from '@repo/db/queries/endpoints'
+import { ORPCError } from '@orpc/server'
+import { countEndpointsByUserId, createEndpoint, deleteEndpoint, getAllEndpoints, getEndpointById, updateEndpoint } from '@repo/db/queries/endpoints'
+import { getPlanLimits } from '@repo/utils'
 import { mapDatabaseError } from '#/orpc/errors/map-database-error.js'
 import { authenticated, pub } from '#/orpc/os.js'
 
 export const endpointRouter = pub.endpoint.router({
   create: authenticated.endpoint.create.handler(async ({ context, input }) => {
+    const limits = getPlanLimits(context.user.plan)
+    const countResult = await countEndpointsByUserId(context.db, context.user.id)
+
+    if (countResult.isErr()) {
+      throw mapDatabaseError(countResult.error)
+    }
+
+    if (countResult.value >= limits.maxEndpoints) {
+      throw new ORPCError('FORBIDDEN', {
+        message: `Your ${context.user.plan} plan allows up to ${limits.maxEndpoints} endpoints. Upgrade to Premium to create more.`,
+      })
+    }
+
     const result = await createEndpoint(context.db, {
       name: input.body.name,
       userId: context.user.id,

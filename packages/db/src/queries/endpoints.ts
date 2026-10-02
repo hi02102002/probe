@@ -54,6 +54,15 @@ export const createEndpoint = withDb(async (
   return newEndpoint
 })
 
+export const countEndpointsByUserId = withDb(async (db, userId: string) => {
+  const [row] = await db
+    .select({ value: count() })
+    .from(endpoint)
+    .where(eq(endpoint.userId, userId))
+
+  return row?.value ?? 0
+})
+
 export const getAllEndpoints = withDb(async (db, input: GetAllEndpointsInput) => {
   const baseOrder = mapSort(input.sort, {
     createdAt: endpoint.createdAt,

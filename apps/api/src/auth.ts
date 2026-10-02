@@ -28,6 +28,19 @@ function getGithubConfig() {
   }
 }
 
+function getPolarConfig() {
+  if (!env.POLAR_ACCESS_TOKEN) {
+    return undefined
+  }
+
+  return {
+    accessToken: env.POLAR_ACCESS_TOKEN,
+    premiumProductId: env.POLAR_PREMIUM_PRODUCT_ID,
+    server: env.POLAR_SERVER,
+    webhookSecret: env.POLAR_WEBHOOK_SECRET,
+  }
+}
+
 const sendMagicLink = createResendMagicLinkSender({
   apiKey: env.RESEND_API_KEY,
   appName: env.APP_NAME,
@@ -50,6 +63,7 @@ export function getAuth() {
     database: getDatabase(),
     github: getGithubConfig(),
     google: getGoogleConfig(),
+    polar: getPolarConfig(),
     secret: env.BETTER_AUTH_SECRET,
     sendMagicLink,
     trustedOrigins: env.WEB_URL,

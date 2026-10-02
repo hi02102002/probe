@@ -58,7 +58,7 @@ describe('retentionCutoff', () => {
 })
 
 describe('retentionJob.run', () => {
-  it('purges all three tables with the retention cutoff', async () => {
+  it('purges both the global scope and the free-tier scope', async () => {
     mocks.env.RETENTION_DAYS = 30
     mocks.deleteExpiredWebhookRequests.mockResolvedValue(successResult(3))
     mocks.deleteExpiredReplayLogs.mockResolvedValue(successResult(2))
@@ -66,10 +66,14 @@ describe('retentionJob.run', () => {
 
     await retentionJob.run()
 
-    const cutoff = retentionCutoff(new Date('2026-10-03T12:00:00Z'), 30)
-    expect(mocks.deleteExpiredWebhookRequests).toHaveBeenCalledExactlyOnceWith(expect.anything(), cutoff)
-    expect(mocks.deleteExpiredReplayLogs).toHaveBeenCalledExactlyOnceWith(expect.anything(), cutoff)
-    expect(mocks.deleteExpiredForwardLogs).toHaveBeenCalledExactlyOnceWith(expect.anything(), cutoff)
+    const globalCutoff = retentionCutoff(new Date('2026-10-03T12:00:00Z'), 30)
+    const freeTierCutoff = retentionCutoff(new Date('2026-10-03T12:00:00Z'), 1)
+
+    expect(mocks.deleteExpiredWebhookRequests).toHaveBeenCalledTimes(2)
+    expect(mocks.deleteExpiredWebhookRequests).toHaveBeenCalledWith(expect.anything(), globalCutoff, undefined)
+    expect(mocks.deleteExpiredWebhookRequests).toHaveBeenCalledWith(expect.anything(), freeTierCutoff, { freePlanOnly: true })
+    expect(mocks.deleteExpiredReplayLogs).toHaveBeenCalledWith(expect.anything(), freeTierCutoff, { freePlanOnly: true })
+    expect(mocks.deleteExpiredForwardLogs).toHaveBeenCalledWith(expect.anything(), freeTierCutoff, { freePlanOnly: true })
   })
 
   it('does nothing when retention is disabled', async () => {
@@ -82,7 +86,7 @@ describe('retentionJob.run', () => {
     mocks.env.RETENTION_DAYS = 30
   })
 
-  it('keeps the process alive when a purge round fails', async () => {
+  it('keeps running when a purge round fails', async () => {
     mocks.env.RETENTION_DAYS = 7
     mocks.deleteExpiredWebhookRequests.mockRejectedValue(new Error('database unavailable'))
 
@@ -104,9 +108,7 @@ describe('startCronJobs', () => {
 
     await vi.advanceTimersByTimeAsync(30_000)
 
-    // Fake timers advanced the mocked clock by the 30s boot delay.
-    const cutoff = retentionCutoff(new Date('2026-10-03T12:00:30Z'), 30)
-    expect(mocks.deleteExpiredWebhookRequests).toHaveBeenCalledExactlyOnceWith(expect.anything(), cutoff)
+    expect(mocks.deleteExpiredWebhookRequests).toHaveBeenCalledTimes(2)
   })
 
   it('skips jobs with an invalid schedule', () => {
