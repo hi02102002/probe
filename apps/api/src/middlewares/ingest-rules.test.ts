@@ -10,11 +10,13 @@ const mocks = vi.hoisted(() => ({
   getEndpointByToken: vi.fn(),
   getDatabase: vi.fn(),
   findRule: vi.fn(),
+  insertForwardLog: vi.fn(),
   fetch: vi.fn<(...args: unknown[]) => Promise<Response>>(),
 }))
 
 vi.mock('@repo/db', () => ({
   getEndpointByToken: mocks.getEndpointByToken,
+  insertForwardLog: mocks.insertForwardLog,
 }))
 
 vi.mock('#/db.js', () => ({
@@ -75,6 +77,8 @@ beforeEach(() => {
   })
   mocks.getEndpointByToken.mockResolvedValue({ isErr: () => false, value: makeEndpoint() })
   mocks.findRule.mockResolvedValue(undefined)
+  mocks.insertForwardLog.mockReset()
+  mocks.insertForwardLog.mockResolvedValue({ isErr: () => false })
 })
 
 describe('ingestRulesMiddleware', () => {
@@ -261,6 +265,49 @@ describe('ingestRulesMiddleware', () => {
     expect((init.headers as Headers).get('x-signature')).toBe(
       `sha256=${signatureFor(RAW_BODY, SECRET)}`,
     )
+  })
+
+  it('records a forward log with the destination status on success', async () => {
+    mocks.findRule.mockResolvedValue(makeRule({
+      forwardEnabled: true,
+      forwardTargetUrl: 'https://public.example/hook',
+    }))
+    mocks.fetch.mockResolvedValue(new Response('{}', { status: 200 }))
+
+    await buildApp().request('/api/e/tok123', {
+      body: RAW_BODY,
+      headers: { 'content-type': 'application/json' },
+      method: 'POST',
+    })
+
+    await vi.waitFor(() => expect(mocks.insertForwardLog).toHaveBeenCalled())
+
+    const log = mocks.insertForwardLog.mock.calls[0]?.[1] as Record<string, unknown>
+    expect(log.endpointId).toBe('ep_123')
+    expect(log.method).toBe('POST')
+    expect(log.targetUrl).toBe('https://public.example/hook')
+    expect(log.reqBody).toBe(RAW_BODY)
+    expect(log.statusCode).toBe(200)
+    expect(log.success).toBe(true)
+    expect(log.error).toBeNull()
+  })
+
+  it('records a failed forward log when the destination is unreachable', async () => {
+    mocks.findRule.mockResolvedValue(makeRule({
+      forwardEnabled: true,
+      forwardTargetUrl: 'https://public.example/hook',
+    }))
+    mocks.fetch.mockRejectedValue(new Error('connection refused'))
+
+    await buildApp().request('/api/e/tok123')
+
+    await vi.waitFor(() => expect(mocks.insertForwardLog).toHaveBeenCalled())
+
+    const log = mocks.insertForwardLog.mock.calls[0]?.[1] as Record<string, unknown>
+    expect(log.statusCode).toBeNull()
+    expect(log.success).toBe(false)
+    expect(log.error).toBe('Error: connection refused')
+    expect(log.targetUrl).toBe('https://public.example/hook')
   })
 
   it('swallows forward failures without failing the ingest', async () => {
