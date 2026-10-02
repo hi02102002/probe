@@ -39,11 +39,23 @@ export function CreateEndpointDialog({
 
   const closeTriggerRef = useRef<HTMLButtonElement>(null)
   const handleSubmit: EndpointFormProps['onSubmit'] = async (values) => {
-    await createEndpointMutation.mutateAsync({
-      body: {
-        name: values.name,
-      },
-    })
+    try {
+      await createEndpointMutation.mutateAsync({
+        body: {
+          name: values.name,
+        },
+      })
+    }
+    catch (error) {
+      toastManager.add({
+        type: 'error',
+        title: 'Could not create endpoint',
+        description: error instanceof Error
+          ? error.message
+          : 'Something went wrong. Please try again.',
+      })
+      return
+    }
 
     toastManager.add({
       type: 'success',

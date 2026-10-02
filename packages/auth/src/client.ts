@@ -1,3 +1,5 @@
+import { polarClient } from '@polar-sh/better-auth/client'
+import type { BetterAuthClientPlugin } from 'better-auth/client'
 import { createAuthClient } from 'better-auth/client'
 import { magicLinkClient } from 'better-auth/client/plugins'
 
@@ -6,6 +8,10 @@ export interface AppAuthClientOptions {
 }
 
 export function createAppAuthClient(options: AppAuthClientOptions) {
+  // Typed as the base client plugin so the generated declarations do not
+  // reference @polar-sh/better-auth's unexported plugin type.
+  const polarClientPlugin: BetterAuthClientPlugin = polarClient()
+
   return createAuthClient({
     baseURL: options.baseURL,
     fetchOptions: {
@@ -13,6 +19,7 @@ export function createAppAuthClient(options: AppAuthClientOptions) {
     },
     plugins: [
       magicLinkClient(),
+      polarClientPlugin,
     ],
   })
 }

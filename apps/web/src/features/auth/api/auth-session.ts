@@ -14,6 +14,7 @@ export interface AuthSession {
     id: string
     image?: null | string
     name: string
+    plan?: string
   }
 }
 
