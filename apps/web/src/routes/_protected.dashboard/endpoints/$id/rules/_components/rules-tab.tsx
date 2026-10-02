@@ -1,7 +1,6 @@
 import {
   ClockIcon,
   CodeIcon,
-  GlobeIcon,
   ShieldCheckIcon,
 } from '@phosphor-icons/react'
 import { useMutation, useQuery } from '@tanstack/react-query'
@@ -10,7 +9,7 @@ import { useEffect, useRef, useState } from 'react'
 import { Alert, AlertAction, AlertDescription, AlertTitle } from '@/components/ui/alert'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
+import { Card, CardAction, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Field, FieldLabel } from '@/components/ui/field'
 import { Input } from '@/components/ui/input'
 import { Skeleton } from '@/components/ui/skeleton'
@@ -36,11 +35,6 @@ interface SignatureForm {
   secret: string
 }
 
-interface ForwardingForm {
-  enabled: boolean
-  targetUrl: string
-}
-
 const DEFAULT_CUSTOM_RESPONSE: CustomResponseForm = {
   body: '{\n  "received": true,\n  "status": "success"\n}',
   contentType: 'application/json',
@@ -57,11 +51,6 @@ const DEFAULT_SIGNATURE: SignatureForm = {
   enabled: false,
   headerName: 'X-Webhook-Signature',
   secret: '',
-}
-
-const DEFAULT_FORWARDING: ForwardingForm = {
-  enabled: false,
-  targetUrl: '',
 }
 
 export function RulesTab() {
@@ -81,7 +70,6 @@ export function RulesTab() {
   const [customResponse, setCustomResponse] = useState<CustomResponseForm>(DEFAULT_CUSTOM_RESPONSE)
   const [delay, setDelay] = useState<DelayForm>(DEFAULT_DELAY)
   const [signature, setSignature] = useState<SignatureForm>(DEFAULT_SIGNATURE)
-  const [forwarding, setForwarding] = useState<ForwardingForm>(DEFAULT_FORWARDING)
 
   const prefilledRef = useRef(false)
 
@@ -104,10 +92,6 @@ export function RulesTab() {
         enabled: rule.signatureEnabled,
         headerName: rule.signatureHeaderName ?? DEFAULT_SIGNATURE.headerName,
         secret: rule.signatureSecret ?? '',
-      })
-      setForwarding({
-        enabled: rule.forwardEnabled,
-        targetUrl: rule.forwardTargetUrl ?? '',
       })
     }
   }, [ruleData])
@@ -154,15 +138,6 @@ export function RulesTab() {
       }
     }
 
-    if (forwarding.enabled) {
-      const targetUrl = forwarding.targetUrl.trim()
-
-      if (!URL.canParse(targetUrl) || !['http:', 'https:'].includes(new URL(targetUrl).protocol)) {
-        toastManager.add({ title: 'A valid http(s) destination URL is required', type: 'error' })
-        return
-      }
-    }
-
     try {
       await saveMutation.mutateAsync({
         body: {
@@ -177,8 +152,8 @@ export function RulesTab() {
             enabled: delay.enabled,
           },
           forwarding: {
-            enabled: forwarding.enabled,
-            targetUrl: forwarding.targetUrl.trim(),
+            enabled: ruleData?.rule?.forwardEnabled ?? false,
+            targetUrl: ruleData?.rule?.forwardTargetUrl ?? '',
           },
           signature: {
             enabled: signature.enabled,
@@ -201,7 +176,7 @@ export function RulesTab() {
   if (isRulePending) {
     return (
       <div className="mt-4 flex max-w-4xl flex-col gap-4">
-        {[0, 1, 2, 3].map(index => (
+        {[0, 1, 2].map(index => (
           <Skeleton key={index} className="h-20 w-full rounded-xl" />
         ))}
       </div>
@@ -257,7 +232,7 @@ export function RulesTab() {
 
       {/* Rule 1: Custom Response Status & Body */}
       <Card className="shadow-xs">
-        <CardHeader className="flex-row items-start justify-between gap-4 p-4 pb-3 sm:p-6 sm:pb-4">
+        <CardHeader className="p-4 pb-3 sm:p-6 sm:pb-4">
           <div className="flex items-start gap-3">
             <div className="flex size-9 shrink-0 items-center justify-center rounded-lg border border-border bg-primary/10 text-primary">
               <CodeIcon className="size-4.5" />
@@ -274,10 +249,12 @@ export function RulesTab() {
               </CardDescription>
             </div>
           </div>
-          <Switch
-            checked={customResponse.enabled}
-            onCheckedChange={checked => setCustomResponse(prev => ({ ...prev, enabled: checked }))}
-          />
+          <CardAction>
+            <Switch
+              checked={customResponse.enabled}
+              onCheckedChange={checked => setCustomResponse(prev => ({ ...prev, enabled: checked }))}
+            />
+          </CardAction>
         </CardHeader>
         {customResponse.enabled && (
           <CardContent className="flex flex-col gap-4 border-t border-border p-4 pt-4 sm:p-6 sm:pt-4">
@@ -319,7 +296,7 @@ export function RulesTab() {
 
       {/* Rule 2: Simulated Response Latency / Delay */}
       <Card className="shadow-xs">
-        <CardHeader className="flex-row items-start justify-between gap-4 p-4 pb-3 sm:p-6 sm:pb-4">
+        <CardHeader className="p-4 pb-3 sm:p-6 sm:pb-4">
           <div className="flex items-start gap-3">
             <div className="flex size-9 shrink-0 items-center justify-center rounded-lg border border-border bg-amber-500/10 text-amber-600 dark:text-amber-400">
               <ClockIcon className="size-4.5" />
@@ -336,10 +313,12 @@ export function RulesTab() {
               </CardDescription>
             </div>
           </div>
-          <Switch
-            checked={delay.enabled}
-            onCheckedChange={checked => setDelay(prev => ({ ...prev, enabled: checked }))}
-          />
+          <CardAction>
+            <Switch
+              checked={delay.enabled}
+              onCheckedChange={checked => setDelay(prev => ({ ...prev, enabled: checked }))}
+            />
+          </CardAction>
         </CardHeader>
         {delay.enabled && (
           <CardContent className="flex flex-col gap-4 border-t border-border p-4 pt-4 sm:p-6 sm:pt-4">
@@ -364,7 +343,7 @@ export function RulesTab() {
 
       {/* Rule 3: Signature / HMAC Validation */}
       <Card className="shadow-xs">
-        <CardHeader className="flex-row items-start justify-between gap-4 p-4 pb-3 sm:p-6 sm:pb-4">
+        <CardHeader className="p-4 pb-3 sm:p-6 sm:pb-4">
           <div className="flex items-start gap-3">
             <div className="flex size-9 shrink-0 items-center justify-center rounded-lg border border-border bg-primary/10 text-primary">
               <ShieldCheckIcon className="size-4.5" />
@@ -384,10 +363,12 @@ export function RulesTab() {
               </CardDescription>
             </div>
           </div>
-          <Switch
-            checked={signature.enabled}
-            onCheckedChange={checked => setSignature(prev => ({ ...prev, enabled: checked }))}
-          />
+          <CardAction>
+            <Switch
+              checked={signature.enabled}
+              onCheckedChange={checked => setSignature(prev => ({ ...prev, enabled: checked }))}
+            />
+          </CardAction>
         </CardHeader>
         {signature.enabled && (
           <CardContent className="flex flex-col gap-4 border-t border-border p-4 pt-4 sm:p-6 sm:pt-4">
@@ -414,47 +395,6 @@ export function RulesTab() {
                 />
               </Field>
             </div>
-          </CardContent>
-        )}
-      </Card>
-
-      {/* Rule 4: Webhook Forwarding / Relay */}
-      <Card className="shadow-xs">
-        <CardHeader className="flex-row items-start justify-between gap-4 p-4 pb-3 sm:p-6 sm:pb-4">
-          <div className="flex items-start gap-3">
-            <div className="flex size-9 shrink-0 items-center justify-center rounded-lg border border-border bg-primary/10 text-primary">
-              <GlobeIcon className="size-4.5" />
-            </div>
-            <div>
-              <div className="flex items-center gap-2">
-                <CardTitle className="text-base">Webhook Forwarding / Relay</CardTitle>
-                <Badge variant={forwarding.enabled ? 'success' : 'outline'}>
-                  {forwarding.enabled ? 'Relaying' : 'Disabled'}
-                </Badge>
-              </div>
-              <CardDescription className="mt-1">
-                Automatically forward incoming requests to your local development environment or staging webhook handler.
-              </CardDescription>
-            </div>
-          </div>
-          <Switch
-            checked={forwarding.enabled}
-            onCheckedChange={checked => setForwarding(prev => ({ ...prev, enabled: checked }))}
-          />
-        </CardHeader>
-        {forwarding.enabled && (
-          <CardContent className="flex flex-col gap-4 border-t border-border p-4 pt-4 sm:p-6 sm:pt-4">
-            <Field className="w-full gap-1.5">
-              <FieldLabel htmlFor="rule-forward-url">Destination Target URL</FieldLabel>
-              <Input
-                className="font-mono text-xs"
-                id="rule-forward-url"
-                onChange={e => setForwarding(prev => ({ ...prev, targetUrl: e.target.value }))}
-                placeholder="https://staging.yourdomain.com/api/webhooks"
-                type="url"
-                value={forwarding.targetUrl}
-              />
-            </Field>
           </CardContent>
         )}
       </Card>
