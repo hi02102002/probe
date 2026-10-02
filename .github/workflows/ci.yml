@@ -1,0 +1,50 @@
+# Continuous integration — lint, typecheck, test and build the monorepo on
+# every push to main and every pull request, so regressions (including the
+# vitest suite in apps/api) are caught before merge.
+
+name: CI
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened, ready_for_review]
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+# Cancels any in-flight run for the same PR (or branch, on push) the moment a
+# new commit arrives, so only the latest commit's results are shown.
+concurrency:
+  group: ci-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  ci:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+
+      # Reads the pinned version from the root package.json
+      # "packageManager" field (pnpm@9.0.0, matching the v9 lockfile).
+      - uses: pnpm/action-setup@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Lint
+        run: pnpm lint
+
+      - name: Typecheck
+        run: pnpm check-types
+
+      - name: Test
+        run: pnpm test
+
+      - name: Build
+        run: pnpm build
