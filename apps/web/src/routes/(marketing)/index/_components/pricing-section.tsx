@@ -38,14 +38,14 @@ export function PricingSection() {
   return (
     <section id="pricing" className="scroll-mt-24">
       <div className="overflow-hidden border-b border-border bg-card">
-        <div className="border-b border-border px-8 py-10 sm:px-10 lg:px-16">
-          <h2 className="text-4xl font-semibold tracking-[-0.035em] text-foreground sm:text-5xl">Priced fairly.</h2>
-          <p className="mt-3 text-muted-foreground">Simple, flat-rate plans. No surprise fees.</p>
+        <div className="border-b border-border px-6 py-10 sm:px-10">
+          <h2 className="text-3xl font-semibold tracking-[-0.03em] text-foreground sm:text-4xl">Priced fairly.</h2>
+          <p className="mt-2 max-w-2xl text-sm leading-6 text-muted-foreground">Simple, flat-rate plans. No surprise fees. Start free and upgrade when your webhook traffic grows.</p>
         </div>
 
         <div className="grid grid-cols-1 divide-y divide-border border-b border-border sm:grid-cols-2 sm:divide-x sm:divide-y-0">
           {PLANS.map(plan => (
-            <div className="flex flex-col px-8 py-8 sm:px-10 lg:px-16" key={plan.key}>
+            <div className="flex flex-col px-6 py-8 sm:px-10" key={plan.key}>
               <span className="font-medium text-muted-foreground text-xs tracking-[0.2em] uppercase">{plan.label}</span>
               <div className="mt-3 flex items-baseline gap-1.5">
                 <span className="font-semibold text-5xl text-foreground">{plan.price}</span>
@@ -71,7 +71,7 @@ export function PricingSection() {
           {PLANS.map(plan => (
             <ul className="divide-y divide-border" key={plan.key}>
               {plan.features.map(feature => (
-                <li className="flex items-center gap-2.5 px-8 py-3.5 text-muted-foreground text-sm sm:px-10 lg:px-16" key={feature}>
+                <li className="flex items-center gap-2.5 px-6 py-3.5 text-muted-foreground text-sm sm:px-10" key={feature}>
                   <CheckIcon className="size-3.5 shrink-0" weight="bold" />
                   {feature}
                 </li>

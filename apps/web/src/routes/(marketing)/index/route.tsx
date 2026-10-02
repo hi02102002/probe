@@ -159,8 +159,8 @@ function HomePage() {
         <FeaturesSection />
         <DeliverySection />
         <ComparisonSection />
-        <FaqSection />
         <PricingSection />
+        <FaqSection />
       </main>
       <HomeFooter />
     </div>
