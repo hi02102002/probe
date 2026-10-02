@@ -1,5 +1,6 @@
 import process from 'node:process'
 import { serve } from '@hono/node-server'
+import { startCronJobs } from '#/cron/index.js'
 import { closeDatabase } from '#/db.js'
 import { env } from '#/env.js'
 import { createApp } from '#/libs/create-app.js'
@@ -12,6 +13,8 @@ const server = serve({
 }, (info) => {
   process.stdout.write(`API listening on http://localhost:${info.port}\n`)
 })
+
+startCronJobs()
 
 let isShuttingDown = false
 

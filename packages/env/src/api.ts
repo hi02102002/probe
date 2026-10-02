@@ -21,6 +21,7 @@ export function createApiEnv(
       PORT: runtimeEnv.PORT,
       RESEND_API_KEY: runtimeEnv.RESEND_API_KEY,
       RESEND_FROM_EMAIL: runtimeEnv.RESEND_FROM_EMAIL,
+      RETENTION_DAYS: runtimeEnv.RETENTION_DAYS,
       SERVER_URL: serverUrl,
       WEB_URL: runtimeEnv.WEB_URL,
       REDIS_URL: runtimeEnv.REDIS_URL,
@@ -38,6 +39,7 @@ export function createApiEnv(
       PORT: z.coerce.number().int().min(1).max(65_535).default(3001),
       RESEND_API_KEY: z.string().min(1).optional(),
       RESEND_FROM_EMAIL: z.email().optional(),
+      RETENTION_DAYS: z.coerce.number().int().min(0).max(3650).default(30),
       SERVER_URL: z.url().default('http://localhost:3001'),
       WEB_URL: z.string()
         .default('http://localhost:3000')
