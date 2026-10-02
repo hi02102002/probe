@@ -18,6 +18,7 @@
     "format": "eslint . --fix",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
+    "test": "turbo run test",
     "doctor": "npx react-doctor@latest"
   },
   "devDependencies": {
