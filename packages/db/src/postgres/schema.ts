@@ -2,6 +2,7 @@ import { createId } from '@repo/utils'
 import {
   boolean,
   index,
+  integer,
   jsonb,
   pgTable,
   text,
@@ -134,6 +135,70 @@ export const webhook_request = pgTable(
   },
   table => [
     index('webhook_request_endpoint_created_at_id_idx').on(
+      table.endpointId,
+      table.createdAt,
+      table.id,
+    ),
+  ],
+)
+
+export const endpoint_rule = pgTable(
+  'endpoint_rules',
+  {
+    id: text('id')
+      .primaryKey()
+      .$defaultFn(() => createId('er')),
+    endpointId: text('endpoint_id')
+      .notNull()
+      .unique()
+      .references(() => endpoint.id, { onDelete: 'cascade' }),
+    customResponseEnabled: boolean('custom_response_enabled').notNull().default(false),
+    customStatusCode: integer('custom_status_code'),
+    customContentType: text('custom_content_type'),
+    customResponseBody: text('custom_response_body'),
+    delayEnabled: boolean('delay_enabled').notNull().default(false),
+    delayMs: integer('delay_ms'),
+    signatureEnabled: boolean('signature_enabled').notNull().default(false),
+    signatureHeaderName: text('signature_header_name'),
+    signatureSecret: text('signature_secret'),
+    forwardEnabled: boolean('forward_enabled').notNull().default(false),
+    forwardTargetUrl: text('forward_target_url'),
+    createdAt: timestamp('created_at', { withTimezone: true }).defaultNow().notNull(),
+    updatedAt: timestamp('updated_at', { withTimezone: true })
+      .defaultNow()
+      .$onUpdate(() => new Date())
+      .notNull(),
+  },
+)
+
+export const replay_log = pgTable(
+  'replay_logs',
+  {
+    id: text('id')
+      .primaryKey()
+      .$defaultFn(() => createId('rp')),
+    endpointId: text('endpoint_id')
+      .notNull()
+      .references(() => endpoint.id, { onDelete: 'cascade' }),
+    originalRequestId: text('original_request_id'),
+    method: text('method')
+      .$type<'GET' | 'POST' | 'PUT' | 'DELETE' | 'PATCH'>()
+      .notNull(),
+    targetUrl: text('target_url').notNull(),
+    reqBody: jsonb('req_body'),
+    statusCode: integer('status_code'),
+    resBody: jsonb('res_body'),
+    durationMs: integer('duration_ms'),
+    success: boolean('success').notNull().default(false),
+    error: text('error'),
+    createdAt: timestamp('created_at', { withTimezone: true }).defaultNow().notNull(),
+    updatedAt: timestamp('updated_at', { withTimezone: true })
+      .defaultNow()
+      .$onUpdate(() => new Date())
+      .notNull(),
+  },
+  table => [
+    index('replay_log_endpoint_created_at_id_idx').on(
       table.endpointId,
       table.createdAt,
       table.id,

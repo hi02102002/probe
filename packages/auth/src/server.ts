@@ -33,6 +33,9 @@ export function createAppAuth(options: AppAuthOptions) {
       database: {
         generateId: () => nanoid(),
       },
+      ipAddress: {
+        ipAddressHeaders: ['x-forwarded-for', 'x-real-ip'],
+      },
     },
     appName: options.appName ?? 'Probe',
     baseURL: options.baseURL,
@@ -61,7 +64,8 @@ export function createAppAuth(options: AppAuthOptions) {
         },
         '*': false,
       },
-      enabled: true,
+      // eslint-disable-next-line node/prefer-global/process
+      enabled: process.env.NODE_ENV === 'production',
     },
     secret: options.secret,
     socialProviders: {

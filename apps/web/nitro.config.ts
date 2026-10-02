@@ -1,4 +1,5 @@
 import { execSync } from 'node:child_process'
+import { readFileSync } from 'node:fs'
 import process from 'node:process'
 import { getProductionSamplingConfig } from '@repo/utils'
 import evlog from 'evlog/nitro/v3'
@@ -21,6 +22,41 @@ function getBuildVersion(): string {
 
 const buildVersion = getBuildVersion()
 
+function getApiOrigin(): string {
+  try {
+    const contents = readFileSync(new URL('./.env', import.meta.url), 'utf-8')
+    const value = contents.match(/^VITE_API_URL=(.+)$/m)?.[1]?.trim()
+
+    if (value) {
+      return new URL(value).origin
+    }
+  }
+  catch {
+    // .env is optional in production builds; fall back to the production API.
+  }
+
+  return 'https://probe-api.monobase.io.vn'
+}
+
+const apiOrigin = getApiOrigin()
+
+// Local dev tools (react-grab, react-scan) load extra assets; the production
+// CSP stays byte-for-byte the same as before.
+const isLocalDev = /localhost|127\.0\.0\.1/.test(apiOrigin)
+
+const contentSecurityPolicy = [
+  'default-src \'self\'',
+  `script-src 'self' 'unsafe-inline' https://umami.monobase.io.vn https://static.cloudflareinsights.com${isLocalDev ? ' blob:' : ''}`,
+  'style-src \'self\' \'unsafe-inline\'',
+  'img-src \'self\' data: blob: https:',
+  'font-src \'self\' data:',
+  `connect-src 'self' ${apiOrigin} https://umami.monobase.io.vn https://cloudflareinsights.com${isLocalDev ? ' https://react-grab.com https://www.react-grab.com https://fonts.googleapis.com' : ''}`,
+  'frame-ancestors \'none\'',
+  'object-src \'none\'',
+  'base-uri \'self\'',
+  'form-action \'self\'',
+].join('; ')
+
 export default defineConfig({
   handlers: [
     {
@@ -38,8 +74,7 @@ export default defineConfig({
     '/**': {
       headers: {
         'Cache-Control': 'no-cache, must-revalidate',
-        'Content-Security-Policy':
-          'default-src \'self\'; script-src \'self\' \'unsafe-inline\' https://umami.monobase.io.vn https://static.cloudflareinsights.com; style-src \'self\' \'unsafe-inline\'; img-src \'self\' data: blob: https:; font-src \'self\' data:; connect-src \'self\' https://probe-api.monobase.io.vn https://umami.monobase.io.vn https://cloudflareinsights.com; frame-ancestors \'none\'; object-src \'none\'; base-uri \'self\'; form-action \'self\';',
+        'Content-Security-Policy': contentSecurityPolicy,
         'Cross-Origin-Embedder-Policy': 'credentialless',
         'Cross-Origin-Opener-Policy': 'same-origin',
         'Cross-Origin-Resource-Policy': 'same-origin',

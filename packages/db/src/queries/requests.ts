@@ -34,7 +34,7 @@ export interface GetRequestsInput {
   readonly query?: string
 }
 
-async function assertOwnedEndpoint(
+export async function assertOwnedEndpoint(
   db: PostgresDatabase,
   endpointId: string,
   userId: string,

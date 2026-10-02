@@ -14,6 +14,11 @@
       "development": "./src/endpoint.ts",
       "import": "./dist/endpoint.js"
     },
+    "./endpoint-rule": {
+      "types": "./src/endpoint-rule.ts",
+      "development": "./src/endpoint-rule.ts",
+      "import": "./dist/endpoint-rule.js"
+    },
     "./pagination": {
       "types": "./src/pagination.ts",
       "development": "./src/pagination.ts",
@@ -23,6 +28,11 @@
       "types": "./src/wh-request.ts",
       "development": "./src/wh-request.ts",
       "import": "./dist/wh-request.js"
+    },
+    "./wh-replay": {
+      "types": "./src/wh-replay.ts",
+      "development": "./src/wh-replay.ts",
+      "import": "./dist/wh-replay.js"
     }
   },
   "files": [

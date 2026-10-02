@@ -5,6 +5,7 @@ import {
   corsMiddleware,
   enrichLoggerMiddleware,
   evlogMiddleware,
+  ingestRulesMiddleware,
   openApiMiddleware,
   orpcMiddleware,
   requestIdMiddleware,
@@ -25,6 +26,7 @@ export function createApp() {
   app.all('/auth/*', c => getAuth().handler(c.req.raw))
 
   app.use('/rpc/*', orpcMiddleware)
+  app.use('/e/*', ingestRulesMiddleware)
   app.use('/*', openApiMiddleware)
 
   app.notFound(c => c.json({
