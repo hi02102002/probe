@@ -1,12 +1,13 @@
 import type { PostgresDatabase } from '@repo/db'
 import type { BetterAuthOptions } from 'better-auth'
 import type { MagicLinkOptions } from 'better-auth/plugins/magic-link'
+import type { PolarPluginOptions } from './polar.js'
 import { drizzleAdapter } from '@better-auth/drizzle-adapter/relations-v2'
 import * as schema from '@repo/db/schema'
 import { betterAuth } from 'better-auth'
 import { magicLink } from 'better-auth/plugins/magic-link'
 import { nanoid } from 'nanoid'
-import { createPolarPlugin, type PolarPluginOptions } from './polar.js'
+import { createPolarPlugin } from './polar.js'
 
 export interface AppAuthOptions {
   appName?: string

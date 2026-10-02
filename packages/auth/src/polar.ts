@@ -1,8 +1,11 @@
-import { checkout, polar, portal, webhooks, type PolarOptions } from '@polar-sh/better-auth'
-import { createPolarCore } from '@polar-sh/sdk/2026-10'
+import type { PolarOptions } from '@polar-sh/better-auth'
 import type { PostgresDatabase } from '@repo/db'
+import type { UserPlan } from '@repo/utils'
+import type { BetterAuthPlugin } from 'better-auth'
+import { checkout, polar, portal, webhooks } from '@polar-sh/better-auth'
+import { createPolarCore } from '@polar-sh/sdk/2026-10'
 import * as schema from '@repo/db/schema'
-import { resolvePlanFromSubscriptionStatus, type UserPlan } from '@repo/utils'
+import { resolvePlanFromSubscriptionStatus } from '@repo/utils'
 import { eq } from 'drizzle-orm'
 
 export interface PolarPluginOptions {
@@ -26,7 +29,7 @@ interface SubscriptionPayload {
  * exposes the hosted checkout + customer portal, and syncs subscription
  * status changes back onto the user's plan column.
  */
-export function createPolarPlugin(database: PostgresDatabase, options: PolarPluginOptions) {
+export function createPolarPlugin(database: PostgresDatabase, options: PolarPluginOptions): BetterAuthPlugin {
   const client = createPolarCore({
     accessToken: options.accessToken,
     environment: options.server,

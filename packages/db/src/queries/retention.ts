@@ -1,6 +1,6 @@
+import type { PostgresDatabase } from '../postgres/index.js'
 import { and, eq, inArray, lt } from 'drizzle-orm'
 import { withDb } from '../helpers/with-db.js'
-import type { PostgresDatabase } from '../postgres/index.js'
 import { endpoint, forward_log, replay_log, user, webhook_request } from '../postgres/schema.js'
 
 const BATCH_SIZE = 5_000

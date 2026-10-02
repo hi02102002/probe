@@ -1,5 +1,5 @@
-import { polarClient } from '@polar-sh/better-auth/client'
 import type { BetterAuthClientPlugin } from 'better-auth/client'
+import { polarClient } from '@polar-sh/better-auth/client'
 import { createAuthClient } from 'better-auth/client'
 import { magicLinkClient } from 'better-auth/client/plugins'
 
