@@ -24,15 +24,20 @@
       "development": "./src/pagination.ts",
       "import": "./dist/pagination.js"
     },
-    "./wh-request": {
-      "types": "./src/wh-request.ts",
-      "development": "./src/wh-request.ts",
-      "import": "./dist/wh-request.js"
+    "./wh-forward": {
+      "types": "./src/wh-forward.ts",
+      "development": "./src/wh-forward.ts",
+      "import": "./dist/wh-forward.js"
     },
     "./wh-replay": {
       "types": "./src/wh-replay.ts",
       "development": "./src/wh-replay.ts",
       "import": "./dist/wh-replay.js"
+    },
+    "./wh-request": {
+      "types": "./src/wh-request.ts",
+      "development": "./src/wh-request.ts",
+      "import": "./dist/wh-request.js"
     }
   },
   "files": [

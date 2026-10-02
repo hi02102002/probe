@@ -1,13 +1,20 @@
+import type { PostgresDatabase } from '@repo/db'
 import type { endpoint_rule } from '@repo/db/schema'
 import type { MiddlewareHandler } from 'hono'
 import { Buffer } from 'node:buffer'
 import { createHmac, timingSafeEqual } from 'node:crypto'
-import { getEndpointByToken } from '@repo/db'
+import { getEndpointByToken, insertForwardLog } from '@repo/db'
 import { getDatabase } from '#/db.js'
 import { safeFetch } from '#/libs/safe-fetch.js'
 import { assertPublicHttpUrl } from '#/libs/ssrf.js'
 
 type EndpointRule = typeof endpoint_rule.$inferSelect
+
+/**
+ * The ingest contract only accepts these methods, so the runtime method of a
+ * captured request is always one of them.
+ */
+type WebhookRequestMethod = 'GET' | 'POST' | 'PUT' | 'DELETE' | 'PATCH'
 
 const FORWARD_TIMEOUT_MS = 10_000
 
@@ -33,11 +40,12 @@ function isSignatureProvidedValid(provided: string | undefined, expected: string
 }
 
 async function forwardCapturedRequest(
+  db: PostgresDatabase,
   rule: EndpointRule,
   options: {
     readonly contentType: string | undefined
     readonly log: { error: (message: string, data?: unknown) => void } | undefined
-    readonly method: string
+    readonly method: WebhookRequestMethod
     readonly rawBody: string
   },
 ): Promise<void> {
@@ -46,6 +54,9 @@ async function forwardCapturedRequest(
   if (!targetUrl) {
     return
   }
+
+  const startedAt = Date.now()
+  let log: Parameters<typeof insertForwardLog>[1]
 
   try {
     const url = await assertPublicHttpUrl(targetUrl)
@@ -63,17 +74,53 @@ async function forwardCapturedRequest(
       )
     }
 
-    await safeFetch(url, {
+    const response = await safeFetch(url, {
       body: options.method === 'GET' ? undefined : options.rawBody || undefined,
       headers,
       method: options.method,
       signal: AbortSignal.timeout(FORWARD_TIMEOUT_MS),
     })
+
+    log = {
+      durationMs: Date.now() - startedAt,
+      endpointId: rule.endpointId,
+      error: null,
+      method: options.method,
+      reqBody: options.rawBody || null,
+      statusCode: response.status,
+      success: response.ok,
+      targetUrl,
+    }
   }
   catch (forwardError) {
+    const message = forwardError instanceof Error
+      ? `${forwardError.name}: ${forwardError.message}`
+      : 'Failed to forward ingested webhook'
+
     options.log?.error('Failed to forward ingested webhook', {
       endpointRuleId: rule.id,
-      error: forwardError instanceof Error ? forwardError.message : String(forwardError),
+      error: message,
+      targetUrl,
+    })
+
+    log = {
+      durationMs: Date.now() - startedAt,
+      endpointId: rule.endpointId,
+      error: message,
+      method: options.method,
+      reqBody: options.rawBody || null,
+      statusCode: null,
+      success: false,
+      targetUrl,
+    }
+  }
+
+  const inserted = await insertForwardLog(db, log)
+
+  if (inserted.isErr()) {
+    options.log?.error('Failed to record forward log', {
+      endpointRuleId: rule.id,
+      error: inserted.error,
       targetUrl,
     })
   }
@@ -128,10 +175,10 @@ export const ingestRulesMiddleware: MiddlewareHandler = async (c, next) => {
   }
 
   if (rule.forwardEnabled) {
-    void forwardCapturedRequest(rule, {
+    void forwardCapturedRequest(db, rule, {
       contentType: c.req.header('content-type'),
       log: c.get('log'),
-      method: c.req.method,
+      method: c.req.method as WebhookRequestMethod,
       rawBody,
     })
   }

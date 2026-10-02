@@ -205,3 +205,36 @@ export const replay_log = pgTable(
     ),
   ],
 )
+
+export const forward_log = pgTable(
+  'forward_logs',
+  {
+    id: text('id')
+      .primaryKey()
+      .$defaultFn(() => createId('fl')),
+    endpointId: text('endpoint_id')
+      .notNull()
+      .references(() => endpoint.id, { onDelete: 'cascade' }),
+    method: text('method')
+      .$type<'GET' | 'POST' | 'PUT' | 'DELETE' | 'PATCH'>()
+      .notNull(),
+    targetUrl: text('target_url').notNull(),
+    reqBody: jsonb('req_body'),
+    statusCode: integer('status_code'),
+    durationMs: integer('duration_ms'),
+    success: boolean('success').notNull().default(false),
+    error: text('error'),
+    createdAt: timestamp('created_at', { withTimezone: true }).defaultNow().notNull(),
+    updatedAt: timestamp('updated_at', { withTimezone: true })
+      .defaultNow()
+      .$onUpdate(() => new Date())
+      .notNull(),
+  },
+  table => [
+    index('forward_log_endpoint_created_at_id_idx').on(
+      table.endpointId,
+      table.createdAt,
+      table.id,
+    ),
+  ],
+)
