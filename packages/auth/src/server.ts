@@ -6,6 +6,7 @@ import * as schema from '@repo/db/schema'
 import { betterAuth } from 'better-auth'
 import { magicLink } from 'better-auth/plugins/magic-link'
 import { nanoid } from 'nanoid'
+import { createPolarPlugin, type PolarPluginOptions } from './polar.js'
 
 export interface AppAuthOptions {
   appName?: string
@@ -14,6 +15,7 @@ export interface AppAuthOptions {
   database: PostgresDatabase
   github?: NonNullable<BetterAuthOptions['socialProviders']>['github']
   google?: NonNullable<BetterAuthOptions['socialProviders']>['google']
+  polar?: PolarPluginOptions
   secret: BetterAuthOptions['secret']
   sendMagicLink: MagicLinkOptions['sendMagicLink']
   trustedOrigins?: BetterAuthOptions['trustedOrigins']
@@ -55,6 +57,9 @@ export function createAppAuth(options: AppAuthOptions) {
         sendMagicLink: options.sendMagicLink,
         storeToken: 'hashed',
       }),
+      ...(options.polar
+        ? [createPolarPlugin(options.database, options.polar)]
+        : []),
     ],
     rateLimit: {
       customRules: {
@@ -73,6 +78,15 @@ export function createAppAuth(options: AppAuthOptions) {
       ...(options.google ? { google: options.google } : {}),
     },
     trustedOrigins: options.trustedOrigins,
+    user: {
+      additionalFields: {
+        plan: {
+          defaultValue: 'free',
+          input: false,
+          type: 'string',
+        },
+      },
+    },
   })
 }
 
