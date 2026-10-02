@@ -4,7 +4,7 @@ import {
   GlobeIcon,
   ShieldCheckIcon,
 } from '@phosphor-icons/react'
-import { useInfiniteQuery, useMutation, useQuery } from '@tanstack/react-query'
+import { useMutation, useQuery } from '@tanstack/react-query'
 import { useParams, useRouteContext } from '@tanstack/react-router'
 import { useEffect, useRef, useState } from 'react'
 import { Alert, AlertAction, AlertDescription, AlertTitle } from '@/components/ui/alert'
@@ -17,7 +17,6 @@ import { Skeleton } from '@/components/ui/skeleton'
 import { Switch } from '@/components/ui/switch'
 import { Textarea } from '@/components/ui/textarea'
 import { toastManager } from '@/components/ui/toast'
-import { formatRelativeTime } from '@/lib/dayjs'
 
 interface CustomResponseForm {
   body: string
@@ -67,12 +66,7 @@ const DEFAULT_FORWARDING: ForwardingForm = {
 
 export function RulesTab() {
   const { id: endpointId } = useParams({ from: '/_protected/dashboard/endpoints/$id' })
-  const {
-    forwardListOptions,
-    orpc,
-    queryClient,
-    ruleOptions,
-  } = useRouteContext({
+  const { orpc, queryClient, ruleOptions } = useRouteContext({
     from: '/_protected/dashboard/endpoints/$id/rules',
   })
 
@@ -83,9 +77,6 @@ export function RulesTab() {
     isPending: isRulePending,
     refetch: refetchRule,
   } = useQuery(ruleOptions)
-
-  const forwardsQuery = useInfiniteQuery(forwardListOptions)
-  const forwardLogs = forwardsQuery.data?.pages.flatMap(page => page.items) ?? []
 
   const [customResponse, setCustomResponse] = useState<CustomResponseForm>(DEFAULT_CUSTOM_RESPONSE)
   const [delay, setDelay] = useState<DelayForm>(DEFAULT_DELAY)
@@ -466,79 +457,6 @@ export function RulesTab() {
             </Field>
           </CardContent>
         )}
-      </Card>
-
-      {/* Forwarding delivery history */}
-      <Card className="shadow-xs">
-        <CardHeader className="flex-row items-center justify-between gap-4 p-4 pb-3 sm:p-6 sm:pb-4">
-          <div>
-            <CardTitle className="text-base">Recent Forwards</CardTitle>
-            <CardDescription className="mt-1">
-              Delivery attempts made by the forwarding rule, newest first.
-            </CardDescription>
-          </div>
-          <Badge variant="outline">
-            {forwardLogs.length}
-            {' '}
-            logs
-          </Badge>
-        </CardHeader>
-        <CardContent className="p-0">
-          {forwardLogs.length === 0
-            ? (
-                <div className="flex min-h-24 items-center justify-center p-4 text-center text-muted-foreground text-sm">
-                  No forwards yet. Enable forwarding and incoming requests will be relayed here.
-                </div>
-              )
-            : (
-                <div className="divide-y divide-border">
-                  {forwardLogs.map(forwardLog => (
-                    <div
-                      key={forwardLog.id}
-                      className="flex items-center justify-between gap-3 p-4 transition-colors hover:bg-muted/20"
-                    >
-                      <div className="flex min-w-0 items-center gap-2">
-                        <Badge variant={forwardLog.success ? 'success' : 'destructive'}>
-                          {forwardLog.statusCode ?? 'ERR'}
-                        </Badge>
-                        <span className="font-semibold font-mono text-foreground text-xs">
-                          {forwardLog.method}
-                        </span>
-                        <span
-                          className="truncate font-mono text-muted-foreground text-xs"
-                          title={forwardLog.targetUrl}
-                        >
-                          {forwardLog.targetUrl}
-                        </span>
-                      </div>
-                      <div className="flex shrink-0 items-center gap-3 font-mono text-[11px] text-muted-foreground">
-                        {forwardLog.durationMs != null && (
-                          <span>
-                            {forwardLog.durationMs}
-                            ms
-                          </span>
-                        )}
-                        <span>{formatRelativeTime(forwardLog.createdAt)}</span>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              )}
-
-          {forwardsQuery.hasNextPage && (
-            <div className="p-3">
-              <Button
-                className="w-full"
-                loading={forwardsQuery.isFetchingNextPage}
-                onClick={() => forwardsQuery.fetchNextPage()}
-                size="sm"
-                variant="outline"
-              >
-                Load more
-              </Button>
-            </div>
-          )}
-        </CardContent>
       </Card>
     </div>
   )

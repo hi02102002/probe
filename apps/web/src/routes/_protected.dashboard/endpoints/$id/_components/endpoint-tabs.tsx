@@ -34,6 +34,13 @@ export function EndPointTabs() {
       },
     },
     {
+      label: 'Forwards',
+      toOptions: {
+        params: { id },
+        to: '/dashboard/endpoints/$id/forwards' as const,
+      },
+    },
+    {
       label: 'Rules',
       toOptions: {
         params: { id },

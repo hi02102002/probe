@@ -14,30 +14,10 @@ export const Route = createFileRoute(
       },
     })
 
-    const forwardListOptions = context.orpc.forward.list.infiniteOptions({
-      getNextPageParam: lastPage => lastPage.nextCursor,
-      initialPageParam: null,
-      input: cursor => ({
-        params: {
-          endpointId: params.id,
-        },
-        query: {
-          cursor: cursor ?? undefined,
-          limit: 10,
-        },
-      }),
-    })
-
-    return {
-      forwardListOptions,
-      ruleOptions,
-    }
+    return { ruleOptions }
   },
   loader: async ({ context }) => {
-    await Promise.all([
-      context.queryClient.ensureQueryData(context.ruleOptions).catch(() => undefined),
-      context.queryClient.ensureInfiniteQueryData(context.forwardListOptions).catch(() => undefined),
-    ])
+    await context.queryClient.ensureQueryData(context.ruleOptions).catch(() => undefined)
   },
 })
 

@@ -30,6 +30,7 @@ import { Route as ProtectedDashboardSettingsRouteRouteImport } from './routes/_p
 import { Route as ProtectedDashboardEndpointsIndexRouteRouteImport } from './routes/_protected.dashboard/endpoints/index/route'
 import { Route as ProtectedDashboardEndpointsIdRouteRouteImport } from './routes/_protected.dashboard/endpoints/$id/route'
 import { Route as ProtectedDashboardEndpointsIdIndexRouteRouteImport } from './routes/_protected.dashboard/endpoints/$id/index/route'
+import { Route as ProtectedDashboardEndpointsIdForwardsRouteRouteImport } from './routes/_protected.dashboard/endpoints/$id/forwards/route'
 import { Route as ProtectedDashboardEndpointsIdReplayRouteRouteImport } from './routes/_protected.dashboard/endpoints/$id/replay/route'
 import { Route as ProtectedDashboardEndpointsIdRequestsRouteRouteImport } from './routes/_protected.dashboard/endpoints/$id/requests/route'
 import { Route as ProtectedDashboardEndpointsIdRulesRouteRouteImport } from './routes/_protected.dashboard/endpoints/$id/rules/route'
@@ -143,6 +144,12 @@ const ProtectedDashboardEndpointsIdIndexRouteRoute =
     path: '',
     getParentRoute: () => ProtectedDashboardEndpointsIdRouteRoute,
   } as any)
+const ProtectedDashboardEndpointsIdForwardsRouteRoute =
+  ProtectedDashboardEndpointsIdForwardsRouteRouteImport.update({
+    id: '/forwards',
+    path: '/forwards',
+    getParentRoute: () => ProtectedDashboardEndpointsIdRouteRoute,
+  } as any)
 const ProtectedDashboardEndpointsIdReplayRouteRoute =
   ProtectedDashboardEndpointsIdReplayRouteRouteImport.update({
     id: '/replay',
@@ -182,6 +189,7 @@ export interface FileRoutesByFullPath {
   '/dashboard/endpoints/': typeof ProtectedDashboardEndpointsIndexRouteRoute
   '/dashboard/endpoints/$id': typeof ProtectedDashboardEndpointsIdRouteRouteWithChildren
   '/dashboard/endpoints/$id/': typeof ProtectedDashboardEndpointsIdIndexRouteRoute
+  '/dashboard/endpoints/$id/forwards': typeof ProtectedDashboardEndpointsIdForwardsRouteRoute
   '/dashboard/endpoints/$id/replay': typeof ProtectedDashboardEndpointsIdReplayRouteRoute
   '/dashboard/endpoints/$id/requests': typeof ProtectedDashboardEndpointsIdRequestsRouteRoute
   '/dashboard/endpoints/$id/rules': typeof ProtectedDashboardEndpointsIdRulesRouteRoute
@@ -205,6 +213,7 @@ export interface FileRoutesByTo {
   '/dashboard/settings': typeof ProtectedDashboardSettingsRouteRoute
   '/dashboard/endpoints': typeof ProtectedDashboardEndpointsIndexRouteRoute
   '/dashboard/endpoints/$id': typeof ProtectedDashboardEndpointsIdIndexRouteRoute
+  '/dashboard/endpoints/$id/forwards': typeof ProtectedDashboardEndpointsIdForwardsRouteRoute
   '/dashboard/endpoints/$id/replay': typeof ProtectedDashboardEndpointsIdReplayRouteRoute
   '/dashboard/endpoints/$id/requests': typeof ProtectedDashboardEndpointsIdRequestsRouteRoute
   '/dashboard/endpoints/$id/rules': typeof ProtectedDashboardEndpointsIdRulesRouteRoute
@@ -232,6 +241,7 @@ export interface FileRoutesById {
   '/_protected/dashboard/endpoints/': typeof ProtectedDashboardEndpointsIndexRouteRoute
   '/_protected/dashboard/endpoints/$id': typeof ProtectedDashboardEndpointsIdRouteRouteWithChildren
   '/_protected/dashboard/endpoints/$id/': typeof ProtectedDashboardEndpointsIdIndexRouteRoute
+  '/_protected/dashboard/endpoints/$id/forwards': typeof ProtectedDashboardEndpointsIdForwardsRouteRoute
   '/_protected/dashboard/endpoints/$id/replay': typeof ProtectedDashboardEndpointsIdReplayRouteRoute
   '/_protected/dashboard/endpoints/$id/requests': typeof ProtectedDashboardEndpointsIdRequestsRouteRoute
   '/_protected/dashboard/endpoints/$id/rules': typeof ProtectedDashboardEndpointsIdRulesRouteRoute
@@ -258,6 +268,7 @@ export interface FileRouteTypes {
     | '/dashboard/endpoints/'
     | '/dashboard/endpoints/$id'
     | '/dashboard/endpoints/$id/'
+    | '/dashboard/endpoints/$id/forwards'
     | '/dashboard/endpoints/$id/replay'
     | '/dashboard/endpoints/$id/requests'
     | '/dashboard/endpoints/$id/rules'
@@ -281,6 +292,7 @@ export interface FileRouteTypes {
     | '/dashboard/settings'
     | '/dashboard/endpoints'
     | '/dashboard/endpoints/$id'
+    | '/dashboard/endpoints/$id/forwards'
     | '/dashboard/endpoints/$id/replay'
     | '/dashboard/endpoints/$id/requests'
     | '/dashboard/endpoints/$id/rules'
@@ -307,6 +319,7 @@ export interface FileRouteTypes {
     | '/_protected/dashboard/endpoints/'
     | '/_protected/dashboard/endpoints/$id'
     | '/_protected/dashboard/endpoints/$id/'
+    | '/_protected/dashboard/endpoints/$id/forwards'
     | '/_protected/dashboard/endpoints/$id/replay'
     | '/_protected/dashboard/endpoints/$id/requests'
     | '/_protected/dashboard/endpoints/$id/rules'
@@ -478,6 +491,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ProtectedDashboardEndpointsIdIndexRouteRouteImport
       parentRoute: typeof ProtectedDashboardEndpointsIdRouteRoute
     }
+    '/_protected/dashboard/endpoints/$id/forwards': {
+      id: '/_protected/dashboard/endpoints/$id/forwards'
+      path: '/forwards'
+      fullPath: '/dashboard/endpoints/$id/forwards'
+      preLoaderRoute: typeof ProtectedDashboardEndpointsIdForwardsRouteRouteImport
+      parentRoute: typeof ProtectedDashboardEndpointsIdRouteRoute
+    }
     '/_protected/dashboard/endpoints/$id/replay': {
       id: '/_protected/dashboard/endpoints/$id/replay'
       path: '/replay'
@@ -514,6 +534,7 @@ const AuthRouteWithChildren = AuthRoute._addFileChildren(AuthRouteChildren)
 
 interface ProtectedDashboardEndpointsIdRouteRouteChildren {
   ProtectedDashboardEndpointsIdIndexRouteRoute: typeof ProtectedDashboardEndpointsIdIndexRouteRoute
+  ProtectedDashboardEndpointsIdForwardsRouteRoute: typeof ProtectedDashboardEndpointsIdForwardsRouteRoute
   ProtectedDashboardEndpointsIdReplayRouteRoute: typeof ProtectedDashboardEndpointsIdReplayRouteRoute
   ProtectedDashboardEndpointsIdRequestsRouteRoute: typeof ProtectedDashboardEndpointsIdRequestsRouteRoute
   ProtectedDashboardEndpointsIdRulesRouteRoute: typeof ProtectedDashboardEndpointsIdRulesRouteRoute
@@ -523,6 +544,8 @@ const ProtectedDashboardEndpointsIdRouteRouteChildren: ProtectedDashboardEndpoin
   {
     ProtectedDashboardEndpointsIdIndexRouteRoute:
       ProtectedDashboardEndpointsIdIndexRouteRoute,
+    ProtectedDashboardEndpointsIdForwardsRouteRoute:
+      ProtectedDashboardEndpointsIdForwardsRouteRoute,
     ProtectedDashboardEndpointsIdReplayRouteRoute:
       ProtectedDashboardEndpointsIdReplayRouteRoute,
     ProtectedDashboardEndpointsIdRequestsRouteRoute:
