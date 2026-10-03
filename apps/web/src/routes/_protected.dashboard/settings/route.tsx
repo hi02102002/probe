@@ -1,8 +1,9 @@
 import { createFileRoute } from '@tanstack/react-router'
 import { generateAppSeo } from '@/lib/seo'
+import { SettingsPage } from './_components/settings-page'
 
 export const Route = createFileRoute('/_protected/dashboard/settings')({
-  component: () => null,
+  component: SettingsPage,
   head: () => generateAppSeo({
     description: 'Account and application settings.',
     pathname: '/dashboard/settings',
