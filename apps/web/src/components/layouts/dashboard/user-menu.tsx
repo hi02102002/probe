@@ -14,6 +14,7 @@ import {
   MenuSeparator,
   MenuTrigger,
 } from '@/components/ui/menu'
+import { toastManager } from '@/components/ui/toast'
 import { getAuthSessionQueryOptions } from '@/features/auth/api/auth-session'
 import { getAuthClient } from '@/features/auth/lib/auth-client'
 
@@ -29,6 +30,11 @@ export function UserMenu({ user }: { user: AuthSession['user'] }) {
       const result = await getAuthClient().signOut()
 
       if (result.error) {
+        toastManager.add({
+          type: 'error',
+          title: 'Could not log out',
+          description: 'Please try again in a moment.',
+        })
         return
       }
 

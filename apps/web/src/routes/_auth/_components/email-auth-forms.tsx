@@ -28,10 +28,11 @@ function getAuthErrorCallbackURL(redirectTo: string | undefined) {
   return errorCallbackURL.toString()
 }
 
-function SocialButtons({ redirectTo }: {
+function SocialButtons({ initialError, redirectTo }: {
+  initialError?: string
   redirectTo?: string
 }) {
-  const [error, setError] = useState<string>()
+  const [error, setError] = useState<string | undefined>(initialError)
   const [isSubmitting, setIsSubmitting] = useState<'github' | 'google'>()
 
   async function signInWithSocial(provider: 'github' | 'google') {
@@ -41,6 +42,7 @@ function SocialButtons({ redirectTo }: {
     try {
       const result = await getAuthClient().signIn.social({
         callbackURL: getAuthCallbackURL(redirectTo),
+        errorCallbackURL: getAuthErrorCallbackURL(redirectTo),
         provider,
       })
 
@@ -130,7 +132,8 @@ const loginSchema = z.object({
   email: z.string().email('Enter a valid email address.'),
 })
 
-export function LoginForm({ redirectTo }: {
+export function LoginForm({ initialError, redirectTo }: {
+  initialError?: string
   redirectTo?: string
 }) {
   const [cooldownSeconds, setCooldownSeconds] = useState(0)
@@ -215,7 +218,7 @@ export function LoginForm({ redirectTo }: {
         <h1 className="text-2xl font-semibold text-foreground">Welcome back</h1>
         <p className="mt-2 text-muted-foreground text-sm">Sign in to your Probe account</p>
       </div>
-      <SocialButtons redirectTo={redirectTo} />
+      <SocialButtons initialError={initialError} redirectTo={redirectTo} />
       <FormDivider />
       <Form className="space-y-3" onSubmit={form.handleSubmit(onSubmit)} noValidate>
         <Controller

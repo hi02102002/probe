@@ -14,12 +14,14 @@ export const Route = createFileRoute('/_auth/login')({
     title: 'Login',
   }),
   validateSearch: z.object({
+    // Set by Better Auth when an OAuth callback fails.
+    error: z.string().optional().catch(undefined),
     redirect: z.string().optional(),
   }),
 })
 
 function RouteComponent() {
-  const { redirect } = Route.useSearch()
+  const { error, redirect } = Route.useSearch()
 
-  return <LoginForm redirectTo={redirect} />
+  return <LoginForm initialError={error ? 'Sign-in failed. Please try again.' : undefined} redirectTo={redirect} />
 }

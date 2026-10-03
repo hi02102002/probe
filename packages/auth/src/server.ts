@@ -20,6 +20,8 @@ export interface AppAuthOptions {
   secret: BetterAuthOptions['secret']
   sendMagicLink: MagicLinkOptions['sendMagicLink']
   trustedOrigins?: BetterAuthOptions['trustedOrigins']
+  /** Origin of the web app, used to leave Better Auth's built-in error page. */
+  webURL?: string
 }
 
 export function createAppAuth(options: AppAuthOptions) {
@@ -40,6 +42,12 @@ export function createAppAuth(options: AppAuthOptions) {
         ipAddressHeaders: ['x-forwarded-for', 'x-real-ip'],
       },
     },
+    // Without this, auth errors (e.g. failed OAuth callbacks) land on the
+    // built-in HTML error page served by the API; send them to the web app's
+    // login screen with ?error= instead.
+    ...(options.webURL
+      ? { onAPIError: { errorURL: new URL('/login', options.webURL).toString() } }
+      : {}),
     appName: options.appName ?? 'Probe',
     baseURL: options.baseURL,
     database: drizzleAdapter(options.database, {

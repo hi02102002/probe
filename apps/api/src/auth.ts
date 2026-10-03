@@ -67,6 +67,7 @@ export function getAuth() {
     secret: env.BETTER_AUTH_SECRET,
     sendMagicLink,
     trustedOrigins: env.WEB_URL,
+    webURL: resolveHttpUrl(env.WEB_URL[0], 'http://localhost:3000'),
   })
 
   return auth
