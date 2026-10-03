@@ -1,5 +1,6 @@
 import { createFileRoute } from '@tanstack/react-router'
 import { z } from 'zod'
+import { getBillingStatus } from '@/features/billing/api/billing-status'
 import { generateAppSeo } from '@/lib/seo'
 import { BillingPage } from './_components/billing-page'
 
@@ -8,6 +9,9 @@ export const Route = createFileRoute('/_protected/dashboard/billing')({
   validateSearch: z.object({
     checkout: z.string().optional().catch(undefined),
   }),
+  loader: async () => {
+    return { billingStatus: await getBillingStatus() }
+  },
   head: () => generateAppSeo({
     description: 'Billing and subscription management.',
     pathname: '/dashboard/billing',
@@ -21,6 +25,7 @@ export const Route = createFileRoute('/_protected/dashboard/billing')({
 
 function BillingRouteComponent() {
   const { checkout } = Route.useSearch()
+  const { billingStatus } = Route.useLoaderData()
 
-  return <BillingPage checkoutCompleted={checkout === 'success'} />
+  return <BillingPage billingConfigured={billingStatus.configured} checkoutCompleted={checkout === 'success'} />
 }

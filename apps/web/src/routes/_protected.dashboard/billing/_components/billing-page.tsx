@@ -1,8 +1,10 @@
-import { CheckIcon } from '@phosphor-icons/react'
+import { CheckIcon, PlugsIcon } from '@phosphor-icons/react'
 import { getPlanLimits } from '@repo/utils'
 import { useQuery } from '@tanstack/react-query'
 import { useNavigate } from '@tanstack/react-router'
 import { useEffect, useRef } from 'react'
+import { AppShell, PageHeader, PageHeaderDescription, PageHeaderTitle } from '@/components/layouts/dashboard'
+import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import {
@@ -41,11 +43,18 @@ function extractErrorMessage(result: unknown, fallback: string): string {
   return fallback
 }
 
-export function BillingPage({ checkoutCompleted }: { checkoutCompleted?: boolean }) {
+export function BillingPage({
+  billingConfigured,
+  checkoutCompleted,
+}: {
+  billingConfigured: boolean
+  checkoutCompleted?: boolean
+}) {
   const navigate = useNavigate()
   const { data: session } = useQuery(getAuthSessionQueryOptions)
   const plan = session?.user.plan === 'premium' ? 'premium' : 'free'
   const limits = getPlanLimits(plan)
+  const isPremium = plan === 'premium'
 
   const toastShownRef = useRef(false)
 
@@ -93,132 +102,150 @@ export function BillingPage({ checkoutCompleted }: { checkoutCompleted?: boolean
     })
   }
 
-  const isPremium = plan === 'premium'
-
   return (
-    <div className="flex max-w-4xl flex-col gap-4">
-      <Card className="shadow-xs">
-        <CardHeader className="p-4 pb-3 sm:p-6 sm:pb-4">
-          <div>
-            <div className="flex items-center gap-2">
-              <CardTitle className="text-base">Current plan</CardTitle>
-              <Badge variant={isPremium ? 'success' : 'outline'}>
-                {isPremium ? 'Premium' : 'Free'}
-              </Badge>
-            </div>
-            <CardDescription className="mt-1">
-              {isPremium
-                ? 'You are on the Premium plan. Thank you for supporting Probe!'
-                : 'Upgrade to Premium for more endpoints and longer retention.'}
-            </CardDescription>
-          </div>
-          <CardAction>
-            {isPremium
-              ? (
-                  <Button onClick={handleManageSubscription} size="sm" variant="outline">
-                    Manage subscription
-                  </Button>
-                )
-              : (
-                  <Button
-                    data-umami-event="Billing upgrade clicked"
-                    data-umami-event-button-name="dashboard__billing__upgrade"
-                    onClick={handleUpgrade}
-                    size="sm"
-                  >
-                    Upgrade to Premium
-                  </Button>
-                )}
-          </CardAction>
-        </CardHeader>
-        <CardContent className="flex flex-col gap-2 border-t border-border p-4 pt-4 text-sm sm:p-6 sm:pt-4">
-          <div className="flex items-center justify-between">
-            <span className="text-muted-foreground">Endpoints</span>
-            <span className="font-medium">
-              up to
-              {' '}
-              {limits.maxEndpoints}
-            </span>
-          </div>
-          <div className="flex items-center justify-between">
-            <span className="text-muted-foreground">Request retention</span>
-            <span className="font-medium">
-              {limits.retentionDays}
-              {' '}
-              {limits.retentionDays === 1 ? 'day' : 'days'}
-            </span>
-          </div>
-        </CardContent>
-      </Card>
+    <AppShell>
+      <PageHeader>
+        <PageHeaderTitle>
+          Billing
+        </PageHeaderTitle>
+        <PageHeaderDescription>
+          Manage your plan, limits and billing details.
+        </PageHeaderDescription>
+      </PageHeader>
 
-      <Card className="shadow-xs">
-        <CardHeader className="p-4 pb-3 sm:p-6 sm:pb-4">
-          <div>
-            <CardTitle className="text-base">Compare plans</CardTitle>
-            <CardDescription className="mt-1">
-              Pick the plan that matches how much webhook traffic you debug.
-            </CardDescription>
-          </div>
-        </CardHeader>
-        <CardContent className="grid grid-cols-1 gap-4 border-t border-border p-4 pt-4 sm:grid-cols-2 sm:p-6 sm:pt-4">
-          {(['free', 'premium'] as const).map((planKey) => {
-            const planLimits = getPlanLimits(planKey)
+      <div className="flex flex-col gap-4">
+        {!billingConfigured && (
+          <Alert variant="info">
+            <PlugsIcon />
+            <AlertTitle>Billing is not connected yet</AlertTitle>
+            <AlertDescription>
+              Upgrade actions are disabled until the server is configured with
+              the Polar environment variables (POLAR_ACCESS_TOKEN,
+              POLAR_PREMIUM_PRODUCT_ID, POLAR_WEBHOOK_SECRET).
+            </AlertDescription>
+          </Alert>
+        )}
 
-            return (
-              <div className="flex flex-col gap-2 rounded-xl border border-border p-4" key={planKey}>
-                <div className="flex items-center justify-between">
-                  <span className="font-semibold text-foreground">
-                    {planKey === 'free' ? 'Free' : 'Premium'}
-                  </span>
-                  <Badge variant={planKey === 'premium' ? 'success' : 'outline'}>
-                    {planKey === 'free' ? '$0' : '$7/mo'}
-                  </Badge>
-                </div>
-                <ul className="flex flex-col gap-1.5 text-muted-foreground text-sm">
-                  <li className="flex items-center gap-1.5">
-                    <CheckIcon className="size-3.5 text-emerald-500" weight="bold" />
-                    Up to
-                    {' '}
-                    {planLimits.maxEndpoints}
-                    {' '}
-                    endpoints
-                  </li>
-                  <li className="flex items-center gap-1.5">
-                    <CheckIcon className="size-3.5 text-emerald-500" weight="bold" />
-                    Requests kept for
-                    {' '}
-                    {planLimits.retentionDays}
-                    {' '}
-                    {planLimits.retentionDays === 1 ? 'day' : 'days'}
-                  </li>
-                  <li className="flex items-center gap-1.5">
-                    <CheckIcon className="size-3.5 text-emerald-500" weight="bold" />
-                    Rules, replay and forwarding
-                  </li>
-                </ul>
-                {planKey === 'premium' && !isPremium
-                  ? (
-                      <Button onClick={handleUpgrade} size="sm" variant="outline">
-                        Upgrade
-                      </Button>
-                    )
-                  : planKey === 'premium' && isPremium
-                    ? (
-                        <Button disabled size="sm" variant="outline">
-                          Current plan
-                        </Button>
-                      )
-                    : null}
+        <Card className="shadow-xs">
+          <CardHeader className="p-4 pb-3 sm:p-6 sm:pb-4">
+            <div>
+              <div className="flex items-center gap-2">
+                <CardTitle className="text-base">Current plan</CardTitle>
+                <Badge variant={isPremium ? 'success' : 'outline'}>
+                  {isPremium ? 'Premium' : 'Free'}
+                </Badge>
               </div>
-            )
-          })}
-        </CardContent>
-      </Card>
+              <CardDescription className="mt-1">
+                {isPremium
+                  ? 'You are on the Premium plan. Thank you for supporting Probe!'
+                  : 'Upgrade to Premium for more endpoints and longer retention.'}
+              </CardDescription>
+            </div>
+            <CardAction>
+              {billingConfigured && (isPremium
+                ? (
+                    <Button onClick={handleManageSubscription} size="sm" variant="outline">
+                      Manage subscription
+                    </Button>
+                  )
+                : (
+                    <Button
+                      data-umami-event="Billing upgrade clicked"
+                      data-umami-event-button-name="dashboard__billing__upgrade"
+                      onClick={handleUpgrade}
+                      size="sm"
+                    >
+                      Upgrade to Premium
+                    </Button>
+                  ))}
+            </CardAction>
+          </CardHeader>
+          <CardContent className="flex flex-col gap-2 border-t border-border p-4 pt-4 text-sm sm:p-6 sm:pt-4">
+            <div className="flex items-center justify-between">
+              <span className="text-muted-foreground">Endpoints</span>
+              <span className="font-medium">
+                up to
+                {' '}
+                {limits.maxEndpoints}
+              </span>
+            </div>
+            <div className="flex items-center justify-between">
+              <span className="text-muted-foreground">Request retention</span>
+              <span className="font-medium">
+                {limits.retentionDays}
+                {' '}
+                {limits.retentionDays === 1 ? 'day' : 'days'}
+              </span>
+            </div>
+          </CardContent>
+        </Card>
 
-      <p className="text-muted-foreground text-xs">
-        Payments are processed by Polar. Manage invoices and payment methods
-        from the customer portal.
-      </p>
-    </div>
+        <Card className="shadow-xs">
+          <CardHeader className="p-4 pb-3 sm:p-6 sm:pb-4">
+            <div>
+              <CardTitle className="text-base">Compare plans</CardTitle>
+              <CardDescription className="mt-1">
+                Pick the plan that matches how much webhook traffic you debug.
+              </CardDescription>
+            </div>
+          </CardHeader>
+          <CardContent className="grid grid-cols-1 gap-4 border-t border-border p-4 pt-4 sm:grid-cols-2 sm:p-6 sm:pt-4">
+            {(['free', 'premium'] as const).map((planKey) => {
+              const planLimits = getPlanLimits(planKey)
+
+              return (
+                <div className="flex flex-col gap-2 rounded-xl border border-border p-4" key={planKey}>
+                  <div className="flex items-center justify-between">
+                    <span className="font-semibold text-foreground">
+                      {planKey === 'free' ? 'Free' : 'Premium'}
+                    </span>
+                    <Badge variant={planKey === 'premium' ? 'success' : 'outline'}>
+                      {planKey === 'free' ? '$0' : '$7/mo'}
+                    </Badge>
+                  </div>
+                  <ul className="flex flex-col gap-1.5 text-muted-foreground text-sm">
+                    <li className="flex items-center gap-1.5">
+                      <CheckIcon className="size-3.5 text-emerald-500" weight="bold" />
+                      Up to
+                      {' '}
+                      {planLimits.maxEndpoints}
+                      {' '}
+                      endpoints
+                    </li>
+                    <li className="flex items-center gap-1.5">
+                      <CheckIcon className="size-3.5 text-emerald-500" weight="bold" />
+                      Requests kept for
+                      {' '}
+                      {planLimits.retentionDays}
+                      {' '}
+                      {planLimits.retentionDays === 1 ? 'day' : 'days'}
+                    </li>
+                    <li className="flex items-center gap-1.5">
+                      <CheckIcon className="size-3.5 text-emerald-500" weight="bold" />
+                      Rules, replay and forwarding
+                    </li>
+                  </ul>
+                  {billingConfigured && planKey === 'premium' && !isPremium && (
+                    <Button onClick={handleUpgrade} size="sm" variant="outline">
+                      Upgrade
+                    </Button>
+                  )}
+                  {billingConfigured && planKey === 'premium' && isPremium && (
+                    <Button disabled size="sm" variant="outline">
+                      Current plan
+                    </Button>
+                  )}
+                </div>
+              )
+            })}
+          </CardContent>
+        </Card>
+
+        <p className="text-muted-foreground text-xs">
+          Payments are processed by Polar. Manage invoices and payment methods
+          from the customer portal.
+        </p>
+      </div>
+    </AppShell>
   )
 }

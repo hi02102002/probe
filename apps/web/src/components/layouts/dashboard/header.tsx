@@ -18,11 +18,6 @@ export function DashboardHeader() {
 
   const navigators: NavItem[] = [
     {
-      exact: true,
-      label: 'Endpoints',
-      to: '/dashboard',
-    },
-    {
       label: 'Endpoints',
       to: '/dashboard/endpoints',
     },

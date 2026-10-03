@@ -12,10 +12,14 @@ export function createWebServerEnv(
     runtimeEnvStrict: {
       API_URL: runtimeEnv.API_URL || runtimeEnv.SERVER_URL,
       API_RPC_URL: rpcUrl,
+      POLAR_ACCESS_TOKEN: runtimeEnv.POLAR_ACCESS_TOKEN,
+      POLAR_PREMIUM_PRODUCT_ID: runtimeEnv.POLAR_PREMIUM_PRODUCT_ID,
     },
     server: {
       API_URL: z.url().default('http://localhost:3001'),
       API_RPC_URL: z.url().default('http://localhost:3001/api/rpc'),
+      POLAR_ACCESS_TOKEN: z.string().min(1).optional(),
+      POLAR_PREMIUM_PRODUCT_ID: z.string().min(1).optional(),
     },
   })
 }
