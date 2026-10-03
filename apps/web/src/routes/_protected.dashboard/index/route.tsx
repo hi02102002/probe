@@ -9,6 +9,10 @@ export const Route = createFileRoute('/_protected/dashboard/')({
       input: {},
     })
 
+    const trendOptions = context.orpc.dashboard.trend.queryOptions({
+      input: {},
+    })
+
     const recentRequestsOptions = context.orpc.dashboard.recentRequests.queryOptions({
       input: {
         query: {
@@ -20,11 +24,13 @@ export const Route = createFileRoute('/_protected/dashboard/')({
     return {
       recentRequestsOptions,
       statsOptions,
+      trendOptions,
     }
   },
   loader: async ({ context }) => {
     await Promise.all([
       context.queryClient.ensureQueryData(context.statsOptions).catch(() => undefined),
+      context.queryClient.ensureQueryData(context.trendOptions).catch(() => undefined),
       context.queryClient.ensureQueryData(context.recentRequestsOptions).catch(() => undefined),
     ])
   },

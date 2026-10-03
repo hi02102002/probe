@@ -1,4 +1,10 @@
-import { PlusIcon, PulseIcon } from '@phosphor-icons/react'
+import {
+  ClockClockwiseIcon,
+  LightningIcon,
+  PlusIcon,
+  PulseIcon,
+  StackIcon,
+} from '@phosphor-icons/react'
 import { getPlanLimits } from '@repo/utils'
 import { useQuery } from '@tanstack/react-query'
 import { Link, useRouteContext } from '@tanstack/react-router'
@@ -6,12 +12,23 @@ import { AppShell, PageHeader, PageHeaderDescription, PageHeaderTitle } from '@/
 import { Alert, AlertAction, AlertDescription, AlertTitle } from '@/components/ui/alert'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
+import { Card, CardAction, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
+import {
+  Empty,
+  EmptyContent,
+  EmptyDescription,
+  EmptyHeader,
+  EmptyMedia,
+  EmptyTitle,
+} from '@/components/ui/empty'
+import { Progress, ProgressIndicator, ProgressTrack } from '@/components/ui/progress'
 import { Skeleton } from '@/components/ui/skeleton'
 import { getAuthSessionQueryOptions } from '@/features/auth/api/auth-session'
+import { cn } from '@/lib/cn'
 import { formatRelativeTime } from '@/lib/dayjs'
 import { getRequestPath } from '../../endpoints/$id/requests/_utils/request-utils'
 import { CreateEndpointDialog } from '../../endpoints/index/_components/create-endpoint-dialog'
+import { RequestsTrendChart } from './requests-trend-chart'
 
 function statusVariant(statusCode: string | null | undefined): 'destructive' | 'outline' | 'success' {
   if (statusCode == null) {
@@ -23,13 +40,22 @@ function statusVariant(statusCode: string | null | undefined): 'destructive' | '
   return status >= 200 && status < 300 ? 'success' : 'destructive'
 }
 
+const METHOD_TONE_CLASSES = {
+  DELETE: 'border-destructive/20 bg-destructive/10 text-destructive',
+  GET: 'border-chart-4/20 bg-chart-4/10 text-chart-4',
+  PATCH: 'border-chart-5/20 bg-chart-5/10 text-chart-5',
+  POST: 'border-success/20 bg-success/10 text-success',
+  PUT: 'border-warning/20 bg-warning/10 text-warning',
+} as const
+
 export function DashboardPage() {
-  const { recentRequestsOptions, statsOptions } = useRouteContext({
+  const { recentRequestsOptions, statsOptions, trendOptions } = useRouteContext({
     from: '/_protected/dashboard/',
   })
 
   const { data: session } = useQuery(getAuthSessionQueryOptions)
   const statsQuery = useQuery(statsOptions)
+  const trendQuery = useQuery(trendOptions)
   const recentQuery = useQuery(recentRequestsOptions)
 
   const plan = session?.user.plan === 'premium' ? 'premium' : 'free'
@@ -54,7 +80,6 @@ export function DashboardPage() {
             <Button
               data-umami-event="New endpoint button clicked"
               data-umami-event-button-name="dashboard__dashboard__new-endpoint"
-              size="sm"
             >
               <PlusIcon />
               New endpoint
@@ -95,117 +120,130 @@ export function DashboardPage() {
               )
             : (
                 <div className="grid grid-cols-2 gap-4 lg:grid-cols-4">
-                  <Card className="shadow-xs">
-                    <CardHeader className="p-4 pb-2">
-                      <CardDescription>Endpoints</CardDescription>
-                      <CardTitle className="text-3xl">
-                        {statsQuery.data.stats.endpoints}
-                      </CardTitle>
-                    </CardHeader>
-                    <CardContent className="px-4 pb-4">
-                      <span className="text-muted-foreground text-xs">
-                        across your workspace
-                      </span>
-                    </CardContent>
-                  </Card>
-                  <Card className="shadow-xs">
-                    <CardHeader className="p-4 pb-2">
-                      <CardDescription>Active</CardDescription>
-                      <CardTitle className="text-3xl">
-                        {statsQuery.data.stats.activeEndpoints}
-                      </CardTitle>
-                    </CardHeader>
-                    <CardContent className="px-4 pb-4">
-                      <span className="text-muted-foreground text-xs">
-                        accepting requests
-                      </span>
-                    </CardContent>
-                  </Card>
-                  <Card className="shadow-xs">
-                    <CardHeader className="p-4 pb-2">
-                      <CardDescription>Requests (24h)</CardDescription>
-                      <CardTitle className="text-3xl">
-                        {statsQuery.data.stats.requests24h}
-                      </CardTitle>
-                    </CardHeader>
-                    <CardContent className="px-4 pb-4">
-                      <span className="text-muted-foreground text-xs">
-                        captured webhooks
-                      </span>
-                    </CardContent>
-                  </Card>
-                  <Card className="shadow-xs">
-                    <CardHeader className="p-4 pb-2">
-                      <CardDescription>Requests (7d)</CardDescription>
-                      <CardTitle className="text-3xl">
-                        {statsQuery.data.stats.requests7d}
-                      </CardTitle>
-                    </CardHeader>
-                    <CardContent className="px-4 pb-4">
-                      <span className="text-muted-foreground text-xs">
-                        captured webhooks
-                      </span>
-                    </CardContent>
-                  </Card>
+                  <StatCard
+                    caption="across your workspace"
+                    icon={StackIcon}
+                    label="Endpoints"
+                    tone="border-chart-1/20 bg-chart-1/10 text-chart-1"
+                    value={statsQuery.data.stats.endpoints}
+                  />
+                  <StatCard
+                    caption="accepting requests"
+                    icon={PulseIcon}
+                    label="Active"
+                    tone="border-success/20 bg-success/10 text-success"
+                    value={statsQuery.data.stats.activeEndpoints}
+                  />
+                  <StatCard
+                    caption="captured webhooks"
+                    icon={LightningIcon}
+                    label="Requests (24h)"
+                    tone="border-chart-2/20 bg-chart-2/10 text-chart-2"
+                    value={statsQuery.data.stats.requests24h}
+                  />
+                  <StatCard
+                    caption="captured webhooks"
+                    icon={ClockClockwiseIcon}
+                    label="Requests (7d)"
+                    tone="border-chart-5/20 bg-chart-5/10 text-chart-5"
+                    value={statsQuery.data.stats.requests7d}
+                  />
                 </div>
               )}
 
-        {/* Plan usage */}
-        <Card className="shadow-xs">
-          <CardHeader className="p-4 pb-3 sm:p-6 sm:pb-4">
-            <div>
-              <div className="flex items-center gap-2">
-                <CardTitle className="text-base">Plan usage</CardTitle>
-                <Badge variant={plan === 'premium' ? 'success' : 'outline'}>
-                  {plan === 'premium' ? 'Premium' : 'Free'}
-                </Badge>
+        {/* Trend + plan usage */}
+        <div className="grid grid-cols-1 gap-4 lg:grid-cols-3">
+          <Card className="shadow-xs lg:col-span-2">
+            <CardHeader className="p-4 pb-3 sm:p-6 sm:pb-4">
+              <div>
+                <CardTitle className="text-base">Requests</CardTitle>
+                <CardDescription className="mt-1">
+                  Captured per hour · last 24 hours.
+                </CardDescription>
               </div>
-              <CardDescription className="mt-1">
-                Limits applied to your account.
-              </CardDescription>
-            </div>
-          </CardHeader>
-          <CardContent className="flex flex-col gap-3 border-t border-border p-4 pt-4 sm:p-6 sm:pt-4">
-            <div className="flex items-center justify-between text-sm">
-              <span className="text-muted-foreground">
-                Endpoints
-              </span>
-              <span className="font-medium">
-                {endpointsUsed}
-                {' '}
-                /
-                {' '}
-                {limits.maxEndpoints}
-              </span>
-            </div>
-            <div aria-hidden="true" className="h-1.5 w-full overflow-hidden rounded-full bg-muted">
-              <div
-                className="h-full rounded-full bg-primary transition-[width]"
-                style={{ width: `${usagePercent}%` }}
-              />
-            </div>
-            <div className="flex items-center justify-between text-sm">
-              <span className="text-muted-foreground">
-                Request retention
-              </span>
-              <span className="font-medium">
-                {limits.retentionDays}
-                {' '}
-                {limits.retentionDays === 1 ? 'day' : 'days'}
-              </span>
-            </div>
-            {plan === 'free' && (
-              <Link
-                className="font-medium text-primary hover:underline"
-                data-umami-link-event="Dashboard manage plan clicked"
-                data-umami-event-button-name="dashboard__dashboard__manage-plan"
-                to="/dashboard/billing"
-              >
-                Manage plan
-              </Link>
-            )}
-          </CardContent>
-        </Card>
+            </CardHeader>
+            <CardContent className="border-t border-border p-4 pt-4 sm:p-6 sm:pt-4">
+              {trendQuery.isPending
+                ? <Skeleton className="h-28 w-full rounded-lg" />
+                : trendQuery.isError
+                  ? (
+                      <Alert variant="error">
+                        <AlertTitle>Unable to load trend</AlertTitle>
+                        <AlertDescription>
+                          We could not load your request trend. Please try again.
+                        </AlertDescription>
+                        <AlertAction>
+                          <Button
+                            loading={trendQuery.isFetching}
+                            onClick={() => void trendQuery.refetch()}
+                            size="sm"
+                            type="button"
+                            variant="outline"
+                          >
+                            Try again
+                          </Button>
+                        </AlertAction>
+                      </Alert>
+                    )
+                  : <RequestsTrendChart points={trendQuery.data.points} />}
+            </CardContent>
+          </Card>
+
+          <Card className="shadow-xs">
+            <CardHeader className="p-4 pb-3 sm:p-6 sm:pb-4">
+              <div>
+                <div className="flex items-center gap-2">
+                  <CardTitle className="text-base">Plan usage</CardTitle>
+                  <Badge variant={plan === 'premium' ? 'success' : 'outline'}>
+                    {plan === 'premium' ? 'Premium' : 'Free'}
+                  </Badge>
+                </div>
+                <CardDescription className="mt-1">
+                  Limits applied to your account.
+                </CardDescription>
+              </div>
+            </CardHeader>
+            <CardContent className="flex flex-col gap-3 border-t border-border p-4 pt-4 sm:p-6 sm:pt-4">
+              <div className="flex items-center justify-between text-sm">
+                <span className="text-muted-foreground">
+                  Endpoints
+                </span>
+                <span className="font-medium">
+                  {endpointsUsed}
+                  {' '}
+                  /
+                  {' '}
+                  {limits.maxEndpoints}
+                </span>
+              </div>
+              <Progress value={usagePercent}>
+                <ProgressTrack className="h-1.5">
+                  <ProgressIndicator />
+                </ProgressTrack>
+              </Progress>
+              <div className="flex items-center justify-between text-sm">
+                <span className="text-muted-foreground">
+                  Request retention
+                </span>
+                <span className="font-medium">
+                  {limits.retentionDays}
+                  {' '}
+                  {limits.retentionDays === 1 ? 'day' : 'days'}
+                </span>
+              </div>
+              {plan === 'free' && (
+                <Link
+                  className="font-medium text-primary hover:underline"
+                  data-umami-link-event="Dashboard manage plan clicked"
+                  data-umami-event-button-name="dashboard__dashboard__manage-plan"
+                  to="/dashboard/billing"
+                >
+                  Manage plan
+                </Link>
+              )}
+            </CardContent>
+          </Card>
+        </div>
 
         {/* Recent activity */}
         <Card className="shadow-xs">
@@ -250,15 +288,33 @@ export function DashboardPage() {
                   )
                 : recentRequests.length === 0
                   ? (
-                      <div className="flex min-h-32 flex-col items-center justify-center gap-1.5 p-6 text-center">
-                        <PulseIcon className="size-5 text-muted-foreground" />
-                        <p className="text-muted-foreground text-sm">
-                          No requests captured yet.
-                        </p>
-                        <p className="text-muted-foreground text-sm">
-                          Send a webhook to one of your endpoints to see it here.
-                        </p>
-                      </div>
+                      <Empty className="min-h-48 border-0 py-10">
+                        <EmptyHeader>
+                          <EmptyMedia variant="icon">
+                            <PulseIcon className="size-5" weight="duotone" />
+                          </EmptyMedia>
+                          <EmptyTitle>
+                            No requests captured yet
+                          </EmptyTitle>
+                          <EmptyDescription>
+                            Send a webhook to one of your endpoints and it will appear here.
+                          </EmptyDescription>
+                        </EmptyHeader>
+                        <EmptyContent>
+                          <CreateEndpointDialog
+                            trigger={(
+                              <Button
+                                data-umami-event="Empty state new endpoint clicked"
+                                data-umami-event-button-name="dashboard__dashboard__empty-new-endpoint"
+                                variant="outline"
+                              >
+                                <PlusIcon />
+                                New endpoint
+                              </Button>
+                            )}
+                          />
+                        </EmptyContent>
+                      </Empty>
                     )
                   : (
                       <div className="divide-y divide-border">
@@ -276,7 +332,12 @@ export function DashboardPage() {
                                 <Badge variant={statusVariant(request.statusCode)}>
                                   {request.statusCode ?? '—'}
                                 </Badge>
-                                <span className="font-semibold font-mono text-foreground text-xs">
+                                <span
+                                  className={cn(
+                                    'rounded-md border px-1.5 py-0.5 font-mono text-[10px] font-semibold tracking-wide',
+                                    METHOD_TONE_CLASSES[request.method],
+                                  )}
+                                >
                                   {request.method}
                                 </span>
                                 <span className="truncate text-muted-foreground text-xs">
@@ -298,5 +359,36 @@ export function DashboardPage() {
         </Card>
       </div>
     </AppShell>
+  )
+}
+
+interface StatCardProps {
+  caption: string
+  icon: React.ComponentType<React.ComponentProps<typeof StackIcon>>
+  label: string
+  tone: string
+  value: number
+}
+
+function StatCard({ caption, icon: Icon, label, tone, value }: StatCardProps) {
+  return (
+    <Card className="shadow-xs transition-transform duration-200 hover:-translate-y-0.5">
+      <CardHeader className="p-4 pb-2">
+        <CardDescription>{label}</CardDescription>
+        <CardTitle className="text-3xl tabular-nums tracking-tight">
+          {value}
+        </CardTitle>
+        <CardAction>
+          <span className={cn('flex size-8 items-center justify-center rounded-lg border', tone)}>
+            <Icon className="size-4.5" weight="duotone" />
+          </span>
+        </CardAction>
+      </CardHeader>
+      <CardContent className="px-4 pb-4">
+        <span className="text-muted-foreground text-xs">
+          {caption}
+        </span>
+      </CardContent>
+    </Card>
   )
 }
