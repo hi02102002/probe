@@ -1,8 +1,9 @@
-import { and, count, desc, eq, gte } from 'drizzle-orm'
+import { and, count, desc, eq, gte, sql } from 'drizzle-orm'
 import { withDb } from '../helpers/with-db.js'
 import { endpoint, webhook_request } from '../postgres/schema.js'
 
 const DAY_MS = 24 * 60 * 60 * 1000
+const TREND_BUCKETS = 24
 
 export const getDashboardStats = withDb(async (db, userId: string) => {
   const now = Date.now()
@@ -55,6 +56,46 @@ export interface GetRecentRequestsInput {
   readonly userId: string
   readonly limit: number
 }
+
+export interface DashboardTrendPoint {
+  /** ISO timestamp of the UTC hour bucket start */
+  readonly hour: string
+  readonly total: number
+}
+
+/**
+ * Hourly request counts for the last 24 hours. Hours without captured
+ * requests are filled with zero so the series is always TREND_BUCKETS long,
+ * ordered oldest to newest.
+ */
+export const getRequestTrend = withDb(async (db, userId: string): Promise<DashboardTrendPoint[]> => {
+  const since = new Date(Date.now() - DAY_MS)
+
+  const rows = await db
+    .select({
+      hour: sql<string>`date_trunc('hour', ${webhook_request.createdAt})`,
+      total: count(),
+    })
+    .from(webhook_request)
+    .innerJoin(endpoint, eq(endpoint.id, webhook_request.endpointId))
+    .where(and(
+      eq(endpoint.userId, userId),
+      gte(webhook_request.createdAt, since),
+    ))
+    .groupBy(sql`date_trunc('hour', ${webhook_request.createdAt})`)
+
+  const totalsByHour = new Map(rows.map(row => [Number(new Date(row.hour)), row.total]))
+
+  const currentHourStart = Math.floor(Date.now() / 60 / 60 / 1000) * 60 * 60 * 1000
+
+  return Array.from({ length: TREND_BUCKETS }, (_, index) => {
+    const hour = currentHourStart - (TREND_BUCKETS - 1 - index) * 60 * 60 * 1000
+    return {
+      hour: new Date(hour).toISOString(),
+      total: totalsByHour.get(hour) ?? 0,
+    }
+  })
+})
 
 export const getRecentRequests = withDb(async (db, input: GetRecentRequestsInput) => {
   return await db

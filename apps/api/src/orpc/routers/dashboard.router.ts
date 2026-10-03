@@ -1,4 +1,4 @@
-import { getDashboardStats, getRecentRequests } from '@repo/db/queries/dashboard'
+import { getDashboardStats, getRecentRequests, getRequestTrend } from '@repo/db/queries/dashboard'
 import { mapDatabaseError } from '#/orpc/errors/map-database-error.js'
 import { authenticated, pub } from '#/orpc/os.js'
 
@@ -23,5 +23,14 @@ export const dashboardRouter = pub.dashboard.router({
     }
 
     return result.value
+  }),
+  trend: authenticated.dashboard.trend.handler(async ({ context }) => {
+    const result = await getRequestTrend(context.db, context.user.id)
+
+    if (result.isErr()) {
+      throw mapDatabaseError(result.error)
+    }
+
+    return { points: result.value }
   }),
 })
