@@ -9,6 +9,11 @@
       "development": "./src/index.ts",
       "import": "./dist/index.js"
     },
+    "./dashboard": {
+      "types": "./src/dashboard.ts",
+      "development": "./src/dashboard.ts",
+      "import": "./dist/dashboard.js"
+    },
     "./endpoint": {
       "types": "./src/endpoint.ts",
       "development": "./src/endpoint.ts",

@@ -2,6 +2,7 @@ import type {
   InferContractRouterInputs,
   InferContractRouterOutputs,
 } from '@orpc/contract'
+import { dashboardContract } from './dashboard.js'
 import { endpointContract } from './endpoint.js'
 import { forwardContract } from './forward.js'
 import { ingestContract } from './ingest.js'
@@ -10,6 +11,7 @@ import { requestContract } from './request.js'
 import { ruleContract } from './rule.js'
 import { systemContract } from './system.js'
 
+export { dashboardContract } from './dashboard.js'
 export { endpointContract } from './endpoint.js'
 export { forwardContract } from './forward.js'
 export { ingestContract, type IngestEvent } from './ingest.js'
@@ -19,6 +21,7 @@ export { ruleContract } from './rule.js'
 export { systemContract } from './system.js'
 
 export const contract = {
+  dashboard: dashboardContract,
   endpoint: endpointContract,
   forward: forwardContract,
   ingest: ingestContract,
