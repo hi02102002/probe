@@ -47,9 +47,11 @@ const isLocalDev = /localhost|127\.0\.0\.1/.test(apiOrigin)
 const contentSecurityPolicy = [
   'default-src \'self\'',
   `script-src 'self' 'unsafe-inline' https://umami.monobase.io.vn https://static.cloudflareinsights.com${isLocalDev ? ' blob:' : ''}`,
-  'style-src \'self\' \'unsafe-inline\'',
+  // react-grab injects a Google Fonts stylesheet in dev; production stays
+  // self-hosted via @fontsource.
+  `style-src 'self' 'unsafe-inline'${isLocalDev ? ' https://fonts.googleapis.com' : ''}`,
   'img-src \'self\' data: blob: https:',
-  'font-src \'self\' data:',
+  `font-src 'self' data:${isLocalDev ? ' https://fonts.gstatic.com' : ''}`,
   `connect-src 'self' ${apiOrigin} https://umami.monobase.io.vn https://cloudflareinsights.com${isLocalDev ? ' https://react-grab.com https://www.react-grab.com https://fonts.googleapis.com' : ''}`,
   'frame-ancestors \'none\'',
   'object-src \'none\'',
