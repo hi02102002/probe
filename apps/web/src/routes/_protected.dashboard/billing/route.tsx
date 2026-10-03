@@ -9,8 +9,19 @@ export const Route = createFileRoute('/_protected/dashboard/billing')({
   validateSearch: z.object({
     checkout: z.string().optional().catch(undefined),
   }),
-  loader: async () => {
-    return { billingStatus: await getBillingStatus() }
+  context: ({ context }) => {
+    return {
+      statsOptions: context.orpc.dashboard.stats.queryOptions({
+        input: {},
+      }),
+    }
+  },
+  loader: async ({ context }) => {
+    const [billingStatus] = await Promise.all([
+      getBillingStatus(),
+      context.queryClient.ensureQueryData(context.statsOptions).catch(() => undefined),
+    ])
+    return { billingStatus }
   },
   head: () => generateAppSeo({
     description: 'Billing and subscription management.',
