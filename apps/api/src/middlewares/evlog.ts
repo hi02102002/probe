@@ -4,20 +4,29 @@ import { createAppEnricher } from '@repo/utils'
 import { evlog } from 'evlog/hono'
 import { enrichLogger, getAuthIdentifier } from '#/libs/evlog.js'
 
+/**
+ * Paths that never produce evlog events at the Hono layer. The oRPC
+ * `withEvlog` wrapper must NOT use this list — excluding a path there skips
+ * evlog's async storage init, which makes `useLogger()` inside handlers
+ * throw. Hono-level exclusion here already prevents duplicate events.
+ */
+export const EVLOG_EXCLUDED_PATHS = [
+  '/',
+  '/api',
+  '/api/',
+  '/spec.json',
+  '/api/spec.json',
+  '/health',
+  '/api/health',
+  '/api/health/*',
+  '/openapi/**',
+  '/api/openapi/**',
+  '/rpc/**',
+  '/api/rpc/**',
+]
+
 export const evlogMiddleware = evlog({
-  exclude: [
-    '/',
-    '/api',
-    '/api/',
-    '/spec.json',
-    '/api/spec.json',
-    '/health',
-    '/api/health',
-    '/openapi/**',
-    '/api/openapi/**',
-    '/rpc/**',
-    '/api/rpc/**',
-  ],
+  exclude: EVLOG_EXCLUDED_PATHS,
   redact: true,
   enrich: createAppEnricher(),
 })
