@@ -117,11 +117,10 @@ export function BillingPage({
         {!billingConfigured && (
           <Alert variant="info">
             <PlugsIcon />
-            <AlertTitle>Billing is not connected yet</AlertTitle>
+            <AlertTitle>Upgrades are temporarily unavailable</AlertTitle>
             <AlertDescription>
-              Upgrade actions are disabled until the server is configured with
-              the Polar environment variables (POLAR_ACCESS_TOKEN,
-              POLAR_PREMIUM_PRODUCT_ID, POLAR_WEBHOOK_SECRET).
+              Online payments are being set up right now. Your current plan
+              keeps working — please check back soon.
             </AlertDescription>
           </Alert>
         )}
